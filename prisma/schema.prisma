@@ -1,0 +1,499 @@
+// This is your Prisma schema file
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Base User model for authentication
+model User {
+  id            String    @id @default(uuid())
+  email         String    @unique
+  password      String
+  userType      UserType
+  isActive      Boolean   @default(false)
+  isVerified    Boolean   @default(false)
+  resetPasswordToken String?
+  refreshToken  String?
+  lat           Float?
+  lng           Float?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // Relations
+  shipper       Shipper?
+  carrier       Carrier?
+  adminUser     AdminUser?
+  documentsUploaded Document[]
+  documentsVerified Document[] @relation("DocumentVerifier")
+  
+  @@index([email])
+  @@index([userType])
+}
+
+// Shipper model (Companies that need logistics services)
+model Shipper {
+  id                    String    @id @default(uuid())
+  userId                String    @unique
+  companyName           String
+  registrationNumber    String?
+  taxId                 String?
+  businessEmail         String    @unique
+  phoneNumber           String
+  website               String?
+  companySize           CompanySize
+  description           String?
+  
+  // Address
+  street                String
+  city                  String
+  state                 String
+  postalCode            String
+  countryCode           String
+  
+  // Contact Person
+  contactFirstName      String
+  contactLastName       String
+  contactJobTitle       String
+  contactPhone          String
+  contactEmail          String
+  
+  // Business Info
+  expectedMonthlyVolume String?
+  operatingRegions      String?
+  marketingOptIn        Boolean   @default(false)
+  
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  // Relations
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  bookings              Booking[]
+  
+  @@index([businessEmail])
+  @@index([companyName])
+  @@index([city, state])
+}
+
+// Carrier model (Truck owners/companies that provide logistics services)
+model Carrier {
+  id                    String    @id @default(uuid())
+  userId                String    @unique
+  companyName           String
+  registrationNumber    String?
+  taxId                 String?
+  businessEmail         String    @unique
+  phoneNumber           String
+  website               String?
+  companySize           CompanySize
+  description           String?
+  
+  // Address
+  street                String
+  city                  String
+  state                 String
+  postalCode            String
+  countryCode           String
+  
+  // Contact Person
+  contactFirstName      String
+  contactLastName       String
+  contactJobTitle       String
+  contactPhone          String
+  contactEmail          String
+  
+  // Business Info
+  fleetSize             String?
+  operatingRegions      String?
+  marketingOptIn        Boolean   @default(false)
+  
+  // Carrier-specific fields
+  isVerified            Boolean   @default(false)
+  rating                Float?    @default(0)
+  completedJobs         Int       @default(0)
+  
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  // Relations
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  trucks                Truck[]
+  bids                  Bid[]
+  documents             Document[]
+  
+  @@index([businessEmail])
+  @@index([companyName])
+  @@index([city, state])
+  @@index([rating])
+}
+
+// Truck model (Vehicles owned by carriers)
+model Truck {
+  id                    String    @id @default(uuid())
+  carrierId             String
+  makeModel             String
+  year                  Int
+  licensePlate          String    @unique
+  maxPayload            Float
+  cargoVolume           Float?
+  truckType             String
+  condition             String
+  mileage               Float?
+  equipment             String[]
+  availableServices     String[]
+  photoUrl              String?
+  
+  // Insurance
+  insuranceNumber       String?
+  insuranceExpiryDate   DateTime?
+  
+  // Driver assigned to truck
+  driverName            String?
+  driverLicenseNumber   String?
+  driverLicenseExpiry   DateTime?
+  driverExperience      Int?
+  driverPhone           String?
+  driverRating          Float?
+  
+  isActive              Boolean   @default(true)
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  // Relations
+  carrier               Carrier   @relation(fields: [carrierId], references: [id], onDelete: Cascade)
+  
+  @@index([carrierId])
+  @@index([truckType])
+  @@index([licensePlate])
+}
+
+// Booking model (Job postings from shippers)
+model Booking {
+  id                    String    @id @default(uuid())
+  shipperId             String
+  referenceNumber       String?
+  description           String
+  
+  // Locations (stored as JSON for flexibility)
+  pickupLocation        Json
+  deliveryLocation      Json
+  
+  // Cargo details
+  cargoDetails          Json
+  
+  // Truck requirements
+  preferredTruckType    String
+  preferredPickupTime   DateTime
+  latestPickupTime      DateTime?
+  requiredDeliveryTime  DateTime?
+  urgencyLevel          UrgencyLevel
+  loadingType           String
+  unloadingType         String
+  
+  // Pricing
+  proposedPrice         Float
+  currency              String    @default("NGN")
+  minimumPrice          Float?
+  maximumPrice          Float?
+  isNegotiable          Boolean   @default(true)
+  
+  // Additional requirements
+  additionalRequirements String?
+  requiredServices      String[]
+  
+  // Contact info
+  contactPerson         String
+  contactPhone          String
+  contactEmail          String?
+  
+  // Booking settings
+  expiresAt             DateTime?
+  notificationsEnabled  Boolean   @default(true)
+  isRecurring           Boolean   @default(false)
+  recurrencePattern     String?
+  
+  status                BookingStatus @default(ACTIVE)
+  acceptedBidId         String?
+  
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  // Relations
+  shipper               Shipper   @relation(fields: [shipperId], references: [id], onDelete: Cascade)
+  bids                  Bid[]
+  documents             Document[]
+  billOfLading          BillOfLading?
+  
+  @@index([status])
+  @@index([shipperId])
+  @@index([urgencyLevel])
+  @@index([preferredTruckType])
+  @@index([createdAt])
+}
+
+// Bid model (Proposals from carriers)
+model Bid {
+  id                    String    @id @default(uuid())
+  bookingId             String
+  carrierId             String
+  bidAmount             Float
+  currency              String    @default("NGN")
+  proposedPickupTime    DateTime
+  estimatedDeliveryTime DateTime
+  
+  // Truck and driver info (stored as JSON for flexibility)
+  truckDetails          Json
+  driverDetails         Json
+  
+  // Bid details
+  message               String?
+  includedServices      String[]
+  bidExpiresAt          DateTime?
+  isNegotiable          Boolean   @default(true)
+  paymentTerms          String?
+  specialTerms          String?
+  minimumAcceptablePrice Float?
+  documentationUrl      String?
+  
+  // Contact info
+  contactPerson         String
+  contactPhone          String
+  contactEmail          String?
+  
+  status                BidStatus @default(PENDING)
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  // Relations
+  booking               Booking   @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  carrier               Carrier   @relation(fields: [carrierId], references: [id], onDelete: Cascade)
+  documents             Document[]
+  
+  @@index([bookingId])
+  @@index([carrierId])
+  @@index([status])
+  @@index([createdAt])
+}
+
+// Enums
+enum UserType {
+  SHIPPER
+  CARRIER
+  ADMIN
+}
+
+enum CompanySize {
+  SMALL       // 1-10 employees
+  MEDIUM      // 11-50 employees
+  LARGE       // 51-200 employees
+  ENTERPRISE  // 200+ employees
+}
+
+enum UrgencyLevel {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
+
+enum BookingStatus {
+  ACTIVE
+  PENDING_BIDS
+  BIDS_RECEIVED
+  ACCEPTED
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+  EXPIRED
+}
+
+enum BidStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+  COUNTER_OFFERED
+  WITHDRAWN
+  EXPIRED
+}
+
+enum DocumentType {
+  BILL_OF_LADING
+  INSURANCE_CERTIFICATE
+  DRIVER_LICENSE
+  CARGO_PHOTO
+  DELIVERY_SIGNATURE
+  INSPECTION_REPORT
+  INVOICE
+  RECEIPT
+}
+
+enum DocumentStatus {
+  PENDING
+  VERIFIED
+  REJECTED
+  EXPIRED
+}
+
+enum UserRole {
+  SUPER_ADMIN
+  ADMIN
+  MODERATOR
+  SUPPORT
+}
+
+// Document management model
+model Document {
+  id            String          @id @default(uuid())
+  type          DocumentType
+  status        DocumentStatus  @default(PENDING)
+  fileName      String
+  originalName  String
+  fileUrl       String
+  fileSize      Int
+  mimeType      String
+  
+  // Relations
+  bookingId     String?
+  bidId         String?
+  carrierId     String?
+  uploadedById  String
+  billOfLadingId String?
+  
+  // Metadata
+  metadata      Json?
+  expiresAt     DateTime?
+  verifiedAt    DateTime?
+  verifiedById  String?
+  
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  
+  // Relations
+  booking       Booking?        @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  bid           Bid?            @relation(fields: [bidId], references: [id], onDelete: Cascade)
+  carrier       Carrier?        @relation(fields: [carrierId], references: [id], onDelete: Cascade)
+  uploadedBy    User            @relation(fields: [uploadedById], references: [id])
+  verifiedBy    User?           @relation("DocumentVerifier", fields: [verifiedById], references: [id])
+  billOfLading  BillOfLading?   @relation(fields: [billOfLadingId], references: [id], onDelete: Cascade)
+  
+  @@index([type])
+  @@index([status])
+  @@index([bookingId])
+  @@index([carrierId])
+  @@index([createdAt])
+}
+
+// Digital Bill of Lading
+model BillOfLading {
+  id                String    @id @default(uuid())
+  bolNumber         String    @unique
+  bookingId         String    @unique
+  
+  // Shipper Information
+  shipperName       String
+  shipperAddress    Json
+  shipperContact    Json
+  
+  // Consignee Information
+  consigneeName     String
+  consigneeAddress  Json
+  consigneeContact  Json
+  
+  // Carrier Information
+  carrierName       String
+  carrierAddress    Json
+  carrierContact    Json
+  driverName        String
+  driverLicense     String
+  truckInfo         Json
+  
+  // Cargo Information
+  cargoDescription  String
+  cargoWeight       Float
+  cargoValue        Float?
+  packageCount      Int
+  packageType       String
+  
+  // Service Information
+  serviceType       String
+  pickupDate        DateTime
+  deliveryDate      DateTime?
+  route             Json
+  
+  // Special Instructions
+  specialInstructions String?
+  hazmatInfo        Json?
+  
+  // Status and Signatures
+  status            String    @default("CREATED")
+  shipperSignature  String?
+  carrierSignature  String?
+  deliverySignature String?
+  
+  // Timestamps
+  issuedAt          DateTime  @default(now())
+  signedAt          DateTime?
+  deliveredAt       DateTime?
+  
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  
+  // Relations
+  booking           Booking   @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  documents         Document[]
+  
+  @@index([bolNumber])
+  @@index([bookingId])
+  @@index([status])
+}
+
+// Admin user model
+model AdminUser {
+  id            String    @id @default(uuid())
+  userId        String    @unique
+  role          UserRole  @default(ADMIN)
+  permissions   String[]  @default([])
+  
+  // Admin specific fields
+  department    String?
+  isActive      Boolean   @default(true)
+  lastLoginAt   DateTime?
+  
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  
+  // Relations
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  auditLogs     AuditLog[]
+  
+  @@index([role])
+  @@index([isActive])
+}
+
+// Audit log for admin actions
+model AuditLog {
+  id            String    @id @default(uuid())
+  adminId       String
+  action        String
+  entityType    String
+  entityId      String
+  oldValue      Json?
+  newValue      Json?
+  ipAddress     String?
+  userAgent     String?
+  
+  createdAt     DateTime  @default(now())
+  
+  // Relations
+  admin         AdminUser @relation(fields: [adminId], references: [id])
+  
+  @@index([adminId])
+  @@index([action])
+  @@index([entityType])
+  @@index([createdAt])
+}

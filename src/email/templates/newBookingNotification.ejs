@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Booking Available - IpTruck</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .header {
+            background-color: #e74c3c;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 8px 8px 0 0;
+        }
+        .content {
+            background-color: #f9f9f9;
+            padding: 30px;
+            border-radius: 0 0 8px 8px;
+        }
+        .urgency-high {
+            background-color: #e74c3c;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+        .urgency-medium {
+            background-color: #f39c12;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+        .urgency-low {
+            background-color: #27ae60;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+        .button {
+            background-color: #3498db;
+            color: white;
+            padding: 12px 24px;
+            text-decoration: none;
+            border-radius: 5px;
+            display: inline-block;
+            margin: 20px 0;
+        }
+        .details {
+            background-color: #ecf0f1;
+            padding: 20px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .price {
+            font-size: 24px;
+            font-weight: bold;
+            color: #27ae60;
+            text-align: center;
+            margin: 20px 0;
+        }
+        .route {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 20px 0;
+        }
+        .location {
+            text-align: center;
+            flex: 1;
+        }
+        .arrow {
+            font-size: 24px;
+            color: #3498db;
+            margin: 0 20px;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            color: #666;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🚛 New Booking Available!</h1>
+        <p>A new truck booking request is waiting for your bid</p>
+    </div>
+    
+    <div class="content">
+        <div class="urgency-<%= urgencyLevel %>">
+            🚨 <%= urgencyLevel.toUpperCase() %> PRIORITY BOOKING
+        </div>
+        
+        <h2>Booking Details</h2>
+        <div class="details">
+            <p><strong>Booking ID:</strong> <%= bookingId %></p>
+            <% if (referenceNumber) { %>
+            <p><strong>Reference:</strong> <%= referenceNumber %></p>
+            <% } %>
+            <p><strong>Description:</strong> <%= description %></p>
+            <p><strong>Cargo Type:</strong> <%= cargoType %></p>
+            <p><strong>Weight:</strong> <%= weight %> kg</p>
+            <p><strong>Pickup Time:</strong> <%= preferredPickupTime %></p>
+        </div>
+        
+        <div class="route">
+            <div class="location">
+                <h3>📍 Pickup</h3>
+                <p><%= pickupLocation %></p>
+            </div>
+            <div class="arrow">→</div>
+            <div class="location">
+                <h3>📍 Delivery</h3>
+                <p><%= deliveryLocation %></p>
+            </div>
+        </div>
+        
+        <div class="price">
+            Proposed Price: ₦<%= proposedPrice %>
+        </div>
+        
+        <div class="details">
+            <h3>Contact Information</h3>
+            <p><strong>Contact Person:</strong> <%= contactPerson %></p>
+            <p><strong>Phone:</strong> <%= contactPhone %></p>
+        </div>
+        
+        <center>
+            <a href="<%= bookingUrl %>" class="button">View Booking & Submit Bid</a>
+        </center>
+        
+        <p><strong>Don't miss out!</strong> This booking is now live and other carriers can submit bids. Submit your competitive bid quickly to secure this job.</p>
+        
+        <p><em>Tip: Review the booking details carefully and submit a competitive bid that reflects your service quality and pricing.</em></p>
+    </div>
+    
+    <div class="footer">
+        <p>© 2024 IpTruck. All rights reserved.</p>
+        <p>You received this email because you're registered as an active carrier.</p>
+        <p>To manage your notification preferences, visit your dashboard.</p>
+    </div>
+</body>
+</html>
