@@ -70,7 +70,7 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   async updateLocation(
     @Param('id') id: string,
-    @Body() updateLocationDto: UpdateLocationDto
+    @Body() updateLocationDto: UpdateLocationDto,
   ) {
     return this.authService.updateLocation(id, updateLocationDto);
   }
@@ -105,6 +105,9 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   refreshToken(@Req() req: Request) {
     const user = req.user;
-    return this.authService.refreshToken(user!['refreshToken'], user!['payload']);
+    return this.authService.refreshToken(
+      user!['refreshToken'],
+      user!['payload'],
+    );
   }
 }

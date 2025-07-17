@@ -55,7 +55,9 @@ __decorate([
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.MinLength)(5),
     (0, class_validator_1.MaxLength)(20),
-    (0, class_validator_1.Matches)(/^[A-Z0-9-]+$/, { message: 'License plate must contain only uppercase letters, numbers, and hyphens' }),
+    (0, class_validator_1.Matches)(/^[A-Z0-9-]+$/, {
+        message: 'License plate must contain only uppercase letters, numbers, and hyphens',
+    }),
     (0, class_transformer_1.Transform)(({ value }) => value?.toUpperCase().trim()),
     __metadata("design:type", String)
 ], CreateTruckDto.prototype, "licensePlate", void 0);
@@ -127,7 +129,9 @@ __decorate([
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.MinLength)(2),
     (0, class_validator_1.MaxLength)(100),
-    (0, class_validator_1.Matches)(/^[a-zA-Z\s'-]+$/, { message: 'Driver name must contain only letters, spaces, hyphens, and apostrophes' }),
+    (0, class_validator_1.Matches)(/^[a-zA-Z\s'-]+$/, {
+        message: 'Driver name must contain only letters, spaces, hyphens, and apostrophes',
+    }),
     (0, class_transformer_1.Transform)(({ value }) => value?.trim()),
     __metadata("design:type", String)
 ], CreateTruckDto.prototype, "driverName", void 0);
@@ -152,7 +156,9 @@ __decorate([
 ], CreateTruckDto.prototype, "driverExperience", void 0);
 __decorate([
     (0, class_validator_1.IsOptional)(),
-    (0, class_validator_1.IsPhoneNumber)('NG', { message: 'Please provide a valid Nigerian phone number for the driver' }),
+    (0, class_validator_1.IsPhoneNumber)('NG', {
+        message: 'Please provide a valid Nigerian phone number for the driver',
+    }),
     __metadata("design:type", String)
 ], CreateTruckDto.prototype, "driverPhone", void 0);
 __decorate([

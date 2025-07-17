@@ -24,7 +24,7 @@ exports.DocumentsModule = DocumentsModule = __decorate([
                 storage: (0, multer_1.diskStorage)({
                     destination: process.env.UPLOAD_PATH || './uploads',
                     filename: (req, file, cb) => {
-                        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+                        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
                         cb(null, file.fieldname + '-' + uniqueSuffix + (0, path_1.extname)(file.originalname));
                     },
                 }),

@@ -28,7 +28,10 @@ export class ShipperService {
       this.logger.log(`Shipper created successfully: ${shipper.id}`);
       return shipper;
     } catch (error) {
-      this.logger.error(`Error creating shipper: ${error.message}`, error.stack);
+      this.logger.error(
+        `Error creating shipper: ${error.message}`,
+        error.stack,
+      );
       throw error;
     }
   }
@@ -38,7 +41,7 @@ export class ShipperService {
    */
   async findAll(page: number = 1, limit: number = 20) {
     const skip = (page - 1) * limit;
-    
+
     try {
       const [shippers, total] = await Promise.all([
         this.prisma.shipper.findMany({
@@ -67,14 +70,21 @@ export class ShipperService {
         this.prisma.shipper.count(),
       ]);
 
-      const pagination = this.helperService.getPaginationMeta(page, limit, total);
+      const pagination = this.helperService.getPaginationMeta(
+        page,
+        limit,
+        total,
+      );
 
       return {
         data: shippers,
         pagination,
       };
     } catch (error) {
-      this.logger.error(`Error fetching shippers: ${error.message}`, error.stack);
+      this.logger.error(
+        `Error fetching shippers: ${error.message}`,
+        error.stack,
+      );
       throw error;
     }
   }
@@ -119,7 +129,10 @@ export class ShipperService {
 
       return shipper;
     } catch (error) {
-      this.logger.error(`Error fetching shipper: ${error.message}`, error.stack);
+      this.logger.error(
+        `Error fetching shipper: ${error.message}`,
+        error.stack,
+      );
       throw error;
     }
   }
@@ -144,7 +157,10 @@ export class ShipperService {
         },
       });
     } catch (error) {
-      this.logger.error(`Error fetching shipper by user ID: ${error.message}`, error.stack);
+      this.logger.error(
+        `Error fetching shipper by user ID: ${error.message}`,
+        error.stack,
+      );
       throw error;
     }
   }
@@ -152,7 +168,10 @@ export class ShipperService {
   /**
    * Update shipper profile
    */
-  async update(id: string, updateShipperDto: UpdateShipperDto): Promise<Shipper> {
+  async update(
+    id: string,
+    updateShipperDto: UpdateShipperDto,
+  ): Promise<Shipper> {
     try {
       const shipper = await this.prisma.shipper.update({
         where: { id },
@@ -173,7 +192,10 @@ export class ShipperService {
       this.logger.log(`Shipper updated successfully: ${shipper.id}`);
       return shipper;
     } catch (error) {
-      this.logger.error(`Error updating shipper: ${error.message}`, error.stack);
+      this.logger.error(
+        `Error updating shipper: ${error.message}`,
+        error.stack,
+      );
       throw error;
     }
   }
@@ -189,7 +211,10 @@ export class ShipperService {
 
       this.logger.log(`Shipper deleted successfully: ${id}`);
     } catch (error) {
-      this.logger.error(`Error deleting shipper: ${error.message}`, error.stack);
+      this.logger.error(
+        `Error deleting shipper: ${error.message}`,
+        error.stack,
+      );
       throw error;
     }
   }
@@ -227,7 +252,7 @@ export class ShipperService {
       }, {});
 
       const totalSpent = stats.bookings
-        .filter(booking => booking.status === 'COMPLETED')
+        .filter((booking) => booking.status === 'COMPLETED')
         .reduce((total, booking) => total + booking.proposedPrice, 0);
 
       return {
@@ -237,7 +262,10 @@ export class ShipperService {
         currency: stats.bookings[0]?.currency || 'NGN',
       };
     } catch (error) {
-      this.logger.error(`Error fetching shipper statistics: ${error.message}`, error.stack);
+      this.logger.error(
+        `Error fetching shipper statistics: ${error.message}`,
+        error.stack,
+      );
       throw error;
     }
   }
@@ -288,14 +316,21 @@ export class ShipperService {
         }),
       ]);
 
-      const pagination = this.helperService.getPaginationMeta(page, limit, total);
+      const pagination = this.helperService.getPaginationMeta(
+        page,
+        limit,
+        total,
+      );
 
       return {
         data: shippers,
         pagination,
       };
     } catch (error) {
-      this.logger.error(`Error searching shippers: ${error.message}`, error.stack);
+      this.logger.error(
+        `Error searching shippers: ${error.message}`,
+        error.stack,
+      );
       throw error;
     }
   }

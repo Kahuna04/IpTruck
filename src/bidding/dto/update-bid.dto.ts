@@ -1,14 +1,23 @@
 import { PartialType } from '@nestjs/swagger';
 import { CreateBidDto } from './create-bid.dto';
 import { BidStatus } from '@prisma/client';
-import { IsEnum, IsOptional, IsString, IsNumber, IsDateString, MaxLength, IsPositive, Min } from 'class-validator';
+import {
+  IsEnum,
+  IsOptional,
+  IsString,
+  IsNumber,
+  IsDateString,
+  MaxLength,
+  IsPositive,
+  Min,
+} from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class UpdateBidDto extends PartialType(CreateBidDto) {
   @ApiProperty({
     example: BidStatus.ACCEPTED,
     description: 'Updated bid status',
-    enum: BidStatus
+    enum: BidStatus,
   })
   @IsOptional()
   @IsEnum(BidStatus)
@@ -16,7 +25,7 @@ export class UpdateBidDto extends PartialType(CreateBidDto) {
 
   @ApiProperty({
     example: 'Updated proposal with better terms',
-    description: 'Updated message or proposal details'
+    description: 'Updated message or proposal details',
   })
   @IsOptional()
   @IsString()
@@ -25,7 +34,7 @@ export class UpdateBidDto extends PartialType(CreateBidDto) {
 
   @ApiProperty({
     example: 150000,
-    description: 'Updated bid amount'
+    description: 'Updated bid amount',
   })
   @IsOptional()
   @IsNumber()
@@ -35,7 +44,7 @@ export class UpdateBidDto extends PartialType(CreateBidDto) {
 
   @ApiProperty({
     example: '2024-07-16T08:00:00Z',
-    description: 'Updated proposed pickup time'
+    description: 'Updated proposed pickup time',
   })
   @IsOptional()
   @IsDateString()
@@ -43,7 +52,7 @@ export class UpdateBidDto extends PartialType(CreateBidDto) {
 
   @ApiProperty({
     example: '2024-07-16T16:00:00Z',
-    description: 'Updated estimated delivery time'
+    description: 'Updated estimated delivery time',
   })
   @IsOptional()
   @IsDateString()
@@ -51,7 +60,7 @@ export class UpdateBidDto extends PartialType(CreateBidDto) {
 
   @ApiProperty({
     example: 'Counter-offer: Can do it for 140k with same terms',
-    description: 'Response message from shipper'
+    description: 'Response message from shipper',
   })
   @IsOptional()
   @IsString()
@@ -60,7 +69,7 @@ export class UpdateBidDto extends PartialType(CreateBidDto) {
 
   @ApiProperty({
     example: '2024-07-17T23:59:59Z',
-    description: 'Updated bid expiration time'
+    description: 'Updated bid expiration time',
   })
   @IsOptional()
   @IsDateString()
@@ -68,7 +77,7 @@ export class UpdateBidDto extends PartialType(CreateBidDto) {
 
   @ApiProperty({
     example: 'Payment terms updated to 50% upfront',
-    description: 'Updated payment terms'
+    description: 'Updated payment terms',
   })
   @IsOptional()
   @IsString()
@@ -77,7 +86,7 @@ export class UpdateBidDto extends PartialType(CreateBidDto) {
 
   @ApiProperty({
     example: 'Updated special terms and conditions',
-    description: 'Updated special terms'
+    description: 'Updated special terms',
   })
   @IsOptional()
   @IsString()

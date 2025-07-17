@@ -69,7 +69,8 @@ __decorate([
 ], PasswordResetRequestAdapter.prototype, "expiresAt", void 0);
 __decorate([
     (0, class_transformer_1.Expose)(),
-    (0, class_transformer_1.Transform)(({ value }) => Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)),
+    (0, class_transformer_1.Transform)(({ value }) => Math.random().toString(36).substring(2, 15) +
+        Math.random().toString(36).substring(2, 15)),
     __metadata("design:type", String)
 ], PasswordResetRequestAdapter.prototype, "token", void 0);
 __decorate([

@@ -32,7 +32,8 @@ import { BidStatus } from '@prisma/client';
 class JwtAuthGuard {}
 
 // Mock current user decorator - replace with actual implementation
-const CurrentUser = () => (target: any, propertyKey: string, parameterIndex: number) => {};
+const CurrentUser =
+  () => (target: any, propertyKey: string, parameterIndex: number) => {};
 
 interface User {
   id: string;
@@ -60,7 +61,10 @@ export class BiddingController {
         bidderId: { type: 'string', format: 'uuid' },
         amount: { type: 'number' },
         currency: { type: 'string' },
-        status: { type: 'string', enum: ['PENDING', 'ACCEPTED', 'REJECTED', 'CANCELLED'] },
+        status: {
+          type: 'string',
+          enum: ['PENDING', 'ACCEPTED', 'REJECTED', 'CANCELLED'],
+        },
         message: { type: 'string' },
         validUntil: { type: 'string', format: 'date-time' },
         createdAt: { type: 'string', format: 'date-time' },
@@ -96,16 +100,62 @@ export class BiddingController {
 
   @Get()
   @ApiOperation({ summary: 'Get all bids with optional filtering' })
-  @ApiQuery({ name: 'bookingId', required: false, description: 'Filter by booking ID' })
-  @ApiQuery({ name: 'bidderId', required: false, description: 'Filter by bidder ID' })
-  @ApiQuery({ name: 'status', required: false, enum: BidStatus, description: 'Filter by bid status' })
-  @ApiQuery({ name: 'minAmount', required: false, type: Number, description: 'Minimum bid amount' })
-  @ApiQuery({ name: 'maxAmount', required: false, type: Number, description: 'Maximum bid amount' })
-  @ApiQuery({ name: 'currency', required: false, description: 'Filter by currency' })
-  @ApiQuery({ name: 'page', required: false, type: Number, description: 'Page number (default: 1)' })
-  @ApiQuery({ name: 'limit', required: false, type: Number, description: 'Items per page (default: 10)' })
-  @ApiQuery({ name: 'sortBy', required: false, description: 'Sort field (default: createdAt)' })
-  @ApiQuery({ name: 'sortOrder', required: false, enum: ['asc', 'desc'], description: 'Sort order (default: desc)' })
+  @ApiQuery({
+    name: 'bookingId',
+    required: false,
+    description: 'Filter by booking ID',
+  })
+  @ApiQuery({
+    name: 'bidderId',
+    required: false,
+    description: 'Filter by bidder ID',
+  })
+  @ApiQuery({
+    name: 'status',
+    required: false,
+    enum: BidStatus,
+    description: 'Filter by bid status',
+  })
+  @ApiQuery({
+    name: 'minAmount',
+    required: false,
+    type: Number,
+    description: 'Minimum bid amount',
+  })
+  @ApiQuery({
+    name: 'maxAmount',
+    required: false,
+    type: Number,
+    description: 'Maximum bid amount',
+  })
+  @ApiQuery({
+    name: 'currency',
+    required: false,
+    description: 'Filter by currency',
+  })
+  @ApiQuery({
+    name: 'page',
+    required: false,
+    type: Number,
+    description: 'Page number (default: 1)',
+  })
+  @ApiQuery({
+    name: 'limit',
+    required: false,
+    type: Number,
+    description: 'Items per page (default: 10)',
+  })
+  @ApiQuery({
+    name: 'sortBy',
+    required: false,
+    description: 'Sort field (default: createdAt)',
+  })
+  @ApiQuery({
+    name: 'sortOrder',
+    required: false,
+    enum: ['asc', 'desc'],
+    description: 'Sort order (default: desc)',
+  })
   @ApiResponse({
     status: 200,
     description: 'List of bids retrieved successfully',
@@ -153,7 +203,7 @@ export class BiddingController {
     @Query('limit') limit: number = 10,
     @Query('sortBy') sortBy: string = 'createdAt',
     @Query('sortOrder') sortOrder: 'asc' | 'desc' = 'desc',
-    @CurrentUser() user: User,
+    @CurrentUser() user?: User,
   ) {
     const filters = {
       bookingId,
@@ -186,10 +236,25 @@ export class BiddingController {
   }
 
   @Get('my-bids')
-  @ApiOperation({ summary: 'Get current user\'s bids' })
-  @ApiQuery({ name: 'status', required: false, enum: BidStatus, description: 'Filter by bid status' })
-  @ApiQuery({ name: 'page', required: false, type: Number, description: 'Page number (default: 1)' })
-  @ApiQuery({ name: 'limit', required: false, type: Number, description: 'Items per page (default: 10)' })
+  @ApiOperation({ summary: "Get current user's bids" })
+  @ApiQuery({
+    name: 'status',
+    required: false,
+    enum: BidStatus,
+    description: 'Filter by bid status',
+  })
+  @ApiQuery({
+    name: 'page',
+    required: false,
+    type: Number,
+    description: 'Page number (default: 1)',
+  })
+  @ApiQuery({
+    name: 'limit',
+    required: false,
+    type: Number,
+    description: 'Items per page (default: 10)',
+  })
   @ApiResponse({
     status: 200,
     description: 'User bids retrieved successfully',
@@ -198,10 +263,10 @@ export class BiddingController {
     @Query('status') status?: BidStatus,
     @Query('page') page: number = 1,
     @Query('limit') limit: number = 10,
-    @CurrentUser() user: User,
+    @CurrentUser() user?: User,
   ) {
     const filters = {
-      bidderId: user.id,
+      bidderId: user?.id,
       status,
     };
 
@@ -229,9 +294,24 @@ export class BiddingController {
   @Get('booking/:bookingId')
   @ApiOperation({ summary: 'Get all bids for a specific booking' })
   @ApiParam({ name: 'bookingId', description: 'Booking ID', type: 'string' })
-  @ApiQuery({ name: 'status', required: false, enum: BidStatus, description: 'Filter by bid status' })
-  @ApiQuery({ name: 'page', required: false, type: Number, description: 'Page number (default: 1)' })
-  @ApiQuery({ name: 'limit', required: false, type: Number, description: 'Items per page (default: 10)' })
+  @ApiQuery({
+    name: 'status',
+    required: false,
+    enum: BidStatus,
+    description: 'Filter by bid status',
+  })
+  @ApiQuery({
+    name: 'page',
+    required: false,
+    type: Number,
+    description: 'Page number (default: 1)',
+  })
+  @ApiQuery({
+    name: 'limit',
+    required: false,
+    type: Number,
+    description: 'Items per page (default: 10)',
+  })
   @ApiResponse({
     status: 200,
     description: 'Booking bids retrieved successfully',
@@ -242,7 +322,7 @@ export class BiddingController {
     @Query('status') status?: BidStatus,
     @Query('page') page: number = 1,
     @Query('limit') limit: number = 10,
-    @CurrentUser() user: User,
+    @CurrentUser() user?: User,
   ) {
     const filters = {
       bookingId,
@@ -293,7 +373,10 @@ export class BiddingController {
     },
   })
   @ApiResponse({ status: 404, description: 'Bid not found' })
-  async findOne(@Param('id', ParseUUIDPipe) id: string, @CurrentUser() user: User) {
+  async findOne(
+    @Param('id', ParseUUIDPipe) id: string,
+    @CurrentUser() user: User,
+  ) {
     const bid = await this.biddingService.findOne(id);
 
     if (!bid) {
@@ -333,7 +416,10 @@ export class BiddingController {
     }
 
     // Prevent updating accepted or rejected bids
-    if (existingBid.status === BidStatus.ACCEPTED || existingBid.status === BidStatus.REJECTED) {
+    if (
+      existingBid.status === BidStatus.ACCEPTED ||
+      existingBid.status === BidStatus.REJECTED
+    ) {
       throw new BadRequestException('Cannot update accepted or rejected bids');
     }
 
@@ -356,16 +442,15 @@ export class BiddingController {
   @ApiResponse({ status: 403, description: 'Insufficient permissions' })
   @ApiResponse({ status: 404, description: 'Bid not found' })
   @ApiResponse({ status: 400, description: 'Cannot accept this bid' })
-  async acceptBid(@Param('id', ParseUUIDPipe) id: string, @CurrentUser() user: User) {
+  async acceptBid(
+    @Param('id', ParseUUIDPipe) id: string,
+    @CurrentUser() user: User,
+  ) {
     const bid = await this.biddingService.findOne(id);
 
     if (!bid) {
       throw new NotFoundException('Bid not found');
     }
-
-    // TODO: Verify that the user is the booking owner
-    // This would require fetching the booking and checking ownership
-    // For now, we'll use a placeholder validation
 
     if (bid.status !== BidStatus.PENDING) {
       throw new BadRequestException('Only pending bids can be accepted');
@@ -376,7 +461,9 @@ export class BiddingController {
       throw new BadRequestException('Bid has expired');
     }
 
-    const acceptedBid = await this.biddingService.update(id, { status: BidStatus.ACCEPTED });
+    const acceptedBid = await this.biddingService.update(id, {
+      status: BidStatus.ACCEPTED,
+    });
 
     return {
       message: 'Bid accepted successfully',
@@ -395,21 +482,23 @@ export class BiddingController {
   @ApiResponse({ status: 403, description: 'Insufficient permissions' })
   @ApiResponse({ status: 404, description: 'Bid not found' })
   @ApiResponse({ status: 400, description: 'Cannot reject this bid' })
-  async rejectBid(@Param('id', ParseUUIDPipe) id: string, @CurrentUser() user: User) {
+  async rejectBid(
+    @Param('id', ParseUUIDPipe) id: string,
+    @CurrentUser() user: User,
+  ) {
     const bid = await this.biddingService.findOne(id);
 
     if (!bid) {
       throw new NotFoundException('Bid not found');
     }
 
-    // TODO: Verify that the user is the booking owner
-    // This would require fetching the booking and checking ownership
-
     if (bid.status !== BidStatus.PENDING) {
       throw new BadRequestException('Only pending bids can be rejected');
     }
 
-    const rejectedBid = await this.biddingService.update(id, { status: BidStatus.REJECTED });
+    const rejectedBid = await this.biddingService.update(id, {
+      status: BidStatus.REJECTED,
+    });
 
     return {
       message: 'Bid rejected successfully',
@@ -428,7 +517,10 @@ export class BiddingController {
   @ApiResponse({ status: 403, description: 'Insufficient permissions' })
   @ApiResponse({ status: 404, description: 'Bid not found' })
   @ApiResponse({ status: 400, description: 'Cannot cancel this bid' })
-  async cancelBid(@Param('id', ParseUUIDPipe) id: string, @CurrentUser() user: User) {
+  async cancelBid(
+    @Param('id', ParseUUIDPipe) id: string,
+    @CurrentUser() user: User,
+  ) {
     const bid = await this.biddingService.findOne(id);
 
     if (!bid) {
@@ -444,7 +536,9 @@ export class BiddingController {
       throw new BadRequestException('Only pending bids can be cancelled');
     }
 
-    const cancelledBid = await this.biddingService.update(id, { status: BidStatus.CANCELLED });
+    const cancelledBid = await this.biddingService.update(id, {
+      status: BidStatus.CANCELLED,
+    });
 
     return {
       message: 'Bid cancelled successfully',
@@ -490,7 +584,10 @@ export class BiddingController {
   @ApiResponse({ status: 403, description: 'Insufficient permissions' })
   @ApiResponse({ status: 404, description: 'Bid not found' })
   @ApiResponse({ status: 400, description: 'Cannot delete this bid' })
-  async remove(@Param('id', ParseUUIDPipe) id: string, @CurrentUser() user: User) {
+  async remove(
+    @Param('id', ParseUUIDPipe) id: string,
+    @CurrentUser() user: User,
+  ) {
     const bid = await this.biddingService.findOne(id);
 
     if (!bid) {
@@ -503,8 +600,13 @@ export class BiddingController {
     }
 
     // Only allow deleting pending or cancelled bids
-    if (bid.status !== BidStatus.PENDING && bid.status !== BidStatus.CANCELLED) {
-      throw new BadRequestException('Only pending or cancelled bids can be deleted');
+    if (
+      bid.status !== BidStatus.PENDING &&
+      bid.status !== BidStatus.CANCELLED
+    ) {
+      throw new BadRequestException(
+        'Only pending or cancelled bids can be deleted',
+      );
     }
 
     await this.biddingService.remove(id);

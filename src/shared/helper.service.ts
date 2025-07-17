@@ -23,7 +23,8 @@ export class HelperService {
    * Generate random string
    */
   generateRandomString(length: number = 32): string {
-    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    const chars =
+      'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     let result = '';
     for (let i = 0; i < length; i++) {
       result += chars.charAt(Math.floor(Math.random() * chars.length));
@@ -44,7 +45,7 @@ export class HelperService {
   formatPhoneNumber(phoneNumber: string, countryCode: string = '+234'): string {
     // Remove all non-digit characters
     const cleaned = phoneNumber.replace(/\D/g, '');
-    
+
     // Handle Nigerian numbers
     if (countryCode === '+234') {
       // If starts with 234, remove it
@@ -58,7 +59,7 @@ export class HelperService {
       // Otherwise, add country code
       return `+234${cleaned}`;
     }
-    
+
     return phoneNumber;
   }
 
@@ -70,17 +71,19 @@ export class HelperService {
     lon1: number,
     lat2: number,
     lon2: number,
-    unit: 'km' | 'miles' = 'km'
+    unit: 'km' | 'miles' = 'km',
   ): number {
     const R = unit === 'km' ? 6371 : 3958.8; // Earth's radius in km or miles
     const dLat = this.toRadians(lat2 - lat1);
     const dLon = this.toRadians(lon2 - lon1);
-    
-    const a = 
+
+    const a =
       Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-      Math.cos(this.toRadians(lat1)) * Math.cos(this.toRadians(lat2)) *
-      Math.sin(dLon / 2) * Math.sin(dLon / 2);
-    
+      Math.cos(this.toRadians(lat1)) *
+        Math.cos(this.toRadians(lat2)) *
+        Math.sin(dLon / 2) *
+        Math.sin(dLon / 2);
+
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     return R * c;
   }
@@ -98,12 +101,12 @@ export class HelperService {
   createResponse<T>(
     status: number,
     message: string,
-    data: T
+    data: T,
   ): ResponseWrapper<T> {
     return {
       status,
       message,
-      data
+      data,
     };
   }
 
@@ -112,15 +115,15 @@ export class HelperService {
    */
   isValidNigerianPhone(phoneNumber: string): boolean {
     const cleaned = phoneNumber.replace(/\D/g, '');
-    
+
     // Check if it's a valid Nigerian number format
     const patterns = [
       /^234[789]\d{9}$/, // +234 format
       /^0[789]\d{9}$/, // 0 format
-      /^[789]\d{9}$/ // Without country code or 0
+      /^[789]\d{9}$/, // Without country code or 0
     ];
-    
-    return patterns.some(pattern => pattern.test(cleaned));
+
+    return patterns.some((pattern) => pattern.test(cleaned));
   }
 
   /**
@@ -174,7 +177,7 @@ export class HelperService {
   formatCurrency(amount: number, currency: string = 'NGN'): string {
     return new Intl.NumberFormat('en-NG', {
       style: 'currency',
-      currency: currency
+      currency: currency,
     }).format(amount);
   }
 
@@ -196,8 +199,9 @@ export class HelperService {
    * Capitalize first letter of each word
    */
   titleCase(str: string): string {
-    return str.replace(/\w\S*/g, (txt) => 
-      txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()
+    return str.replace(
+      /\w\S*/g,
+      (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase(),
     );
   }
 
@@ -208,7 +212,7 @@ export class HelperService {
     const totalPages = Math.ceil(total / limit);
     const hasNextPage = page < totalPages;
     const hasPreviousPage = page > 1;
-    
+
     return {
       currentPage: page,
       totalPages,
@@ -217,7 +221,7 @@ export class HelperService {
       hasNextPage,
       hasPreviousPage,
       nextPage: hasNextPage ? page + 1 : null,
-      previousPage: hasPreviousPage ? page - 1 : null
+      previousPage: hasPreviousPage ? page - 1 : null,
     };
   }
 }

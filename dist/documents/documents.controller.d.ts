@@ -7,7 +7,7 @@ export declare class DocumentsController {
     private readonly documentsService;
     constructor(documentsService: DocumentsService);
     uploadDocument(file: Express.Multer.File, createDocumentDto: CreateDocumentDto, user: any): Promise<Document>;
-    getDocuments(type?: DocumentType, status?: DocumentStatus, bookingId?: string, myDocuments?: boolean, limit?: number, offset?: number, user: any): Promise<{
+    getDocuments(type?: DocumentType, status?: DocumentStatus, bookingId?: string, myDocuments?: boolean, limit?: number, offset?: number, user?: any): Promise<{
         documents: Document[];
         total: number;
     }>;
@@ -16,7 +16,7 @@ export declare class DocumentsController {
     deleteDocument(id: string, user: any): Promise<void>;
     verifyDocument(id: string, body: {
         comments?: string;
-    }, user: any): Promise<Document>;
+    }, user?: any): Promise<Document>;
     rejectDocument(id: string, body: {
         reason: string;
         comments?: string;
@@ -27,7 +27,7 @@ export declare class DocumentsController {
         mimeType: string;
     }>;
     getDocumentsForBooking(bookingId: string, user: any): Promise<Document[]>;
-    getExpiringDocuments(days?: number, user: any): Promise<Document[]>;
+    getExpiringDocuments(days?: number, user?: any): Promise<Document[]>;
     getDocumentStats(user: any): Promise<{
         totalDocuments: number;
         verifiedDocuments: number;
@@ -36,7 +36,7 @@ export declare class DocumentsController {
         expiringDocuments: number;
         documentsByType: Record<string, number>;
     }>;
-    searchDocuments(query: string, type?: DocumentType, status?: DocumentStatus, limit?: number, offset?: number, user: any): Promise<{
+    searchDocuments(query: string, type?: DocumentType, status?: DocumentStatus, limit?: number, offset?: number, user?: any): Promise<{
         documents: Document[];
         total: number;
     }>;

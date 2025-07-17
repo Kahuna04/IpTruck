@@ -1,4 +1,9 @@
-import { BadRequestException, Injectable, InternalServerErrorException, Logger } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  InternalServerErrorException,
+  Logger,
+} from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtPayload, Tokens } from '../shared/constants';
 import { JwtService } from '@nestjs/jwt';
@@ -12,9 +17,12 @@ export class JwtHandler {
   ) {
     this.logger = new Logger(JwtHandler.name);
     this.SECRET = this.config.get<string>('JWT_AT_SECRET') || 'fallback_secret';
-    this.RT_SECRET = this.config.get<string>('JWT_RT_SECRET') || 'fallback_rt_secret';
-    this.TOKEN_EXPIRATION = this.config.get<string>('TOKEN_EXPIRATION') || '15m';
-    this.RT_EXPIRATION = this.config.get<string>('REFRESH_TOKEN_EXPIRATION') || '7d';
+    this.RT_SECRET =
+      this.config.get<string>('JWT_RT_SECRET') || 'fallback_rt_secret';
+    this.TOKEN_EXPIRATION =
+      this.config.get<string>('TOKEN_EXPIRATION') || '15m';
+    this.RT_EXPIRATION =
+      this.config.get<string>('REFRESH_TOKEN_EXPIRATION') || '7d';
   }
 
   private SECRET: string;

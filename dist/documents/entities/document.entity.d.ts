@@ -8,15 +8,15 @@ export declare class Document {
     fileUrl: string;
     fileSize: number;
     mimeType: string;
-    bookingId?: string;
-    bidId?: string;
-    carrierId?: string;
+    bookingId?: string | null;
+    bidId?: string | null;
+    carrierId?: string | null;
     uploadedById: string;
-    billOfLadingId?: string;
+    billOfLadingId?: string | null;
     metadata?: any;
-    expiresAt?: Date;
-    verifiedAt?: Date;
-    verifiedById?: string;
+    expiresAt?: Date | null;
+    verifiedAt?: Date | null;
+    verifiedById?: string | null;
     createdAt: Date;
     updatedAt: Date;
 }

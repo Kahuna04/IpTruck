@@ -1,10 +1,10 @@
-import { 
-  IsString, 
-  IsOptional, 
+import {
+  IsString,
+  IsOptional,
   IsPhoneNumber,
   IsUrl,
-  MinLength, 
-  MaxLength, 
+  MinLength,
+  MaxLength,
   IsNotEmpty,
   Matches,
   IsArray,
@@ -14,7 +14,7 @@ import {
   Max,
   IsBoolean,
   IsDateString,
-  IsEnum
+  IsEnum,
 } from 'class-validator';
 import { Transform, Type } from 'class-transformer';
 import { TRUCK_TYPES } from '../../shared/constants';
@@ -36,7 +36,10 @@ export class CreateTruckDto {
   @IsString()
   @MinLength(5)
   @MaxLength(20)
-  @Matches(/^[A-Z0-9-]+$/, { message: 'License plate must contain only uppercase letters, numbers, and hyphens' })
+  @Matches(/^[A-Z0-9-]+$/, {
+    message:
+      'License plate must contain only uppercase letters, numbers, and hyphens',
+  })
   @Transform(({ value }) => value?.toUpperCase().trim())
   licensePlate: string;
 
@@ -99,7 +102,10 @@ export class CreateTruckDto {
   @IsString()
   @MinLength(2)
   @MaxLength(100)
-  @Matches(/^[a-zA-Z\s'-]+$/, { message: 'Driver name must contain only letters, spaces, hyphens, and apostrophes' })
+  @Matches(/^[a-zA-Z\s'-]+$/, {
+    message:
+      'Driver name must contain only letters, spaces, hyphens, and apostrophes',
+  })
   @Transform(({ value }) => value?.trim())
   driverName?: string;
 
@@ -120,7 +126,9 @@ export class CreateTruckDto {
   driverExperience?: number;
 
   @IsOptional()
-  @IsPhoneNumber('NG', { message: 'Please provide a valid Nigerian phone number for the driver' })
+  @IsPhoneNumber('NG', {
+    message: 'Please provide a valid Nigerian phone number for the driver',
+  })
   driverPhone?: string;
 
   @IsOptional()

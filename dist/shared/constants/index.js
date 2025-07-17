@@ -20,14 +20,9 @@ exports.TRUCK_TYPES = [
     'HEAVY_HAUL',
     'PICKUP',
     'BOX_TRUCK',
-    'TRACTOR_TRAILER'
+    'TRACTOR_TRAILER',
 ];
-exports.URGENCY_LEVELS = [
-    'LOW',
-    'MEDIUM',
-    'HIGH',
-    'URGENT'
-];
+exports.URGENCY_LEVELS = ['LOW', 'MEDIUM', 'HIGH', 'URGENT'];
 exports.CARGO_TYPES = [
     'GENERAL',
     'PERISHABLE',
@@ -38,19 +33,51 @@ exports.CARGO_TYPES = [
     'BULK',
     'CONSTRUCTION',
     'AUTOMOTIVE',
-    'ELECTRONICS'
+    'ELECTRONICS',
 ];
 exports.NIGERIAN_STATES = [
-    'ABIA', 'ADAMAWA', 'AKWA_IBOM', 'ANAMBRA', 'BAUCHI', 'BAYELSA', 'BENUE', 'BORNO',
-    'CROSS_RIVER', 'DELTA', 'EBONYI', 'EDO', 'EKITI', 'ENUGU', 'FCT', 'GOMBE',
-    'IMO', 'JIGAWA', 'KADUNA', 'KANO', 'KATSINA', 'KEBBI', 'KOGI', 'KWARA',
-    'LAGOS', 'NASARAWA', 'NIGER', 'OGUN', 'ONDO', 'OSUN', 'OYO', 'PLATEAU',
-    'RIVERS', 'SOKOTO', 'TARABA', 'YOBE', 'ZAMFARA'
+    'ABIA',
+    'ADAMAWA',
+    'AKWA_IBOM',
+    'ANAMBRA',
+    'BAUCHI',
+    'BAYELSA',
+    'BENUE',
+    'BORNO',
+    'CROSS_RIVER',
+    'DELTA',
+    'EBONYI',
+    'EDO',
+    'EKITI',
+    'ENUGU',
+    'FCT',
+    'GOMBE',
+    'IMO',
+    'JIGAWA',
+    'KADUNA',
+    'KANO',
+    'KATSINA',
+    'KEBBI',
+    'KOGI',
+    'KWARA',
+    'LAGOS',
+    'NASARAWA',
+    'NIGER',
+    'OGUN',
+    'ONDO',
+    'OSUN',
+    'OYO',
+    'PLATEAU',
+    'RIVERS',
+    'SOKOTO',
+    'TARABA',
+    'YOBE',
+    'ZAMFARA',
 ];
 exports.DEFAULT_PAGINATION = {
     page: 1,
     limit: 20,
-    maxLimit: 100
+    maxLimit: 100,
 };
 exports.EMAIL_TEMPLATES = {
     SHIPPER_WELCOME: 'shipperWelcome',
@@ -62,7 +89,7 @@ exports.EMAIL_TEMPLATES = {
     BID_ACCEPTED: 'bidAccepted',
     BID_REJECTED: 'bidRejected',
     BOOKING_CONFIRMATION: 'bookingConfirmation',
-    BOOKING_REMINDER: 'bookingReminder'
+    BOOKING_REMINDER: 'bookingReminder',
 };
 exports.API_RESPONSE_MESSAGES = {
     SUCCESS: 'Operation completed successfully',
@@ -74,6 +101,6 @@ exports.API_RESPONSE_MESSAGES = {
     FORBIDDEN: 'Access forbidden',
     VALIDATION_ERROR: 'Validation failed',
     SERVER_ERROR: 'Internal server error',
-    CONFLICT: 'Resource already exists'
+    CONFLICT: 'Resource already exists',
 };
 //# sourceMappingURL=index.js.map

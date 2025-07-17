@@ -31,7 +31,7 @@ __decorate([
     (0, swagger_2.ApiProperty)({
         example: client_1.BidStatus.ACCEPTED,
         description: 'Updated bid status',
-        enum: client_1.BidStatus
+        enum: client_1.BidStatus,
     }),
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsEnum)(client_1.BidStatus),
@@ -40,7 +40,7 @@ __decorate([
 __decorate([
     (0, swagger_2.ApiProperty)({
         example: 'Updated proposal with better terms',
-        description: 'Updated message or proposal details'
+        description: 'Updated message or proposal details',
     }),
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsString)(),
@@ -50,7 +50,7 @@ __decorate([
 __decorate([
     (0, swagger_2.ApiProperty)({
         example: 150000,
-        description: 'Updated bid amount'
+        description: 'Updated bid amount',
     }),
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsNumber)(),
@@ -61,7 +61,7 @@ __decorate([
 __decorate([
     (0, swagger_2.ApiProperty)({
         example: '2024-07-16T08:00:00Z',
-        description: 'Updated proposed pickup time'
+        description: 'Updated proposed pickup time',
     }),
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsDateString)(),
@@ -70,7 +70,7 @@ __decorate([
 __decorate([
     (0, swagger_2.ApiProperty)({
         example: '2024-07-16T16:00:00Z',
-        description: 'Updated estimated delivery time'
+        description: 'Updated estimated delivery time',
     }),
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsDateString)(),
@@ -79,7 +79,7 @@ __decorate([
 __decorate([
     (0, swagger_2.ApiProperty)({
         example: 'Counter-offer: Can do it for 140k with same terms',
-        description: 'Response message from shipper'
+        description: 'Response message from shipper',
     }),
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsString)(),
@@ -89,7 +89,7 @@ __decorate([
 __decorate([
     (0, swagger_2.ApiProperty)({
         example: '2024-07-17T23:59:59Z',
-        description: 'Updated bid expiration time'
+        description: 'Updated bid expiration time',
     }),
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsDateString)(),
@@ -98,7 +98,7 @@ __decorate([
 __decorate([
     (0, swagger_2.ApiProperty)({
         example: 'Payment terms updated to 50% upfront',
-        description: 'Updated payment terms'
+        description: 'Updated payment terms',
     }),
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsString)(),
@@ -108,7 +108,7 @@ __decorate([
 __decorate([
     (0, swagger_2.ApiProperty)({
         example: 'Updated special terms and conditions',
-        description: 'Updated special terms'
+        description: 'Updated special terms',
     }),
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsString)(),

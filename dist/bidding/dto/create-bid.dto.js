@@ -43,7 +43,7 @@ exports.TruckDetailsDto = TruckDetailsDto;
 __decorate([
     (0, swagger_1.ApiProperty)({
         example: 'Mercedes-Benz Actros',
-        description: 'Truck make and model'
+        description: 'Truck make and model',
     }),
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.IsString)(),
@@ -54,7 +54,7 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({
         example: 2020,
-        description: 'Year of manufacture'
+        description: 'Year of manufacture',
     }),
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.IsNumber)(),
@@ -65,7 +65,7 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({
         example: 'ABC123DE',
-        description: 'License plate number'
+        description: 'License plate number',
     }),
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.IsString)(),
@@ -76,7 +76,7 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({
         example: 25000,
-        description: 'Maximum payload capacity in kg'
+        description: 'Maximum payload capacity in kg',
     }),
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.IsNumber)(),
@@ -87,7 +87,7 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({
         example: 85,
-        description: 'Cargo volume capacity in cubic meters'
+        description: 'Cargo volume capacity in cubic meters',
     }),
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsNumber)(),
@@ -98,7 +98,7 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({
         example: TruckCondition.GOOD,
-        description: 'Overall condition of the truck'
+        description: 'Overall condition of the truck',
     }),
     (0, class_validator_1.IsEnum)(TruckCondition),
     __metadata("design:type", String)
@@ -106,7 +106,7 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({
         example: 150000,
-        description: 'Odometer reading in kilometers'
+        description: 'Odometer reading in kilometers',
     }),
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsNumber)(),
@@ -116,7 +116,7 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({
         example: 'GPS tracking, temperature monitoring',
-        description: 'Available equipment and features'
+        description: 'Available equipment and features',
     }),
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsString)(),
@@ -126,7 +126,7 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({
         example: ['GPS_TRACKING', 'TEMPERATURE_CONTROL', 'LOADING_ASSISTANCE'],
-        description: 'Available services'
+        description: 'Available services',
     }),
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsArray)(),
@@ -136,7 +136,7 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({
         example: 'https://example.com/truck-photo.jpg',
-        description: 'URL to truck photo'
+        description: 'URL to truck photo',
     }),
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsUrl)(),
@@ -146,7 +146,7 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({
         example: 'INS12345',
-        description: 'Insurance policy number'
+        description: 'Insurance policy number',
     }),
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsString)(),
@@ -156,7 +156,7 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({
         example: '2024-12-31',
-        description: 'Insurance expiry date'
+        description: 'Insurance expiry date',
     }),
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsDateString)(),
@@ -176,7 +176,7 @@ exports.DriverDetailsDto = DriverDetailsDto;
 __decorate([
     (0, swagger_1.ApiProperty)({
         example: 'John Smith',
-        description: 'Driver full name'
+        description: 'Driver full name',
     }),
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.IsString)(),
@@ -187,7 +187,7 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({
         example: 'DL12345678',
-        description: 'Driver license number'
+        description: 'Driver license number',
     }),
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.IsString)(),
@@ -198,7 +198,7 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({
         example: '2025-06-30',
-        description: 'License expiry date'
+        description: 'License expiry date',
     }),
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.IsDateString)(),
@@ -207,7 +207,7 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({
         example: 8,
-        description: 'Years of driving experience'
+        description: 'Years of driving experience',
     }),
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.IsNumber)(),
@@ -218,7 +218,7 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({
         example: '+234-80-9876-5432',
-        description: 'Driver contact phone'
+        description: 'Driver contact phone',
     }),
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.IsString)(),
@@ -229,7 +229,7 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({
         example: 4.8,
-        description: 'Driver rating out of 5'
+        description: 'Driver rating out of 5',
     }),
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsNumber)(),
@@ -240,7 +240,7 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({
         example: 245,
-        description: 'Number of completed trips'
+        description: 'Number of completed trips',
     }),
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsNumber)(),
@@ -250,7 +250,7 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({
         example: ['HAZMAT', 'REFRIGERATED_TRANSPORT'],
-        description: 'Special certifications'
+        description: 'Special certifications',
     }),
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsArray)(),
@@ -282,7 +282,7 @@ exports.CreateBidDto = CreateBidDto;
 __decorate([
     (0, swagger_1.ApiProperty)({
         example: 'booking-uuid-123',
-        description: 'Booking ID this bid is for'
+        description: 'Booking ID this bid is for',
     }),
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.IsString)(),
@@ -291,7 +291,7 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({
         example: 'carrier-uuid-123',
-        description: 'Carrier ID making the bid'
+        description: 'Carrier ID making the bid',
     }),
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.IsString)(),
@@ -300,7 +300,7 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({
         example: 145000,
-        description: 'Bid amount in Naira'
+        description: 'Bid amount in Naira',
     }),
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.IsNumber)(),
@@ -312,7 +312,7 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({
         example: 'NGN',
-        description: 'Currency code'
+        description: 'Currency code',
     }),
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsString)(),
@@ -323,7 +323,7 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({
         example: '2024-07-15T06:00:00Z',
-        description: 'Proposed pickup time'
+        description: 'Proposed pickup time',
     }),
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.IsDateString)(),
@@ -332,7 +332,7 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({
         example: '2024-07-15T14:00:00Z',
-        description: 'Estimated delivery time'
+        description: 'Estimated delivery time',
     }),
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.IsDateString)(),
@@ -340,7 +340,7 @@ __decorate([
 ], CreateBidDto.prototype, "estimatedDeliveryTime", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
-        description: 'Truck details for this bid'
+        description: 'Truck details for this bid',
     }),
     (0, class_validator_1.ValidateNested)(),
     (0, class_transformer_1.Type)(() => TruckDetailsDto),
@@ -348,7 +348,7 @@ __decorate([
 ], CreateBidDto.prototype, "truckDetails", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
-        description: 'Driver details for this bid'
+        description: 'Driver details for this bid',
     }),
     (0, class_validator_1.ValidateNested)(),
     (0, class_transformer_1.Type)(() => DriverDetailsDto),
@@ -357,7 +357,7 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({
         example: 'Reliable service with 10 years experience. Fully insured.',
-        description: 'Additional message or proposal details'
+        description: 'Additional message or proposal details',
     }),
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsString)(),
@@ -367,7 +367,7 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({
         example: ['GPS_TRACKING', 'REAL_TIME_UPDATES', 'PHOTO_PROOF'],
-        description: 'Services included in this bid'
+        description: 'Services included in this bid',
     }),
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsArray)(),
@@ -377,7 +377,7 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({
         example: '2024-07-16T23:59:59Z',
-        description: 'Bid expiration time'
+        description: 'Bid expiration time',
     }),
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsDateString)(),
@@ -386,7 +386,7 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({
         example: true,
-        description: 'Whether this bid is negotiable'
+        description: 'Whether this bid is negotiable',
     }),
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsBoolean)(),
@@ -395,7 +395,7 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({
         example: 'Payment on delivery preferred',
-        description: 'Payment terms and conditions'
+        description: 'Payment terms and conditions',
     }),
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsString)(),
@@ -405,7 +405,7 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({
         example: 'Available for immediate pickup',
-        description: 'Special terms or conditions'
+        description: 'Special terms or conditions',
     }),
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsString)(),
@@ -415,7 +415,7 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({
         example: 130000,
-        description: 'Minimum acceptable counter-offer'
+        description: 'Minimum acceptable counter-offer',
     }),
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsNumber)(),
@@ -425,7 +425,7 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({
         example: 'https://example.com/company-docs.pdf',
-        description: 'URL to additional documentation'
+        description: 'URL to additional documentation',
     }),
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsUrl)(),
@@ -435,7 +435,7 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({
         example: 'John Doe',
-        description: 'Contact person for this bid'
+        description: 'Contact person for this bid',
     }),
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.IsString)(),
@@ -446,7 +446,7 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({
         example: '+234-80-1234-5678',
-        description: 'Contact phone number'
+        description: 'Contact phone number',
     }),
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.IsString)(),
@@ -457,7 +457,7 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({
         example: 'carrier@logistics.com',
-        description: 'Contact email'
+        description: 'Contact email',
     }),
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsString)(),
@@ -474,7 +474,7 @@ __decorate([
     (0, swagger_1.ApiProperty)({
         example: client_1.BidStatus.ACCEPTED,
         description: 'Response status',
-        enum: client_1.BidStatus
+        enum: client_1.BidStatus,
     }),
     (0, class_validator_1.IsEnum)(client_1.BidStatus),
     __metadata("design:type", String)
@@ -482,7 +482,7 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({
         example: 'We accept your bid terms',
-        description: 'Response message'
+        description: 'Response message',
     }),
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsString)(),
@@ -492,7 +492,7 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({
         example: 140000,
-        description: 'Counter-offer amount if applicable'
+        description: 'Counter-offer amount if applicable',
     }),
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsNumber)(),

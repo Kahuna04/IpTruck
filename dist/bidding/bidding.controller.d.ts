@@ -53,9 +53,9 @@ export declare class BiddingController {
                 urgencyLevel: import(".prisma/client").$Enums.UrgencyLevel;
                 preferredPickupTime: Date;
                 proposedPrice: number;
-                expiresAt: Date | null;
                 status: import(".prisma/client").$Enums.BookingStatus;
                 currency: string;
+                expiresAt: Date | null;
                 contactEmail: string | null;
                 id: string;
                 createdAt: Date;
@@ -97,13 +97,14 @@ export declare class BiddingController {
             driverDetails: import("@prisma/client/runtime/library").JsonValue;
             includedServices: string[];
             bidExpiresAt: Date | null;
+            validUntil: Date | null;
             paymentTerms: string | null;
             specialTerms: string | null;
             minimumAcceptablePrice: number | null;
             documentationUrl: string | null;
         };
     }>;
-    findAll(bookingId?: string, bidderId?: string, status?: BidStatus, minAmount?: number, maxAmount?: number, currency?: string, page: number | undefined, limit: number | undefined, sortBy: string | undefined, sortOrder: "asc" | "desc" | undefined, user: User): Promise<{
+    findAll(bookingId?: string, bidderId?: string, status?: BidStatus, minAmount?: number, maxAmount?: number, currency?: string, page?: number, limit?: number, sortBy?: string, sortOrder?: 'asc' | 'desc', user?: User): Promise<{
         message: string;
         data: ({
             carrier: {
@@ -146,9 +147,9 @@ export declare class BiddingController {
                 urgencyLevel: import(".prisma/client").$Enums.UrgencyLevel;
                 preferredPickupTime: Date;
                 proposedPrice: number;
-                expiresAt: Date | null;
                 status: import(".prisma/client").$Enums.BookingStatus;
                 currency: string;
+                expiresAt: Date | null;
                 contactEmail: string | null;
                 id: string;
                 createdAt: Date;
@@ -190,105 +191,7 @@ export declare class BiddingController {
             driverDetails: import("@prisma/client/runtime/library").JsonValue;
             includedServices: string[];
             bidExpiresAt: Date | null;
-            paymentTerms: string | null;
-            specialTerms: string | null;
-            minimumAcceptablePrice: number | null;
-            documentationUrl: string | null;
-        })[];
-        pagination: {
-            page: number;
-            limit: number;
-            total: number;
-            pages: number;
-        };
-    }>;
-    findMyBids(status?: BidStatus, page: number | undefined, limit: number | undefined, user: User): Promise<{
-        message: string;
-        data: ({
-            carrier: {
-                description: string | null;
-                companyName: string;
-                contactPhone: string;
-                contactFirstName: string;
-                contactLastName: string;
-                userId: string;
-                registrationNumber: string | null;
-                taxId: string | null;
-                businessEmail: string;
-                phoneNumber: string;
-                website: string | null;
-                companySize: import(".prisma/client").$Enums.CompanySize;
-                street: string;
-                city: string;
-                state: string;
-                postalCode: string;
-                countryCode: string;
-                contactJobTitle: string;
-                contactEmail: string;
-                operatingRegions: string | null;
-                marketingOptIn: boolean;
-                id: string;
-                createdAt: Date;
-                updatedAt: Date;
-                isVerified: boolean;
-                fleetSize: string | null;
-                rating: number | null;
-                completedJobs: number;
-            };
-            booking: {
-                description: string;
-                referenceNumber: string | null;
-                pickupLocation: import("@prisma/client/runtime/library").JsonValue;
-                deliveryLocation: import("@prisma/client/runtime/library").JsonValue;
-                contactPerson: string;
-                contactPhone: string;
-                urgencyLevel: import(".prisma/client").$Enums.UrgencyLevel;
-                preferredPickupTime: Date;
-                proposedPrice: number;
-                expiresAt: Date | null;
-                status: import(".prisma/client").$Enums.BookingStatus;
-                currency: string;
-                contactEmail: string | null;
-                id: string;
-                createdAt: Date;
-                updatedAt: Date;
-                shipperId: string;
-                cargoDetails: import("@prisma/client/runtime/library").JsonValue;
-                preferredTruckType: string;
-                latestPickupTime: Date | null;
-                requiredDeliveryTime: Date | null;
-                loadingType: string;
-                unloadingType: string;
-                minimumPrice: number | null;
-                maximumPrice: number | null;
-                isNegotiable: boolean;
-                additionalRequirements: string | null;
-                requiredServices: string[];
-                notificationsEnabled: boolean;
-                isRecurring: boolean;
-                recurrencePattern: string | null;
-                acceptedBidId: string | null;
-            };
-        } & {
-            message: string | null;
-            bookingId: string;
-            contactPerson: string;
-            contactPhone: string;
-            bidAmount: number;
-            proposedPickupTime: Date;
-            estimatedDeliveryTime: Date;
-            status: import(".prisma/client").$Enums.BidStatus;
-            currency: string;
-            contactEmail: string | null;
-            id: string;
-            createdAt: Date;
-            updatedAt: Date;
-            isNegotiable: boolean;
-            carrierId: string;
-            truckDetails: import("@prisma/client/runtime/library").JsonValue;
-            driverDetails: import("@prisma/client/runtime/library").JsonValue;
-            includedServices: string[];
-            bidExpiresAt: Date | null;
+            validUntil: Date | null;
             paymentTerms: string | null;
             specialTerms: string | null;
             minimumAcceptablePrice: number | null;
@@ -301,7 +204,7 @@ export declare class BiddingController {
             pages: number;
         };
     }>;
-    findBidsForBooking(bookingId: string, status?: BidStatus, page: number | undefined, limit: number | undefined, user: User): Promise<{
+    findMyBids(status?: BidStatus, page?: number, limit?: number, user?: User): Promise<{
         message: string;
         data: ({
             carrier: {
@@ -344,9 +247,9 @@ export declare class BiddingController {
                 urgencyLevel: import(".prisma/client").$Enums.UrgencyLevel;
                 preferredPickupTime: Date;
                 proposedPrice: number;
-                expiresAt: Date | null;
                 status: import(".prisma/client").$Enums.BookingStatus;
                 currency: string;
+                expiresAt: Date | null;
                 contactEmail: string | null;
                 id: string;
                 createdAt: Date;
@@ -388,6 +291,107 @@ export declare class BiddingController {
             driverDetails: import("@prisma/client/runtime/library").JsonValue;
             includedServices: string[];
             bidExpiresAt: Date | null;
+            validUntil: Date | null;
+            paymentTerms: string | null;
+            specialTerms: string | null;
+            minimumAcceptablePrice: number | null;
+            documentationUrl: string | null;
+        })[];
+        pagination: {
+            page: number;
+            limit: number;
+            total: number;
+            pages: number;
+        };
+    }>;
+    findBidsForBooking(bookingId: string, status?: BidStatus, page?: number, limit?: number, user?: User): Promise<{
+        message: string;
+        data: ({
+            carrier: {
+                description: string | null;
+                companyName: string;
+                contactPhone: string;
+                contactFirstName: string;
+                contactLastName: string;
+                userId: string;
+                registrationNumber: string | null;
+                taxId: string | null;
+                businessEmail: string;
+                phoneNumber: string;
+                website: string | null;
+                companySize: import(".prisma/client").$Enums.CompanySize;
+                street: string;
+                city: string;
+                state: string;
+                postalCode: string;
+                countryCode: string;
+                contactJobTitle: string;
+                contactEmail: string;
+                operatingRegions: string | null;
+                marketingOptIn: boolean;
+                id: string;
+                createdAt: Date;
+                updatedAt: Date;
+                isVerified: boolean;
+                fleetSize: string | null;
+                rating: number | null;
+                completedJobs: number;
+            };
+            booking: {
+                description: string;
+                referenceNumber: string | null;
+                pickupLocation: import("@prisma/client/runtime/library").JsonValue;
+                deliveryLocation: import("@prisma/client/runtime/library").JsonValue;
+                contactPerson: string;
+                contactPhone: string;
+                urgencyLevel: import(".prisma/client").$Enums.UrgencyLevel;
+                preferredPickupTime: Date;
+                proposedPrice: number;
+                status: import(".prisma/client").$Enums.BookingStatus;
+                currency: string;
+                expiresAt: Date | null;
+                contactEmail: string | null;
+                id: string;
+                createdAt: Date;
+                updatedAt: Date;
+                shipperId: string;
+                cargoDetails: import("@prisma/client/runtime/library").JsonValue;
+                preferredTruckType: string;
+                latestPickupTime: Date | null;
+                requiredDeliveryTime: Date | null;
+                loadingType: string;
+                unloadingType: string;
+                minimumPrice: number | null;
+                maximumPrice: number | null;
+                isNegotiable: boolean;
+                additionalRequirements: string | null;
+                requiredServices: string[];
+                notificationsEnabled: boolean;
+                isRecurring: boolean;
+                recurrencePattern: string | null;
+                acceptedBidId: string | null;
+            };
+        } & {
+            message: string | null;
+            bookingId: string;
+            contactPerson: string;
+            contactPhone: string;
+            bidAmount: number;
+            proposedPickupTime: Date;
+            estimatedDeliveryTime: Date;
+            status: import(".prisma/client").$Enums.BidStatus;
+            currency: string;
+            contactEmail: string | null;
+            id: string;
+            createdAt: Date;
+            updatedAt: Date;
+            isNegotiable: boolean;
+            carrierId: string;
+            truckDetails: import("@prisma/client/runtime/library").JsonValue;
+            driverDetails: import("@prisma/client/runtime/library").JsonValue;
+            includedServices: string[];
+            bidExpiresAt: Date | null;
+            validUntil: Date | null;
             paymentTerms: string | null;
             specialTerms: string | null;
             minimumAcceptablePrice: number | null;
@@ -443,9 +447,9 @@ export declare class BiddingController {
                 urgencyLevel: import(".prisma/client").$Enums.UrgencyLevel;
                 preferredPickupTime: Date;
                 proposedPrice: number;
-                expiresAt: Date | null;
                 status: import(".prisma/client").$Enums.BookingStatus;
                 currency: string;
+                expiresAt: Date | null;
                 contactEmail: string | null;
                 id: string;
                 createdAt: Date;
@@ -487,6 +491,7 @@ export declare class BiddingController {
             driverDetails: import("@prisma/client/runtime/library").JsonValue;
             includedServices: string[];
             bidExpiresAt: Date | null;
+            validUntil: Date | null;
             paymentTerms: string | null;
             specialTerms: string | null;
             minimumAcceptablePrice: number | null;
@@ -536,9 +541,9 @@ export declare class BiddingController {
                 urgencyLevel: import(".prisma/client").$Enums.UrgencyLevel;
                 preferredPickupTime: Date;
                 proposedPrice: number;
-                expiresAt: Date | null;
                 status: import(".prisma/client").$Enums.BookingStatus;
                 currency: string;
+                expiresAt: Date | null;
                 contactEmail: string | null;
                 id: string;
                 createdAt: Date;
@@ -580,6 +585,7 @@ export declare class BiddingController {
             driverDetails: import("@prisma/client/runtime/library").JsonValue;
             includedServices: string[];
             bidExpiresAt: Date | null;
+            validUntil: Date | null;
             paymentTerms: string | null;
             specialTerms: string | null;
             minimumAcceptablePrice: number | null;
@@ -629,9 +635,9 @@ export declare class BiddingController {
                 urgencyLevel: import(".prisma/client").$Enums.UrgencyLevel;
                 preferredPickupTime: Date;
                 proposedPrice: number;
-                expiresAt: Date | null;
                 status: import(".prisma/client").$Enums.BookingStatus;
                 currency: string;
+                expiresAt: Date | null;
                 contactEmail: string | null;
                 id: string;
                 createdAt: Date;
@@ -673,6 +679,7 @@ export declare class BiddingController {
             driverDetails: import("@prisma/client/runtime/library").JsonValue;
             includedServices: string[];
             bidExpiresAt: Date | null;
+            validUntil: Date | null;
             paymentTerms: string | null;
             specialTerms: string | null;
             minimumAcceptablePrice: number | null;
@@ -722,9 +729,9 @@ export declare class BiddingController {
                 urgencyLevel: import(".prisma/client").$Enums.UrgencyLevel;
                 preferredPickupTime: Date;
                 proposedPrice: number;
-                expiresAt: Date | null;
                 status: import(".prisma/client").$Enums.BookingStatus;
                 currency: string;
+                expiresAt: Date | null;
                 contactEmail: string | null;
                 id: string;
                 createdAt: Date;
@@ -766,6 +773,7 @@ export declare class BiddingController {
             driverDetails: import("@prisma/client/runtime/library").JsonValue;
             includedServices: string[];
             bidExpiresAt: Date | null;
+            validUntil: Date | null;
             paymentTerms: string | null;
             specialTerms: string | null;
             minimumAcceptablePrice: number | null;
@@ -815,9 +823,9 @@ export declare class BiddingController {
                 urgencyLevel: import(".prisma/client").$Enums.UrgencyLevel;
                 preferredPickupTime: Date;
                 proposedPrice: number;
-                expiresAt: Date | null;
                 status: import(".prisma/client").$Enums.BookingStatus;
                 currency: string;
+                expiresAt: Date | null;
                 contactEmail: string | null;
                 id: string;
                 createdAt: Date;
@@ -859,6 +867,7 @@ export declare class BiddingController {
             driverDetails: import("@prisma/client/runtime/library").JsonValue;
             includedServices: string[];
             bidExpiresAt: Date | null;
+            validUntil: Date | null;
             paymentTerms: string | null;
             specialTerms: string | null;
             minimumAcceptablePrice: number | null;

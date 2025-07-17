@@ -81,7 +81,7 @@ exports.LocationDto = LocationDto;
 __decorate([
     (0, swagger_1.ApiProperty)({
         example: 'Coca-Cola Bottling Plant',
-        description: 'Name of the location (warehouse, factory, etc.)'
+        description: 'Name of the location (warehouse, factory, etc.)',
     }),
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsString)(),
@@ -91,7 +91,7 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({
         example: '123 Industrial Avenue',
-        description: 'Street address'
+        description: 'Street address',
     }),
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.IsString)(),
@@ -102,7 +102,7 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({
         example: 'Lagos',
-        description: 'City'
+        description: 'City',
     }),
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.IsString)(),
@@ -113,7 +113,7 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({
         example: 'Lagos State',
-        description: 'State or province'
+        description: 'State or province',
     }),
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.IsString)(),
@@ -124,7 +124,7 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({
         example: '100001',
-        description: 'Postal code'
+        description: 'Postal code',
     }),
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsString)(),
@@ -135,7 +135,7 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({
         example: 'NG',
-        description: 'Country code'
+        description: 'Country code',
     }),
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.IsString)(),
@@ -146,7 +146,7 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({
         example: 6.5244,
-        description: 'Latitude coordinate'
+        description: 'Latitude coordinate',
     }),
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsNumber)(),
@@ -157,7 +157,7 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({
         example: 3.3792,
-        description: 'Longitude coordinate'
+        description: 'Longitude coordinate',
     }),
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsNumber)(),
@@ -168,7 +168,7 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({
         example: 'Gate 3, loading dock B',
-        description: 'Specific loading/unloading instructions'
+        description: 'Specific loading/unloading instructions',
     }),
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsString)(),
@@ -178,7 +178,7 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({
         example: 'John Doe',
-        description: 'Contact person at this location'
+        description: 'Contact person at this location',
     }),
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsString)(),
@@ -188,7 +188,7 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({
         example: '+234-80-1234-5678',
-        description: 'Contact phone number'
+        description: 'Contact phone number',
     }),
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsString)(),
@@ -217,7 +217,7 @@ exports.CargoDetailsDto = CargoDetailsDto;
 __decorate([
     (0, swagger_1.ApiProperty)({
         example: 'Coca-Cola bottles and cans',
-        description: 'Description of the cargo'
+        description: 'Description of the cargo',
     }),
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.IsString)(),
@@ -228,7 +228,7 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({
         example: CargoType.BEVERAGES,
-        description: 'Type of cargo being transported'
+        description: 'Type of cargo being transported',
     }),
     (0, class_validator_1.IsEnum)(CargoType),
     __metadata("design:type", String)
@@ -236,7 +236,7 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({
         example: 15000,
-        description: 'Weight in kilograms'
+        description: 'Weight in kilograms',
     }),
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.IsNumber)(),
@@ -247,7 +247,7 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({
         example: 45,
-        description: 'Volume in cubic meters'
+        description: 'Volume in cubic meters',
     }),
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsNumber)(),
@@ -258,7 +258,7 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({
         example: 5.5,
-        description: 'Length in meters'
+        description: 'Length in meters',
     }),
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsNumber)(),
@@ -269,7 +269,7 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({
         example: 2.5,
-        description: 'Width in meters'
+        description: 'Width in meters',
     }),
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsNumber)(),
@@ -280,7 +280,7 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({
         example: 3.0,
-        description: 'Height in meters'
+        description: 'Height in meters',
     }),
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsNumber)(),
@@ -291,7 +291,7 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({
         example: 1000,
-        description: 'Number of packages/units'
+        description: 'Number of packages/units',
     }),
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsNumber)(),
@@ -301,7 +301,7 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({
         example: 'Cases',
-        description: 'Unit of measurement (cases, pallets, boxes, etc.)'
+        description: 'Unit of measurement (cases, pallets, boxes, etc.)',
     }),
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsString)(),
@@ -311,7 +311,7 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({
         example: 50000,
-        description: 'Declared value in Naira'
+        description: 'Declared value in Naira',
     }),
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsNumber)(),
@@ -321,7 +321,7 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({
         example: true,
-        description: 'Whether cargo requires temperature control'
+        description: 'Whether cargo requires temperature control',
     }),
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsBoolean)(),
@@ -330,7 +330,7 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({
         example: 4,
-        description: 'Required temperature in Celsius (if refrigerated)'
+        description: 'Required temperature in Celsius (if refrigerated)',
     }),
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsNumber)(),
@@ -341,7 +341,7 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({
         example: true,
-        description: 'Whether cargo is fragile'
+        description: 'Whether cargo is fragile',
     }),
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsBoolean)(),
@@ -350,7 +350,7 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({
         example: false,
-        description: 'Whether cargo is hazardous'
+        description: 'Whether cargo is hazardous',
     }),
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsBoolean)(),
@@ -359,7 +359,7 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({
         example: 'UN1234',
-        description: 'UN number for hazardous materials'
+        description: 'UN number for hazardous materials',
     }),
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsString)(),
@@ -369,7 +369,7 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({
         example: 'Keep upright, do not stack',
-        description: 'Special handling instructions'
+        description: 'Special handling instructions',
     }),
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsString)(),
@@ -408,7 +408,7 @@ exports.CreateBookingDto = CreateBookingDto;
 __decorate([
     (0, swagger_1.ApiProperty)({
         example: 'BEV-DEL-001',
-        description: 'Your internal reference number'
+        description: 'Your internal reference number',
     }),
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsString)(),
@@ -418,7 +418,7 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({
         example: 'Coca-Cola distribution to retailers',
-        description: 'Brief description of the transport job'
+        description: 'Brief description of the transport job',
     }),
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.IsString)(),
@@ -429,7 +429,7 @@ __decorate([
 ], CreateBookingDto.prototype, "description", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
-        description: 'Pickup location details'
+        description: 'Pickup location details',
     }),
     (0, class_validator_1.ValidateNested)(),
     (0, class_transformer_1.Type)(() => LocationDto),
@@ -437,7 +437,7 @@ __decorate([
 ], CreateBookingDto.prototype, "pickupLocation", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
-        description: 'Delivery location details'
+        description: 'Delivery location details',
     }),
     (0, class_validator_1.ValidateNested)(),
     (0, class_transformer_1.Type)(() => LocationDto),
@@ -445,7 +445,7 @@ __decorate([
 ], CreateBookingDto.prototype, "deliveryLocation", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
-        description: 'Cargo details'
+        description: 'Cargo details',
     }),
     (0, class_validator_1.ValidateNested)(),
     (0, class_transformer_1.Type)(() => CargoDetailsDto),
@@ -454,7 +454,7 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({
         example: TruckType.REFRIGERATED,
-        description: 'Preferred truck type'
+        description: 'Preferred truck type',
     }),
     (0, class_validator_1.IsEnum)(TruckType),
     __metadata("design:type", String)
@@ -462,7 +462,7 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({
         example: '2024-07-15T08:00:00Z',
-        description: 'Preferred pickup date and time'
+        description: 'Preferred pickup date and time',
     }),
     (0, class_validator_1.IsDateString)(),
     __metadata("design:type", String)
@@ -470,7 +470,7 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({
         example: '2024-07-15T14:00:00Z',
-        description: 'Latest acceptable pickup time'
+        description: 'Latest acceptable pickup time',
     }),
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsDateString)(),
@@ -479,7 +479,7 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({
         example: '2024-07-15T16:00:00Z',
-        description: 'Required delivery time'
+        description: 'Required delivery time',
     }),
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsDateString)(),
@@ -488,7 +488,7 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({
         example: client_1.UrgencyLevel.HIGH,
-        description: 'Urgency level of the booking'
+        description: 'Urgency level of the booking',
     }),
     (0, class_validator_1.IsEnum)(client_1.UrgencyLevel),
     __metadata("design:type", String)
@@ -496,7 +496,7 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({
         example: LoadingType.FORKLIFT_REQUIRED,
-        description: 'Loading method required'
+        description: 'Loading method required',
     }),
     (0, class_validator_1.IsEnum)(LoadingType),
     __metadata("design:type", String)
@@ -504,7 +504,7 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({
         example: LoadingType.MANUAL_LOADING,
-        description: 'Unloading method required'
+        description: 'Unloading method required',
     }),
     (0, class_validator_1.IsEnum)(LoadingType),
     __metadata("design:type", String)
@@ -512,7 +512,7 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({
         example: 150000,
-        description: 'Your proposed price in Naira'
+        description: 'Your proposed price in Naira',
     }),
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.IsNumber)(),
@@ -524,7 +524,7 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({
         example: 'NGN',
-        description: 'Currency code'
+        description: 'Currency code',
     }),
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsString)(),
@@ -535,7 +535,7 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({
         example: 120000,
-        description: 'Minimum acceptable price'
+        description: 'Minimum acceptable price',
     }),
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsNumber)(),
@@ -545,7 +545,7 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({
         example: 200000,
-        description: 'Maximum acceptable price'
+        description: 'Maximum acceptable price',
     }),
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsNumber)(),
@@ -555,7 +555,7 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({
         example: true,
-        description: 'Whether price is negotiable'
+        description: 'Whether price is negotiable',
     }),
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsBoolean)(),
@@ -564,7 +564,7 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({
         example: 'Need reliable carrier with good reviews',
-        description: 'Additional requirements or notes'
+        description: 'Additional requirements or notes',
     }),
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsString)(),
@@ -574,7 +574,7 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({
         example: ['GPS_TRACKING', 'INSURANCE_COVERED'],
-        description: 'Required services'
+        description: 'Required services',
     }),
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsArray)(),
@@ -584,7 +584,7 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({
         example: 'John Doe',
-        description: 'Contact person for this booking'
+        description: 'Contact person for this booking',
     }),
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.IsString)(),
@@ -595,7 +595,7 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({
         example: '+234-80-1234-5678',
-        description: 'Contact phone number'
+        description: 'Contact phone number',
     }),
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.IsString)(),
@@ -606,7 +606,7 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({
         example: 'contact@cocacola.com',
-        description: 'Contact email'
+        description: 'Contact email',
     }),
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsString)(),
@@ -616,7 +616,7 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({
         example: '2024-07-18T23:59:59Z',
-        description: 'Booking expiration time'
+        description: 'Booking expiration time',
     }),
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsDateString)(),
@@ -625,7 +625,7 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({
         example: true,
-        description: 'Whether to send notifications'
+        description: 'Whether to send notifications',
     }),
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsBoolean)(),
@@ -634,7 +634,7 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({
         example: false,
-        description: 'Whether this is a recurring booking'
+        description: 'Whether this is a recurring booking',
     }),
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsBoolean)(),
@@ -643,7 +643,7 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({
         example: 'weekly',
-        description: 'Recurrence pattern (if recurring)'
+        description: 'Recurrence pattern (if recurring)',
     }),
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsString)(),

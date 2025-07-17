@@ -30,7 +30,7 @@ exports.ForgotPasswordDto = ForgotPasswordDto;
 __decorate([
     (0, swagger_1.ApiProperty)({
         example: 'contact@kahuna-logistics.com',
-        description: 'Company email address for password reset'
+        description: 'Company email address for password reset',
     }),
     (0, class_validator_1.IsEmail)({}, { message: 'Please provide a valid email address' }),
     (0, class_validator_1.MaxLength)(100),
@@ -42,7 +42,7 @@ __decorate([
         example: 'email',
         description: 'Preferred method for receiving reset instructions',
         enum: ResetMethod,
-        required: false
+        required: false,
     }),
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsEnum)(ResetMethod, { message: 'Reset method must be email, sms, or both' }),
@@ -52,7 +52,7 @@ __decorate([
     (0, swagger_1.ApiProperty)({
         example: '192.168.1.100',
         description: 'Client IP address for security logging',
-        required: false
+        required: false,
     }),
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsIP)(),
@@ -62,7 +62,7 @@ __decorate([
     (0, swagger_1.ApiProperty)({
         example: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
         description: 'Client user agent for security logging',
-        required: false
+        required: false,
     }),
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsString)(),
@@ -73,7 +73,7 @@ __decorate([
     (0, swagger_1.ApiProperty)({
         example: '550e8400-e29b-41d4-a716-446655440000',
         description: 'Device fingerprint for security',
-        required: false
+        required: false,
     }),
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsUUID)(),
@@ -88,7 +88,7 @@ exports.VerifyResetTokenDto = VerifyResetTokenDto;
 __decorate([
     (0, swagger_1.ApiProperty)({
         example: 'contact@kahuna-logistics.com',
-        description: 'Company email address'
+        description: 'Company email address',
     }),
     (0, class_validator_1.IsEmail)({}, { message: 'Please provide a valid email address' }),
     (0, class_validator_1.MaxLength)(100),
@@ -98,19 +98,21 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({
         example: 'abc123def456ghi789jkl012mno345pqr678stu901vwx234yz',
-        description: 'Password reset token from email/SMS'
+        description: 'Password reset token from email/SMS',
     }),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.MinLength)(32, { message: 'Reset token must be at least 32 characters' }),
     (0, class_validator_1.MaxLength)(128, { message: 'Reset token must not exceed 128 characters' }),
-    (0, class_validator_1.Matches)(/^[a-zA-Z0-9]+$/, { message: 'Reset token must contain only alphanumeric characters' }),
+    (0, class_validator_1.Matches)(/^[a-zA-Z0-9]+$/, {
+        message: 'Reset token must contain only alphanumeric characters',
+    }),
     __metadata("design:type", String)
 ], VerifyResetTokenDto.prototype, "token", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
         example: '192.168.1.100',
         description: 'Client IP address for security verification',
-        required: false
+        required: false,
     }),
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsIP)(),
@@ -129,7 +131,7 @@ exports.ResetPasswordDto = ResetPasswordDto;
 __decorate([
     (0, swagger_1.ApiProperty)({
         example: 'contact@kahuna-logistics.com',
-        description: 'Company email address'
+        description: 'Company email address',
     }),
     (0, class_validator_1.IsEmail)({}, { message: 'Please provide a valid email address' }),
     (0, class_validator_1.MaxLength)(100),
@@ -139,18 +141,20 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({
         example: 'abc123def456ghi789jkl012mno345pqr678stu901vwx234yz',
-        description: 'Password reset token from email/SMS'
+        description: 'Password reset token from email/SMS',
     }),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.MinLength)(32, { message: 'Reset token must be at least 32 characters' }),
     (0, class_validator_1.MaxLength)(128, { message: 'Reset token must not exceed 128 characters' }),
-    (0, class_validator_1.Matches)(/^[a-zA-Z0-9]+$/, { message: 'Reset token must contain only alphanumeric characters' }),
+    (0, class_validator_1.Matches)(/^[a-zA-Z0-9]+$/, {
+        message: 'Reset token must contain only alphanumeric characters',
+    }),
     __metadata("design:type", String)
 ], ResetPasswordDto.prototype, "token", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
         example: 'NewPassword@123',
-        description: 'New password for the account'
+        description: 'New password for the account',
     }),
     (0, class_validator_1.IsStrongPassword)({
         minLength: 8,
@@ -167,7 +171,7 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({
         example: 'NewPassword@123',
-        description: 'Confirm new password'
+        description: 'Confirm new password',
     }),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.MinLength)(8),
@@ -178,7 +182,7 @@ __decorate([
     (0, swagger_1.ApiProperty)({
         example: '192.168.1.100',
         description: 'Client IP address for security logging',
-        required: false
+        required: false,
     }),
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsIP)(),
@@ -188,7 +192,7 @@ __decorate([
     (0, swagger_1.ApiProperty)({
         example: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
         description: 'Client user agent for security logging',
-        required: false
+        required: false,
     }),
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsString)(),
@@ -199,7 +203,7 @@ __decorate([
     (0, swagger_1.ApiProperty)({
         example: '550e8400-e29b-41d4-a716-446655440000',
         description: 'Device fingerprint for security',
-        required: false
+        required: false,
     }),
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsUUID)(),
@@ -214,7 +218,7 @@ exports.ResendResetTokenDto = ResendResetTokenDto;
 __decorate([
     (0, swagger_1.ApiProperty)({
         example: 'contact@kahuna-logistics.com',
-        description: 'Company email address'
+        description: 'Company email address',
     }),
     (0, class_validator_1.IsEmail)({}, { message: 'Please provide a valid email address' }),
     (0, class_validator_1.MaxLength)(100),
@@ -226,7 +230,7 @@ __decorate([
         example: 'email',
         description: 'Preferred method for receiving reset instructions',
         enum: ResetMethod,
-        required: false
+        required: false,
     }),
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsEnum)(ResetMethod, { message: 'Reset method must be email, sms, or both' }),
@@ -236,7 +240,7 @@ __decorate([
     (0, swagger_1.ApiProperty)({
         example: '192.168.1.100',
         description: 'Client IP address for security logging',
-        required: false
+        required: false,
     }),
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsIP)(),

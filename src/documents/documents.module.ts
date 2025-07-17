@@ -12,8 +12,12 @@ import { extname } from 'path';
       storage: diskStorage({
         destination: process.env.UPLOAD_PATH || './uploads',
         filename: (req, file, cb) => {
-          const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-          cb(null, file.fieldname + '-' + uniqueSuffix + extname(file.originalname));
+          const uniqueSuffix =
+            Date.now() + '-' + Math.round(Math.random() * 1e9);
+          cb(
+            null,
+            file.fieldname + '-' + uniqueSuffix + extname(file.originalname),
+          );
         },
       }),
       limits: {
@@ -31,7 +35,7 @@ import { extname } from 'path';
           'application/vnd.ms-excel',
           'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
         ];
-        
+
         if (allowedMimeTypes.includes(file.mimetype)) {
           cb(null, true);
         } else {

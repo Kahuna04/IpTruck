@@ -80,6 +80,63 @@ export interface BidAcceptanceData {
   };
 }
 
+export interface DeliveryNotificationData {
+  bookingId: string;
+  trackingNumber: string;
+  status: 'picked_up' | 'in_transit' | 'delivered';
+  location: string;
+  timestamp: string;
+  driverName: string;
+  driverPhone: string;
+  shipperCompany: string;
+  carrierCompany: string;
+  estimatedDeliveryTime?: string;
+  deliveryProof?: string;
+}
+
+export interface DocumentVerificationData {
+  documentId: string;
+  documentType: string;
+  fileName: string;
+  status: 'verified' | 'rejected';
+  companyName: string;
+  contactName: string;
+  reason?: string;
+  verifiedBy?: string;
+  verifiedAt?: string;
+}
+
+export interface PaymentNotificationData {
+  bookingId: string;
+  paymentId: string;
+  amount: number;
+  currency: string;
+  status: 'pending' | 'completed' | 'failed';
+  paymentMethod: string;
+  shipperCompany: string;
+  carrierCompany: string;
+  dueDate?: string;
+  invoiceUrl?: string;
+}
+
+export interface MaintenanceNotificationData {
+  maintenanceType: 'scheduled' | 'emergency';
+  startTime: string;
+  endTime: string;
+  affectedServices: string[];
+  description: string;
+  alternativeActions?: string[];
+}
+
+export interface ReviewReminderData {
+  bookingId: string;
+  companyName: string;
+  partnerCompany: string;
+  deliveryDate: string;
+  userType: 'shipper' | 'carrier';
+  reviewUrl: string;
+}
+
 @Injectable()
 export class EmailService {
   constructor(
@@ -118,7 +175,10 @@ Send Welcome Email for Company Registration
 Send Account Activation Email
 ========================================
 */
-  async sendAccountActivationEmail(companyData: CompanyData, activationCode: string) {
+  async sendAccountActivationEmail(
+    companyData: CompanyData,
+    activationCode: string,
+  ) {
     const activationUrl = `${this.getBaseUrl()}/auth/activate/${activationCode}`;
 
     await this.mailService.sendMail({
@@ -158,10 +218,10 @@ Send Account Activation Success Email
   }
 
   /* 
-=======================================
-Send Password Recovery Email
-========================================
-*/
+  =======================================
+  Send Password Recovery Email
+  ========================================
+  */
   async sendPasswordRecoveryEmail(data: PasswordRecoveryData) {
     const { email, name, resetToken } = data;
     const resetPasswordUrl = `${this.getBaseUrl()}/auth/reset-password?token=${resetToken}`;
@@ -178,15 +238,19 @@ Send Password Recovery Email
     });
   }
 
+
   /* 
 =======================================
 Send New Booking Notification to Carriers
 ========================================
 */
-  async sendNewBookingNotification(carrierEmails: string[], bookingData: BookingData) {
+  async sendNewBookingNotification(
+    carrierEmails: string[],
+    bookingData: BookingData,
+  ) {
     const bookingUrl = `${this.getBaseUrl()}/bookings/${bookingData.bookingId}`;
 
-    const emailPromises = carrierEmails.map(email => 
+    const emailPromises = carrierEmails.map((email) =>
       this.mailService.sendMail({
         to: email,
         from: this.config.get<string>('USER_GMAIL'),
@@ -198,7 +262,9 @@ Send New Booking Notification to Carriers
           description: bookingData.description,
           pickupLocation: `${bookingData.pickupLocation.city}, ${bookingData.pickupLocation.state}`,
           deliveryLocation: `${bookingData.deliveryLocation.city}, ${bookingData.deliveryLocation.state}`,
-          preferredPickupTime: new Date(bookingData.preferredPickupTime).toLocaleDateString(),
+          preferredPickupTime: new Date(
+            bookingData.preferredPickupTime,
+          ).toLocaleDateString(),
           proposedPrice: bookingData.proposedPrice.toLocaleString(),
           contactPerson: bookingData.contactPerson,
           contactPhone: bookingData.contactPhone,
@@ -207,7 +273,7 @@ Send New Booking Notification to Carriers
           urgencyLevel: bookingData.urgencyLevel,
           bookingUrl,
         },
-      })
+      }),
     );
 
     await Promise.all(emailPromises);
@@ -230,8 +296,12 @@ Send Bid Received Notification to Shipper
         bidId: bidData.bidId,
         bookingId: bidData.bookingId,
         bidAmount: bidData.bidAmount.toLocaleString(),
-        proposedPickupTime: new Date(bidData.proposedPickupTime).toLocaleDateString(),
-        estimatedDeliveryTime: new Date(bidData.estimatedDeliveryTime).toLocaleDateString(),
+        proposedPickupTime: new Date(
+          bidData.proposedPickupTime,
+        ).toLocaleDateString(),
+        estimatedDeliveryTime: new Date(
+          bidData.estimatedDeliveryTime,
+        ).toLocaleDateString(),
         truckMakeModel: bidData.truckDetails.makeModel,
         truckYear: bidData.truckDetails.year,
         truckLicensePlate: bidData.truckDetails.licensePlate,
@@ -252,7 +322,10 @@ Send Bid Received Notification to Shipper
 Send Bid Accepted Notification to Carrier
 ========================================
 */
-  async sendBidAcceptedNotification(carrierEmail: string, acceptanceData: BidAcceptanceData) {
+  async sendBidAcceptedNotification(
+    carrierEmail: string,
+    acceptanceData: BidAcceptanceData,
+  ) {
     const bookingUrl = `${this.getBaseUrl()}/bookings/${acceptanceData.bookingId}`;
 
     await this.mailService.sendMail({
@@ -265,7 +338,9 @@ Send Bid Accepted Notification to Carrier
         bookingId: acceptanceData.bookingId,
         finalAmount: acceptanceData.finalAmount.toLocaleString(),
         pickupTime: new Date(acceptanceData.pickupTime).toLocaleDateString(),
-        deliveryTime: new Date(acceptanceData.deliveryTime).toLocaleDateString(),
+        deliveryTime: new Date(
+          acceptanceData.deliveryTime,
+        ).toLocaleDateString(),
         shipperCompany: acceptanceData.shipperCompany,
         carrierCompany: acceptanceData.carrierCompany,
         shipperContact: acceptanceData.contactDetails.shipperContact,
@@ -282,7 +357,11 @@ Send Bid Accepted Notification to Carrier
 Send Bid Rejected Notification to Carrier
 ========================================
 */
-  async sendBidRejectedNotification(carrierEmail: string, bidData: BidData, reason?: string) {
+  async sendBidRejectedNotification(
+    carrierEmail: string,
+    bidData: BidData,
+    reason?: string,
+  ) {
     await this.mailService.sendMail({
       to: carrierEmail,
       from: this.config.get<string>('USER_GMAIL'),
@@ -293,7 +372,9 @@ Send Bid Rejected Notification to Carrier
         bookingId: bidData.bookingId,
         carrierCompany: bidData.companyName,
         contactPerson: bidData.contactPerson,
-        reason: reason || 'The shipper has selected a different carrier for this booking.',
+        reason:
+          reason ||
+          'The shipper has selected a different carrier for this booking.',
       },
     });
   }
@@ -303,10 +384,13 @@ Send Bid Rejected Notification to Carrier
 Send Booking Confirmation to Both Parties
 ========================================
 */
-  async sendBookingConfirmation(emails: string[], acceptanceData: BidAcceptanceData) {
+  async sendBookingConfirmation(
+    emails: string[],
+    acceptanceData: BidAcceptanceData,
+  ) {
     const bookingUrl = `${this.getBaseUrl()}/bookings/${acceptanceData.bookingId}`;
 
-    const emailPromises = emails.map(email => 
+    const emailPromises = emails.map((email) =>
       this.mailService.sendMail({
         to: email,
         from: this.config.get<string>('USER_GMAIL'),
@@ -316,7 +400,9 @@ Send Booking Confirmation to Both Parties
           bookingId: acceptanceData.bookingId,
           finalAmount: acceptanceData.finalAmount.toLocaleString(),
           pickupTime: new Date(acceptanceData.pickupTime).toLocaleDateString(),
-          deliveryTime: new Date(acceptanceData.deliveryTime).toLocaleDateString(),
+          deliveryTime: new Date(
+            acceptanceData.deliveryTime,
+          ).toLocaleDateString(),
           shipperCompany: acceptanceData.shipperCompany,
           carrierCompany: acceptanceData.carrierCompany,
           shipperContact: acceptanceData.contactDetails.shipperContact,
@@ -325,7 +411,7 @@ Send Booking Confirmation to Both Parties
           carrierPhone: acceptanceData.contactDetails.carrierPhone,
           bookingUrl,
         },
-      })
+      }),
     );
 
     await Promise.all(emailPromises);
@@ -336,11 +422,16 @@ Send Booking Confirmation to Both Parties
 Send Booking Reminder Email
 ========================================
 */
-  async sendBookingReminder(email: string, bookingData: BookingData, reminderType: 'pickup' | 'delivery') {
+  async sendBookingReminder(
+    email: string,
+    bookingData: BookingData,
+    reminderType: 'pickup' | 'delivery',
+  ) {
     const bookingUrl = `${this.getBaseUrl()}/bookings/${bookingData.bookingId}`;
-    const subject = reminderType === 'pickup' 
-      ? `Pickup Reminder - Booking #${bookingData.bookingId}` 
-      : `Delivery Reminder - Booking #${bookingData.bookingId}`;
+    const subject =
+      reminderType === 'pickup'
+        ? `Pickup Reminder - Booking #${bookingData.bookingId}`
+        : `Delivery Reminder - Booking #${bookingData.bookingId}`;
 
     await this.mailService.sendMail({
       to: email,
@@ -350,12 +441,15 @@ Send Booking Reminder Email
       context: {
         bookingId: bookingData.bookingId,
         reminderType,
-        scheduledTime: new Date(bookingData.preferredPickupTime).toLocaleDateString(),
+        scheduledTime: new Date(
+          bookingData.preferredPickupTime,
+        ).toLocaleDateString(),
         contactPerson: bookingData.contactPerson,
         contactPhone: bookingData.contactPhone,
-        location: reminderType === 'pickup' 
-          ? `${bookingData.pickupLocation.address}, ${bookingData.pickupLocation.city}` 
-          : `${bookingData.deliveryLocation.address}, ${bookingData.deliveryLocation.city}`,
+        location:
+          reminderType === 'pickup'
+            ? `${bookingData.pickupLocation.address}, ${bookingData.pickupLocation.city}`
+            : `${bookingData.deliveryLocation.address}, ${bookingData.deliveryLocation.city}`,
         bookingUrl,
       },
     });
@@ -371,7 +465,7 @@ Send Bid Notification (General)
       // Get the booking details to extract shipper email
       const bookingUrl = `${this.getBaseUrl()}/bookings/${bid.bookingId}`;
       const bidUrl = `${this.getBaseUrl()}/bookings/${bid.bookingId}/bids/${bid.id}`;
-      
+
       // Create BidData object from the bid
       const bidData: BidData = {
         bidId: bid.id,
@@ -396,11 +490,13 @@ Send Bid Notification (General)
       };
 
       // Send notification to shipper about the new bid
-      const shipperEmail = bid.booking?.shipper?.businessEmail || 'admin@iptruck.com';
+      const shipperEmail =
+        bid.booking?.shipper?.businessEmail || 'admin@iptruck.com';
       await this.sendBidReceivedNotification(shipperEmail, bidData);
 
       // Send confirmation to the bidder (carrier)
-      const carrierEmail = bid.contactEmail || bid.carrier?.businessEmail || 'carrier@iptruck.com';
+      const carrierEmail =
+        bid.contactEmail || bid.carrier?.businessEmail || 'carrier@iptruck.com';
       await this.mailService.sendMail({
         to: carrierEmail,
         from: this.config.get<string>('USER_GMAIL'),
@@ -410,18 +506,252 @@ Send Bid Notification (General)
           bidId: bid.id,
           bookingId: bid.bookingId,
           bidAmount: bid.bidAmount.toLocaleString(),
-          proposedPickupTime: new Date(bid.proposedPickupTime).toLocaleDateString(),
-          estimatedDeliveryTime: new Date(bid.estimatedDeliveryTime).toLocaleDateString(),
+          proposedPickupTime: new Date(
+            bid.proposedPickupTime,
+          ).toLocaleDateString(),
+          estimatedDeliveryTime: new Date(
+            bid.estimatedDeliveryTime,
+          ).toLocaleDateString(),
           companyName: bid.carrier?.companyName || 'Your Company',
           contactPerson: bid.contactPerson,
           bidUrl,
           bookingUrl,
         },
       });
-
     } catch (error) {
       console.error('Error sending bid notification:', error);
       // Don't throw error to prevent bid creation from failing
     }
+  }
+
+  /* 
+  =======================================
+  Send Delivery Notification
+  ========================================
+  */
+  async sendDeliveryNotification(
+    email: string,
+    deliveryData: DeliveryNotificationData,
+  ) {
+    const subject = {
+      picked_up: `📦 Cargo Picked Up - Tracking #${deliveryData.trackingNumber}`,
+      in_transit: `🚛 In Transit - Tracking #${deliveryData.trackingNumber}`,
+      delivered: `✅ Delivered - Tracking #${deliveryData.trackingNumber}`,
+    }[deliveryData.status];
+
+    await this.mailService.sendMail({
+      to: email,
+      from: this.config.get<string>('USER_GMAIL'),
+      subject: subject,
+      template: './deliveryNotification',
+      context: {
+        bookingId: deliveryData.bookingId,
+        trackingNumber: deliveryData.trackingNumber,
+        status: deliveryData.status,
+        location: deliveryData.location,
+        timestamp: deliveryData.timestamp,
+        driverName: deliveryData.driverName,
+        driverPhone: deliveryData.driverPhone,
+        shipperCompany: deliveryData.shipperCompany,
+        carrierCompany: deliveryData.carrierCompany,
+        estimatedDeliveryTime: deliveryData.estimatedDeliveryTime,
+        deliveryProof: deliveryData.deliveryProof,
+      },
+    });
+  }
+
+  /* 
+  =======================================
+  Send Document Verification Notification
+  ========================================
+  */
+  async sendDocumentVerificationNotification(
+    email: string,
+    documentData: DocumentVerificationData,
+  ) {
+    const subject = {
+      verified: `✅ Document Verified - ${documentData.documentType}`,
+      rejected: `❌ Document Rejected - ${documentData.documentType}`,
+    }[documentData.status];
+
+    await this.mailService.sendMail({
+      to: email,
+      from: this.config.get<string>('USER_GMAIL'),
+      subject: subject,
+      template: './documentVerification',
+      context: {
+        documentId: documentData.documentId,
+        documentType: documentData.documentType,
+        fileName: documentData.fileName,
+        status: documentData.status,
+        companyName: documentData.companyName,
+        contactName: documentData.contactName,
+        reason: documentData.reason,
+        verifiedBy: documentData.verifiedBy,
+        verifiedAt: documentData.verifiedAt,
+      },
+    });
+  }
+
+  /* 
+  =======================================
+  Send Payment Notification
+  ========================================
+  */
+  async sendPaymentNotification(
+    email: string,
+    paymentData: PaymentNotificationData,
+  ) {
+    const subject = {
+      pending: `⏳ Payment Processing - ${paymentData.currency} ${paymentData.amount.toLocaleString()}`,
+      completed: `✅ Payment Completed - ${paymentData.currency} ${paymentData.amount.toLocaleString()}`,
+      failed: `❌ Payment Failed - ${paymentData.currency} ${paymentData.amount.toLocaleString()}`,
+    }[paymentData.status];
+
+    await this.mailService.sendMail({
+      to: email,
+      from: this.config.get<string>('USER_GMAIL'),
+      subject: subject,
+      template: './paymentNotification',
+      context: {
+        bookingId: paymentData.bookingId,
+        paymentId: paymentData.paymentId,
+        amount: paymentData.amount,
+        currency: paymentData.currency,
+        status: paymentData.status,
+        paymentMethod: paymentData.paymentMethod,
+        shipperCompany: paymentData.shipperCompany,
+        carrierCompany: paymentData.carrierCompany,
+        dueDate: paymentData.dueDate,
+        invoiceUrl: paymentData.invoiceUrl,
+      },
+    });
+  }
+
+  /* 
+  =======================================
+  Send Maintenance Notification
+  ========================================
+  */
+  async sendMaintenanceNotification(
+    emails: string[],
+    maintenanceData: MaintenanceNotificationData,
+  ) {
+    const subject = {
+      scheduled: `🔧 Scheduled Maintenance - ${new Date(maintenanceData.startTime).toLocaleDateString()}`,
+      emergency: `🚨 Emergency Maintenance - Immediate Action Required`,
+    }[maintenanceData.maintenanceType];
+
+    const emailPromises = emails.map((email) =>
+      this.mailService.sendMail({
+        to: email,
+        from: this.config.get<string>('USER_GMAIL'),
+        subject: subject,
+        template: './maintenanceNotification',
+        context: {
+          maintenanceType: maintenanceData.maintenanceType,
+          maintenanceTitle: subject,
+          startTime: new Date(maintenanceData.startTime).toLocaleString(),
+          endTime: new Date(maintenanceData.endTime).toLocaleString(),
+          affectedServices: maintenanceData.affectedServices,
+          description: maintenanceData.description,
+          alternativeActions: maintenanceData.alternativeActions,
+          username: 'Valued User', // This should be dynamically set
+          vehicleRegNo: 'N/A', // This should be dynamically set
+          maintenanceDate: new Date(maintenanceData.startTime).toLocaleDateString(),
+          maintenanceTime: new Date(maintenanceData.startTime).toLocaleTimeString(),
+          maintenanceLocation: 'Service Center', // This should be dynamically set
+          maintenanceDuration: `${Math.ceil((new Date(maintenanceData.endTime).getTime() - new Date(maintenanceData.startTime).getTime()) / (1000 * 60 * 60))} hours`,
+          serviceType: maintenanceData.description,
+          maintenanceId: 'MAINT-' + Date.now(),
+        },
+      }),
+    );
+
+    await Promise.all(emailPromises);
+  }
+
+  /* 
+  =======================================
+  Send Review Reminder
+  ========================================
+  */
+  async sendReviewReminder(
+    email: string,
+    reviewData: ReviewReminderData,
+  ) {
+    const subject = `⭐ Review Reminder - Share Your Experience with ${reviewData.partnerCompany}`;
+
+    await this.mailService.sendMail({
+      to: email,
+      from: this.config.get<string>('USER_GMAIL'),
+      subject: subject,
+      template: './reviewReminder',
+      context: {
+        bookingId: reviewData.bookingId,
+        companyName: reviewData.companyName,
+        partnerCompany: reviewData.partnerCompany,
+        deliveryDate: reviewData.deliveryDate,
+        userType: reviewData.userType,
+        reviewUrl: reviewData.reviewUrl,
+      },
+    });
+  }
+
+  /* 
+  =======================================
+  Send Bulk Notifications
+  ========================================
+  */
+  async sendBulkNotifications(
+    emails: string[],
+    subject: string,
+    templateName: string,
+    context: any,
+  ) {
+    const emailPromises = emails.map((email) =>
+      this.mailService.sendMail({
+        to: email,
+        from: this.config.get<string>('USER_GMAIL'),
+        subject: subject,
+        template: templateName,
+        context: context,
+      }),
+    );
+
+    await Promise.all(emailPromises);
+  }
+
+  /* 
+  =======================================
+  Send Admin Notification
+  ========================================
+  */
+  async sendAdminNotification(
+    adminEmails: string[],
+    subject: string,
+    message: string,
+    data?: any,
+  ) {
+    const emailPromises = adminEmails.map((email) =>
+      this.mailService.sendMail({
+        to: email,
+        from: this.config.get<string>('USER_GMAIL'),
+        subject: `[ADMIN] ${subject}`,
+        html: `
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+            <h2 style="color: #dc3545;">Admin Notification</h2>
+            <p><strong>Subject:</strong> ${subject}</p>
+            <p><strong>Message:</strong> ${message}</p>
+            ${data ? `<p><strong>Additional Data:</strong></p><pre>${JSON.stringify(data, null, 2)}</pre>` : ''}
+            <p><strong>Timestamp:</strong> ${new Date().toLocaleString()}</p>
+            <hr>
+            <p style="color: #666; font-size: 12px;">This is an automated admin notification from IpTruck.</p>
+          </div>
+        `,
+      }),
+    );
+
+    await Promise.all(emailPromises);
   }
 }

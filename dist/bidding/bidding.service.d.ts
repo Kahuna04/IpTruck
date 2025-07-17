@@ -64,9 +64,9 @@ export declare class BiddingService {
             urgencyLevel: import(".prisma/client").$Enums.UrgencyLevel;
             preferredPickupTime: Date;
             proposedPrice: number;
-            expiresAt: Date | null;
             status: import(".prisma/client").$Enums.BookingStatus;
             currency: string;
+            expiresAt: Date | null;
             contactEmail: string | null;
             id: string;
             createdAt: Date;
@@ -108,6 +108,7 @@ export declare class BiddingService {
         driverDetails: import("@prisma/client/runtime/library").JsonValue;
         includedServices: string[];
         bidExpiresAt: Date | null;
+        validUntil: Date | null;
         paymentTerms: string | null;
         specialTerms: string | null;
         minimumAcceptablePrice: number | null;
@@ -155,9 +156,9 @@ export declare class BiddingService {
                 urgencyLevel: import(".prisma/client").$Enums.UrgencyLevel;
                 preferredPickupTime: Date;
                 proposedPrice: number;
-                expiresAt: Date | null;
                 status: import(".prisma/client").$Enums.BookingStatus;
                 currency: string;
+                expiresAt: Date | null;
                 contactEmail: string | null;
                 id: string;
                 createdAt: Date;
@@ -199,6 +200,7 @@ export declare class BiddingService {
             driverDetails: import("@prisma/client/runtime/library").JsonValue;
             includedServices: string[];
             bidExpiresAt: Date | null;
+            validUntil: Date | null;
             paymentTerms: string | null;
             specialTerms: string | null;
             minimumAcceptablePrice: number | null;
@@ -247,9 +249,9 @@ export declare class BiddingService {
             urgencyLevel: import(".prisma/client").$Enums.UrgencyLevel;
             preferredPickupTime: Date;
             proposedPrice: number;
-            expiresAt: Date | null;
             status: import(".prisma/client").$Enums.BookingStatus;
             currency: string;
+            expiresAt: Date | null;
             contactEmail: string | null;
             id: string;
             createdAt: Date;
@@ -291,6 +293,7 @@ export declare class BiddingService {
         driverDetails: import("@prisma/client/runtime/library").JsonValue;
         includedServices: string[];
         bidExpiresAt: Date | null;
+        validUntil: Date | null;
         paymentTerms: string | null;
         specialTerms: string | null;
         minimumAcceptablePrice: number | null;
@@ -337,9 +340,9 @@ export declare class BiddingService {
             urgencyLevel: import(".prisma/client").$Enums.UrgencyLevel;
             preferredPickupTime: Date;
             proposedPrice: number;
-            expiresAt: Date | null;
             status: import(".prisma/client").$Enums.BookingStatus;
             currency: string;
+            expiresAt: Date | null;
             contactEmail: string | null;
             id: string;
             createdAt: Date;
@@ -381,6 +384,7 @@ export declare class BiddingService {
         driverDetails: import("@prisma/client/runtime/library").JsonValue;
         includedServices: string[];
         bidExpiresAt: Date | null;
+        validUntil: Date | null;
         paymentTerms: string | null;
         specialTerms: string | null;
         minimumAcceptablePrice: number | null;
@@ -406,6 +410,7 @@ export declare class BiddingService {
         driverDetails: import("@prisma/client/runtime/library").JsonValue;
         includedServices: string[];
         bidExpiresAt: Date | null;
+        validUntil: Date | null;
         paymentTerms: string | null;
         specialTerms: string | null;
         minimumAcceptablePrice: number | null;
@@ -461,9 +466,9 @@ export declare class BiddingService {
             urgencyLevel: import(".prisma/client").$Enums.UrgencyLevel;
             preferredPickupTime: Date;
             proposedPrice: number;
-            expiresAt: Date | null;
             status: import(".prisma/client").$Enums.BookingStatus;
             currency: string;
+            expiresAt: Date | null;
             contactEmail: string | null;
             id: string;
             createdAt: Date;
@@ -505,6 +510,7 @@ export declare class BiddingService {
         driverDetails: import("@prisma/client/runtime/library").JsonValue;
         includedServices: string[];
         bidExpiresAt: Date | null;
+        validUntil: Date | null;
         paymentTerms: string | null;
         specialTerms: string | null;
         minimumAcceptablePrice: number | null;
@@ -561,6 +567,7 @@ export declare class BiddingService {
         driverDetails: import("@prisma/client/runtime/library").JsonValue;
         includedServices: string[];
         bidExpiresAt: Date | null;
+        validUntil: Date | null;
         paymentTerms: string | null;
         specialTerms: string | null;
         minimumAcceptablePrice: number | null;
@@ -607,9 +614,9 @@ export declare class BiddingService {
             urgencyLevel: import(".prisma/client").$Enums.UrgencyLevel;
             preferredPickupTime: Date;
             proposedPrice: number;
-            expiresAt: Date | null;
             status: import(".prisma/client").$Enums.BookingStatus;
             currency: string;
+            expiresAt: Date | null;
             contactEmail: string | null;
             id: string;
             createdAt: Date;
@@ -651,6 +658,7 @@ export declare class BiddingService {
         driverDetails: import("@prisma/client/runtime/library").JsonValue;
         includedServices: string[];
         bidExpiresAt: Date | null;
+        validUntil: Date | null;
         paymentTerms: string | null;
         specialTerms: string | null;
         minimumAcceptablePrice: number | null;
@@ -676,6 +684,7 @@ export declare class BiddingService {
         driverDetails: import("@prisma/client/runtime/library").JsonValue;
         includedServices: string[];
         bidExpiresAt: Date | null;
+        validUntil: Date | null;
         paymentTerms: string | null;
         specialTerms: string | null;
         minimumAcceptablePrice: number | null;

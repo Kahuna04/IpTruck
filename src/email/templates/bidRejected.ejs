@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bid Update - IpTruck</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .header {
+            background-color: #f39c12;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 8px 8px 0 0;
+        }
+        .content {
+            background-color: #f9f9f9;
+            padding: 30px;
+            border-radius: 0 0 8px 8px;
+        }
+        .info-badge {
+            background-color: #fff3cd;
+            border: 1px solid #ffeaa7;
+            color: #6c5700;
+            padding: 15px;
+            border-radius: 5px;
+            text-align: center;
+            margin: 20px 0;
+        }
+        .booking-details {
+            background-color: #ecf0f1;
+            padding: 20px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .button {
+            background-color: #3498db;
+            color: white;
+            padding: 12px 24px;
+            text-decoration: none;
+            border-radius: 5px;
+            display: inline-block;
+            margin: 20px 0;
+        }
+        .motivation-section {
+            background-color: #e8f5e8;
+            padding: 20px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            color: #666;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>📋 Bid Update</h1>
+        <p>Information about your submitted bid</p>
+    </div>
+    
+    <div class="content">
+        <div class="info-badge">
+            <h2>Bid Status Update</h2>
+            <p>Your bid for booking <strong>#<%= bookingId %></strong> was not selected this time.</p>
+        </div>
+        
+        <h2>Hello <%= carrierCompany %>,</h2>
+        
+        <p>Thank you for your interest in booking <strong>#<%= bookingId %></strong>. We appreciate the time and effort you put into submitting your bid.</p>
+        
+        <div class="booking-details">
+            <p><strong>Bid ID:</strong> <%= bidId %></p>
+            <p><strong>Booking ID:</strong> <%= bookingId %></p>
+            <p><strong>Contact Person:</strong> <%= contactPerson %></p>
+        </div>
+        
+        <p><strong>Reason:</strong> <%= reason %></p>
+        
+        <div class="motivation-section">
+            <h3>🚀 Don't Give Up!</h3>
+            <p>While this bid wasn't selected, there are many more opportunities available on IpTruck. Here's what you can do:</p>
+            <ul>
+                <li>📋 Browse new bookings that match your capabilities</li>
+                <li>⭐ Build your reputation with successful deliveries</li>
+                <li>💰 Adjust your pricing strategy based on market trends</li>
+                <li>🚛 Ensure your truck information is up-to-date</li>
+                <li>📱 Enable notifications for bookings in your area</li>
+            </ul>
+        </div>
+        
+        <center>
+            <a href="https://iptruck.com/dashboard" class="button">Find New Bookings</a>
+        </center>
+        
+        <p><strong>💡 Tips for Future Bids:</strong></p>
+        <ul>
+            <li>Submit competitive pricing while maintaining profitability</li>
+            <li>Provide detailed truck and driver information</li>
+            <li>Respond quickly to new booking notifications</li>
+            <li>Include a personalized message highlighting your strengths</li>
+            <li>Maintain a good rating and positive reviews</li>
+        </ul>
+        
+        <p><strong>Need Support?</strong></p>
+        <p>If you have questions about improving your bid success rate or need assistance with the platform, our team is here to help. Contact us at <a href="mailto:support@iptruck.com">support@iptruck.com</a></p>
+        
+        <p>Thank you for being part of the IpTruck community. We look forward to helping you secure your next booking!</p>
+        
+        <p>Best regards,<br>The IpTruck Team</p>
+    </div>
+    
+    <div class="footer">
+        <p>© 2024 IpTruck. All rights reserved.</p>
+        <p>You received this email because of a bid status update.</p>
+    </div>
+</body>
+</html>

@@ -36,7 +36,9 @@ let BiddingService = class BiddingService {
                 driverDetails: createBidDto.driverDetails,
                 message: createBidDto.message,
                 includedServices: createBidDto.includedServices || [],
-                bidExpiresAt: createBidDto.bidExpiresAt ? new Date(createBidDto.bidExpiresAt) : null,
+                bidExpiresAt: createBidDto.bidExpiresAt
+                    ? new Date(createBidDto.bidExpiresAt)
+                    : null,
                 isNegotiable: createBidDto.isNegotiable ?? true,
                 paymentTerms: createBidDto.paymentTerms,
                 specialTerms: createBidDto.specialTerms,
@@ -159,10 +161,18 @@ let BiddingService = class BiddingService {
     async getStatistics(userId) {
         const [totalBids, pendingBids, acceptedBids, rejectedBids, cancelledBids] = await Promise.all([
             this.prisma.bid.count({ where: { carrierId: userId } }),
-            this.prisma.bid.count({ where: { carrierId: userId, status: 'PENDING' } }),
-            this.prisma.bid.count({ where: { carrierId: userId, status: 'ACCEPTED' } }),
-            this.prisma.bid.count({ where: { carrierId: userId, status: 'REJECTED' } }),
-            this.prisma.bid.count({ where: { carrierId: userId, status: 'WITHDRAWN' } }),
+            this.prisma.bid.count({
+                where: { carrierId: userId, status: 'PENDING' },
+            }),
+            this.prisma.bid.count({
+                where: { carrierId: userId, status: 'ACCEPTED' },
+            }),
+            this.prisma.bid.count({
+                where: { carrierId: userId, status: 'REJECTED' },
+            }),
+            this.prisma.bid.count({
+                where: { carrierId: userId, status: 'WITHDRAWN' },
+            }),
         ]);
         const averageAmountResult = await this.prisma.bid.aggregate({
             where: { carrierId: userId },

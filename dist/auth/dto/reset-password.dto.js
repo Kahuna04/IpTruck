@@ -21,7 +21,7 @@ exports.ResetPasswordDto = ResetPasswordDto;
 __decorate([
     (0, swagger_1.ApiProperty)({
         example: 'abc123def456',
-        description: 'Password reset token received via email'
+        description: 'Password reset token received via email',
     }),
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.IsString)(),
@@ -30,7 +30,7 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({
         example: 'NewPassword123!',
-        description: 'New password (minimum 8 characters)'
+        description: 'New password (minimum 8 characters)',
     }),
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.IsString)(),
@@ -40,7 +40,7 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({
         example: 'NewPassword123!',
-        description: 'Confirm new password'
+        description: 'Confirm new password',
     }),
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.IsString)(),

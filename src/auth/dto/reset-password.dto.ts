@@ -4,7 +4,7 @@ import { ApiProperty } from '@nestjs/swagger';
 export class ResetPasswordDto {
   @ApiProperty({
     example: 'abc123def456',
-    description: 'Password reset token received via email'
+    description: 'Password reset token received via email',
   })
   @IsNotEmpty()
   @IsString()
@@ -12,7 +12,7 @@ export class ResetPasswordDto {
 
   @ApiProperty({
     example: 'NewPassword123!',
-    description: 'New password (minimum 8 characters)'
+    description: 'New password (minimum 8 characters)',
   })
   @IsNotEmpty()
   @IsString()
@@ -21,7 +21,7 @@ export class ResetPasswordDto {
 
   @ApiProperty({
     example: 'NewPassword123!',
-    description: 'Confirm new password'
+    description: 'Confirm new password',
   })
   @IsNotEmpty()
   @IsString()

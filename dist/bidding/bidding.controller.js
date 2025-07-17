@@ -77,7 +77,7 @@ let BiddingController = class BiddingController {
     }
     async findMyBids(status, page = 1, limit = 10, user) {
         const filters = {
-            bidderId: user.id,
+            bidderId: user?.id,
             status,
         };
         const options = {
@@ -139,7 +139,8 @@ let BiddingController = class BiddingController {
         if (existingBid.carrierId !== user.id) {
             throw new common_1.ForbiddenException('You can only update your own bids');
         }
-        if (existingBid.status === client_1.BidStatus.ACCEPTED || existingBid.status === client_1.BidStatus.REJECTED) {
+        if (existingBid.status === client_1.BidStatus.ACCEPTED ||
+            existingBid.status === client_1.BidStatus.REJECTED) {
             throw new common_1.BadRequestException('Cannot update accepted or rejected bids');
         }
         const updatedBid = await this.biddingService.update(id, updateBidDto);
@@ -159,7 +160,9 @@ let BiddingController = class BiddingController {
         if (bid.validUntil && new Date() > new Date(bid.validUntil)) {
             throw new common_1.BadRequestException('Bid has expired');
         }
-        const acceptedBid = await this.biddingService.update(id, { status: client_1.BidStatus.ACCEPTED });
+        const acceptedBid = await this.biddingService.update(id, {
+            status: client_1.BidStatus.ACCEPTED,
+        });
         return {
             message: 'Bid accepted successfully',
             data: acceptedBid,
@@ -173,7 +176,9 @@ let BiddingController = class BiddingController {
         if (bid.status !== client_1.BidStatus.PENDING) {
             throw new common_1.BadRequestException('Only pending bids can be rejected');
         }
-        const rejectedBid = await this.biddingService.update(id, { status: client_1.BidStatus.REJECTED });
+        const rejectedBid = await this.biddingService.update(id, {
+            status: client_1.BidStatus.REJECTED,
+        });
         return {
             message: 'Bid rejected successfully',
             data: rejectedBid,
@@ -190,7 +195,9 @@ let BiddingController = class BiddingController {
         if (bid.status !== client_1.BidStatus.PENDING) {
             throw new common_1.BadRequestException('Only pending bids can be cancelled');
         }
-        const cancelledBid = await this.biddingService.update(id, { status: client_1.BidStatus.CANCELLED });
+        const cancelledBid = await this.biddingService.update(id, {
+            status: client_1.BidStatus.CANCELLED,
+        });
         return {
             message: 'Bid cancelled successfully',
             data: cancelledBid,
@@ -211,7 +218,8 @@ let BiddingController = class BiddingController {
         if (bid.carrierId !== user.id) {
             throw new common_1.ForbiddenException('You can only delete your own bids');
         }
-        if (bid.status !== client_1.BidStatus.PENDING && bid.status !== client_1.BidStatus.CANCELLED) {
+        if (bid.status !== client_1.BidStatus.PENDING &&
+            bid.status !== client_1.BidStatus.CANCELLED) {
             throw new common_1.BadRequestException('Only pending or cancelled bids can be deleted');
         }
         await this.biddingService.remove(id);
@@ -235,7 +243,10 @@ __decorate([
                 bidderId: { type: 'string', format: 'uuid' },
                 amount: { type: 'number' },
                 currency: { type: 'string' },
-                status: { type: 'string', enum: ['PENDING', 'ACCEPTED', 'REJECTED', 'CANCELLED'] },
+                status: {
+                    type: 'string',
+                    enum: ['PENDING', 'ACCEPTED', 'REJECTED', 'CANCELLED'],
+                },
                 message: { type: 'string' },
                 validUntil: { type: 'string', format: 'date-time' },
                 createdAt: { type: 'string', format: 'date-time' },
@@ -255,16 +266,62 @@ __decorate([
 __decorate([
     (0, common_1.Get)(),
     (0, swagger_1.ApiOperation)({ summary: 'Get all bids with optional filtering' }),
-    (0, swagger_1.ApiQuery)({ name: 'bookingId', required: false, description: 'Filter by booking ID' }),
-    (0, swagger_1.ApiQuery)({ name: 'bidderId', required: false, description: 'Filter by bidder ID' }),
-    (0, swagger_1.ApiQuery)({ name: 'status', required: false, enum: client_1.BidStatus, description: 'Filter by bid status' }),
-    (0, swagger_1.ApiQuery)({ name: 'minAmount', required: false, type: Number, description: 'Minimum bid amount' }),
-    (0, swagger_1.ApiQuery)({ name: 'maxAmount', required: false, type: Number, description: 'Maximum bid amount' }),
-    (0, swagger_1.ApiQuery)({ name: 'currency', required: false, description: 'Filter by currency' }),
-    (0, swagger_1.ApiQuery)({ name: 'page', required: false, type: Number, description: 'Page number (default: 1)' }),
-    (0, swagger_1.ApiQuery)({ name: 'limit', required: false, type: Number, description: 'Items per page (default: 10)' }),
-    (0, swagger_1.ApiQuery)({ name: 'sortBy', required: false, description: 'Sort field (default: createdAt)' }),
-    (0, swagger_1.ApiQuery)({ name: 'sortOrder', required: false, enum: ['asc', 'desc'], description: 'Sort order (default: desc)' }),
+    (0, swagger_1.ApiQuery)({
+        name: 'bookingId',
+        required: false,
+        description: 'Filter by booking ID',
+    }),
+    (0, swagger_1.ApiQuery)({
+        name: 'bidderId',
+        required: false,
+        description: 'Filter by bidder ID',
+    }),
+    (0, swagger_1.ApiQuery)({
+        name: 'status',
+        required: false,
+        enum: client_1.BidStatus,
+        description: 'Filter by bid status',
+    }),
+    (0, swagger_1.ApiQuery)({
+        name: 'minAmount',
+        required: false,
+        type: Number,
+        description: 'Minimum bid amount',
+    }),
+    (0, swagger_1.ApiQuery)({
+        name: 'maxAmount',
+        required: false,
+        type: Number,
+        description: 'Maximum bid amount',
+    }),
+    (0, swagger_1.ApiQuery)({
+        name: 'currency',
+        required: false,
+        description: 'Filter by currency',
+    }),
+    (0, swagger_1.ApiQuery)({
+        name: 'page',
+        required: false,
+        type: Number,
+        description: 'Page number (default: 1)',
+    }),
+    (0, swagger_1.ApiQuery)({
+        name: 'limit',
+        required: false,
+        type: Number,
+        description: 'Items per page (default: 10)',
+    }),
+    (0, swagger_1.ApiQuery)({
+        name: 'sortBy',
+        required: false,
+        description: 'Sort field (default: createdAt)',
+    }),
+    (0, swagger_1.ApiQuery)({
+        name: 'sortOrder',
+        required: false,
+        enum: ['asc', 'desc'],
+        description: 'Sort order (default: desc)',
+    }),
     (0, swagger_1.ApiResponse)({
         status: 200,
         description: 'List of bids retrieved successfully',
@@ -318,10 +375,25 @@ __decorate([
 ], BiddingController.prototype, "findAll", null);
 __decorate([
     (0, common_1.Get)('my-bids'),
-    (0, swagger_1.ApiOperation)({ summary: 'Get current user\'s bids' }),
-    (0, swagger_1.ApiQuery)({ name: 'status', required: false, enum: client_1.BidStatus, description: 'Filter by bid status' }),
-    (0, swagger_1.ApiQuery)({ name: 'page', required: false, type: Number, description: 'Page number (default: 1)' }),
-    (0, swagger_1.ApiQuery)({ name: 'limit', required: false, type: Number, description: 'Items per page (default: 10)' }),
+    (0, swagger_1.ApiOperation)({ summary: "Get current user's bids" }),
+    (0, swagger_1.ApiQuery)({
+        name: 'status',
+        required: false,
+        enum: client_1.BidStatus,
+        description: 'Filter by bid status',
+    }),
+    (0, swagger_1.ApiQuery)({
+        name: 'page',
+        required: false,
+        type: Number,
+        description: 'Page number (default: 1)',
+    }),
+    (0, swagger_1.ApiQuery)({
+        name: 'limit',
+        required: false,
+        type: Number,
+        description: 'Items per page (default: 10)',
+    }),
     (0, swagger_1.ApiResponse)({
         status: 200,
         description: 'User bids retrieved successfully',
@@ -338,9 +410,24 @@ __decorate([
     (0, common_1.Get)('booking/:bookingId'),
     (0, swagger_1.ApiOperation)({ summary: 'Get all bids for a specific booking' }),
     (0, swagger_1.ApiParam)({ name: 'bookingId', description: 'Booking ID', type: 'string' }),
-    (0, swagger_1.ApiQuery)({ name: 'status', required: false, enum: client_1.BidStatus, description: 'Filter by bid status' }),
-    (0, swagger_1.ApiQuery)({ name: 'page', required: false, type: Number, description: 'Page number (default: 1)' }),
-    (0, swagger_1.ApiQuery)({ name: 'limit', required: false, type: Number, description: 'Items per page (default: 10)' }),
+    (0, swagger_1.ApiQuery)({
+        name: 'status',
+        required: false,
+        enum: client_1.BidStatus,
+        description: 'Filter by bid status',
+    }),
+    (0, swagger_1.ApiQuery)({
+        name: 'page',
+        required: false,
+        type: Number,
+        description: 'Page number (default: 1)',
+    }),
+    (0, swagger_1.ApiQuery)({
+        name: 'limit',
+        required: false,
+        type: Number,
+        description: 'Items per page (default: 10)',
+    }),
     (0, swagger_1.ApiResponse)({
         status: 200,
         description: 'Booking bids retrieved successfully',

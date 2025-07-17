@@ -254,6 +254,7 @@ model Bid {
   message               String?
   includedServices      String[]
   bidExpiresAt          DateTime?
+  validUntil            DateTime?
   isNegotiable          Boolean   @default(true)
   paymentTerms          String?
   specialTerms          String?
@@ -319,6 +320,7 @@ enum BidStatus {
   COUNTER_OFFERED
   WITHDRAWN
   EXPIRED
+  CANCELLED
 }
 
 enum DocumentType {

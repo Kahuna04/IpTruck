@@ -135,6 +135,10 @@ export declare class BookingService {
     private readonly prisma;
     private readonly helperService;
     private readonly logger;
+    private readonly bookings;
+    private readonly bids;
+    private readonly userBookings;
+    private readonly userBids;
     constructor(emailService: EmailService, prisma: PrismaService, helperService: HelperService);
     createBooking(createBookingDto: CreateBookingDto, shipperId: string): Promise<Booking>;
     getBookings(userId?: string, status?: string, urgencyLevel?: string, truckType?: string, location?: string, limit?: number, offset?: number): Promise<{

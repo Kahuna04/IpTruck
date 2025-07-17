@@ -37,7 +37,11 @@ export class PasswordResetRequestAdapter {
   expiresAt: Date;
 
   @Expose()
-  @Transform(({ value }) => Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15))
+  @Transform(
+    ({ value }) =>
+      Math.random().toString(36).substring(2, 15) +
+      Math.random().toString(36).substring(2, 15),
+  )
   token: string;
 
   @Expose()
@@ -67,11 +71,15 @@ export class EmailNotificationAdapter {
   resetToken: string;
 
   @Expose()
-  @Transform(({ value }) => `${process.env.FRONTEND_URL}/reset-password?token=${value}`)
+  @Transform(
+    ({ value }) => `${process.env.FRONTEND_URL}/reset-password?token=${value}`,
+  )
   resetUrl: string;
 
   @Expose()
-  @Transform(({ value }) => new Date(Date.now() + 30 * 60 * 1000).toLocaleString())
+  @Transform(({ value }) =>
+    new Date(Date.now() + 30 * 60 * 1000).toLocaleString(),
+  )
   expiryTime: string;
 
   @Expose()
@@ -102,7 +110,10 @@ export class SMSNotificationAdapter {
   resetToken: string;
 
   @Expose()
-  @Transform(({ value }) => `Your password reset code: ${value}. Valid for 30 minutes. If you didn't request this, please ignore.`)
+  @Transform(
+    ({ value }) =>
+      `Your password reset code: ${value}. Valid for 30 minutes. If you didn't request this, please ignore.`,
+  )
   message: string;
 
   @Expose()
@@ -228,7 +239,12 @@ export class TokenValidationAdapter {
   expiresAt: Date;
 
   @Expose()
-  @Transform(({ value }) => Math.max(0, Math.floor((new Date(value).getTime() - new Date().getTime()) / 1000)))
+  @Transform(({ value }) =>
+    Math.max(
+      0,
+      Math.floor((new Date(value).getTime() - new Date().getTime()) / 1000),
+    ),
+  )
   secondsUntilExpiry: number;
 
   @Expose()

@@ -68,15 +68,15 @@ __decorate([
 ], Document.prototype, "mimeType", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({ description: 'Associated booking ID', required: false }),
-    __metadata("design:type", String)
+    __metadata("design:type", Object)
 ], Document.prototype, "bookingId", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({ description: 'Associated bid ID', required: false }),
-    __metadata("design:type", String)
+    __metadata("design:type", Object)
 ], Document.prototype, "bidId", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({ description: 'Associated carrier ID', required: false }),
-    __metadata("design:type", String)
+    __metadata("design:type", Object)
 ], Document.prototype, "carrierId", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({ description: 'Uploaded by user ID' }),
@@ -84,7 +84,7 @@ __decorate([
 ], Document.prototype, "uploadedById", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({ description: 'Bill of lading ID', required: false }),
-    __metadata("design:type", String)
+    __metadata("design:type", Object)
 ], Document.prototype, "billOfLadingId", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({ description: 'Document metadata', required: false }),
@@ -92,15 +92,15 @@ __decorate([
 ], Document.prototype, "metadata", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({ description: 'Document expiration date', required: false }),
-    __metadata("design:type", Date)
+    __metadata("design:type", Object)
 ], Document.prototype, "expiresAt", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({ description: 'Document verification date', required: false }),
-    __metadata("design:type", Date)
+    __metadata("design:type", Object)
 ], Document.prototype, "verifiedAt", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({ description: 'Verified by user ID', required: false }),
-    __metadata("design:type", String)
+    __metadata("design:type", Object)
 ], Document.prototype, "verifiedById", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({ description: 'Creation timestamp' }),

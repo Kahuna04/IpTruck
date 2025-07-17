@@ -62,7 +62,9 @@ __decorate([
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.MinLength)(5),
     (0, class_validator_1.MaxLength)(50),
-    (0, class_validator_1.Matches)(/^[A-Z0-9-]+$/, { message: 'Registration number must contain only uppercase letters, numbers, and hyphens' }),
+    (0, class_validator_1.Matches)(/^[A-Z0-9-]+$/, {
+        message: 'Registration number must contain only uppercase letters, numbers, and hyphens',
+    }),
     __metadata("design:type", String)
 ], CreateCarrierDto.prototype, "registrationNumber", void 0);
 __decorate([
@@ -80,7 +82,9 @@ __decorate([
     __metadata("design:type", String)
 ], CreateCarrierDto.prototype, "businessEmail", void 0);
 __decorate([
-    (0, class_validator_1.IsPhoneNumber)('NG', { message: 'Please provide a valid Nigerian phone number' }),
+    (0, class_validator_1.IsPhoneNumber)('NG', {
+        message: 'Please provide a valid Nigerian phone number',
+    }),
     __metadata("design:type", String)
 ], CreateCarrierDto.prototype, "phoneNumber", void 0);
 __decorate([
@@ -90,7 +94,9 @@ __decorate([
     __metadata("design:type", String)
 ], CreateCarrierDto.prototype, "website", void 0);
 __decorate([
-    (0, class_validator_1.IsEnum)(CompanySize, { message: 'Company size must be SMALL, MEDIUM, LARGE, or ENTERPRISE' }),
+    (0, class_validator_1.IsEnum)(CompanySize, {
+        message: 'Company size must be SMALL, MEDIUM, LARGE, or ENTERPRISE',
+    }),
     __metadata("design:type", String)
 ], CreateCarrierDto.prototype, "companySize", void 0);
 __decorate([
@@ -133,7 +139,9 @@ __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.Length)(2, 3),
-    (0, class_validator_1.Matches)(/^[A-Z]{2,3}$/, { message: 'Country code must be 2-3 uppercase letters' }),
+    (0, class_validator_1.Matches)(/^[A-Z]{2,3}$/, {
+        message: 'Country code must be 2-3 uppercase letters',
+    }),
     __metadata("design:type", String)
 ], CreateCarrierDto.prototype, "countryCode", void 0);
 __decorate([
@@ -141,7 +149,9 @@ __decorate([
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.MinLength)(2),
     (0, class_validator_1.MaxLength)(50),
-    (0, class_validator_1.Matches)(/^[a-zA-Z\s'-]+$/, { message: 'First name must contain only letters, spaces, hyphens, and apostrophes' }),
+    (0, class_validator_1.Matches)(/^[a-zA-Z\s'-]+$/, {
+        message: 'First name must contain only letters, spaces, hyphens, and apostrophes',
+    }),
     (0, class_transformer_1.Transform)(({ value }) => value?.trim()),
     __metadata("design:type", String)
 ], CreateCarrierDto.prototype, "contactFirstName", void 0);
@@ -150,7 +160,9 @@ __decorate([
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.MinLength)(2),
     (0, class_validator_1.MaxLength)(50),
-    (0, class_validator_1.Matches)(/^[a-zA-Z\s'-]+$/, { message: 'Last name must contain only letters, spaces, hyphens, and apostrophes' }),
+    (0, class_validator_1.Matches)(/^[a-zA-Z\s'-]+$/, {
+        message: 'Last name must contain only letters, spaces, hyphens, and apostrophes',
+    }),
     (0, class_transformer_1.Transform)(({ value }) => value?.trim()),
     __metadata("design:type", String)
 ], CreateCarrierDto.prototype, "contactLastName", void 0);
@@ -163,7 +175,9 @@ __decorate([
     __metadata("design:type", String)
 ], CreateCarrierDto.prototype, "contactJobTitle", void 0);
 __decorate([
-    (0, class_validator_1.IsPhoneNumber)('NG', { message: 'Please provide a valid Nigerian phone number for the contact person' }),
+    (0, class_validator_1.IsPhoneNumber)('NG', {
+        message: 'Please provide a valid Nigerian phone number for the contact person',
+    }),
     __metadata("design:type", String)
 ], CreateCarrierDto.prototype, "contactPhone", void 0);
 __decorate([

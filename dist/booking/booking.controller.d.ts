@@ -4,8 +4,8 @@ import { CreateBidDto, UpdateBidDto, BidResponseDto } from '../bidding/dto/creat
 export declare class BookingController {
     private readonly bookingService;
     constructor(bookingService: BookingService);
-    createBooking(createBookingDto: CreateBookingDto, user: any): Promise<BookingEntity>;
-    getBookings(status?: BookingStatus, urgencyLevel?: string, truckType?: string, location?: string, myBookings?: boolean, limit?: number, offset?: number, user: any): Promise<{
+    createBooking(createBookingDto: CreateBookingDto, user: any): Promise<any>;
+    getBookings(status?: BookingStatus, urgencyLevel?: string, truckType?: string, location?: string, myBookings?: boolean, limit?: number, offset?: number, user?: any): Promise<{
         bookings: BookingEntity[];
         total: number;
     }>;

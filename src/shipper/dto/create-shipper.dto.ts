@@ -1,16 +1,16 @@
-import { 
-  IsEmail, 
-  IsString, 
-  IsOptional, 
+import {
+  IsEmail,
+  IsString,
+  IsOptional,
   IsPhoneNumber,
   IsEnum,
   IsUrl,
-  MinLength, 
-  MaxLength, 
+  MinLength,
+  MaxLength,
   IsNotEmpty,
   Matches,
   Length,
-  IsBoolean
+  IsBoolean,
 } from 'class-validator';
 import { Transform } from 'class-transformer';
 
@@ -18,14 +18,14 @@ export enum CompanySize {
   SMALL = 'SMALL',
   MEDIUM = 'MEDIUM',
   LARGE = 'LARGE',
-  ENTERPRISE = 'ENTERPRISE'
+  ENTERPRISE = 'ENTERPRISE',
 }
 
 export class CreateShipperDto {
   @IsNotEmpty()
   @IsString()
   userId: string;
-  
+
   @IsNotEmpty()
   @IsString()
   @MinLength(2)
@@ -37,7 +37,10 @@ export class CreateShipperDto {
   @IsString()
   @MinLength(5)
   @MaxLength(50)
-  @Matches(/^[A-Z0-9-]+$/, { message: 'Registration number must contain only uppercase letters, numbers, and hyphens' })
+  @Matches(/^[A-Z0-9-]+$/, {
+    message:
+      'Registration number must contain only uppercase letters, numbers, and hyphens',
+  })
   registrationNumber?: string;
 
   @IsOptional()
@@ -52,7 +55,9 @@ export class CreateShipperDto {
   @Transform(({ value }) => value?.toLowerCase().trim())
   businessEmail: string;
 
-  @IsPhoneNumber('NG', { message: 'Please provide a valid Nigerian phone number' })
+  @IsPhoneNumber('NG', {
+    message: 'Please provide a valid Nigerian phone number',
+  })
   phoneNumber: string;
 
   @IsOptional()
@@ -60,7 +65,9 @@ export class CreateShipperDto {
   @MaxLength(200)
   website?: string;
 
-  @IsEnum(CompanySize, { message: 'Company size must be SMALL, MEDIUM, LARGE, or ENTERPRISE' })
+  @IsEnum(CompanySize, {
+    message: 'Company size must be SMALL, MEDIUM, LARGE, or ENTERPRISE',
+  })
   companySize: CompanySize;
 
   @IsOptional()
@@ -98,7 +105,9 @@ export class CreateShipperDto {
   @IsNotEmpty()
   @IsString()
   @Length(2, 3)
-  @Matches(/^[A-Z]{2,3}$/, { message: 'Country code must be 2-3 uppercase letters' })
+  @Matches(/^[A-Z]{2,3}$/, {
+    message: 'Country code must be 2-3 uppercase letters',
+  })
   countryCode: string;
 
   // Contact Person fields
@@ -106,7 +115,10 @@ export class CreateShipperDto {
   @IsString()
   @MinLength(2)
   @MaxLength(50)
-  @Matches(/^[a-zA-Z\s'-]+$/, { message: 'First name must contain only letters, spaces, hyphens, and apostrophes' })
+  @Matches(/^[a-zA-Z\s'-]+$/, {
+    message:
+      'First name must contain only letters, spaces, hyphens, and apostrophes',
+  })
   @Transform(({ value }) => value?.trim())
   contactFirstName: string;
 
@@ -114,7 +126,10 @@ export class CreateShipperDto {
   @IsString()
   @MinLength(2)
   @MaxLength(50)
-  @Matches(/^[a-zA-Z\s'-]+$/, { message: 'Last name must contain only letters, spaces, hyphens, and apostrophes' })
+  @Matches(/^[a-zA-Z\s'-]+$/, {
+    message:
+      'Last name must contain only letters, spaces, hyphens, and apostrophes',
+  })
   @Transform(({ value }) => value?.trim())
   contactLastName: string;
 
@@ -125,10 +140,16 @@ export class CreateShipperDto {
   @Transform(({ value }) => value?.trim())
   contactJobTitle: string;
 
-  @IsPhoneNumber('NG', { message: 'Please provide a valid Nigerian phone number for the contact person' })
+  @IsPhoneNumber('NG', {
+    message:
+      'Please provide a valid Nigerian phone number for the contact person',
+  })
   contactPhone: string;
 
-  @IsEmail({}, { message: 'Please provide a valid email address for the contact person' })
+  @IsEmail(
+    {},
+    { message: 'Please provide a valid email address for the contact person' },
+  )
   @MaxLength(100)
   @Transform(({ value }) => value?.toLowerCase().trim())
   contactEmail: string;

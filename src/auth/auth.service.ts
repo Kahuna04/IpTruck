@@ -44,87 +44,110 @@ User Registration Method
 ========================================
 */
   async createUser(userDetails: CreateCompanyDto): Promise<UserRO> {
-  let savedUser: any;
-  const { email, password, userType, address, ...companyDetails } = userDetails;
+    let savedUser: any;
+    const { email, password, userType, address, ...companyDetails } =
+      userDetails;
 
-  try {
-    // Create user in the database
-    savedUser = await this.prisma.user.create({
+    try {
+      // Create user in the database
+      savedUser = await this.prisma.user.create({
+        data: {
+          email,
+          password: await this.helperService.hashData(password),
+          userType: userType as any, // Map from CompanyType to UserType
+        },
+      });
+
+      // Conditionally create shipper or carrier based on the userType
+      if (userType === 'SHIPPER') {
+        await this.shipperService.create({
+          ...companyDetails,
+          userId: savedUser.id,
+          street: address.street,
+          city: address.city,
+          state: address.state,
+          postalCode: address.postalCode,
+          countryCode: address.countryCode,
+        } as CreateShipperDto);
+      } else if (userType === 'CARRIER') {
+        await this.carrierService.create({
+          ...companyDetails,
+          userId: savedUser.id,
+          street: address.street,
+          city: address.city,
+          state: address.state,
+          postalCode: address.postalCode,
+          countryCode: address.countryCode,
+        } as CreateCarrierDto);
+      }
+    } catch (error: any) {
+      this.logger.error(`Error creating user: ${error.message}`, error.stack);
+      throw new BadRequestException('Database error occurred');
+    }
+
+    // Generate JWT token payload
+    const payload: JwtPayload = {
+      sub: savedUser.id,
+      email: savedUser.email,
+      userType: savedUser.userType,
+    };
+    // Generate Tokens
+    const { accessToken, refreshToken } =
+      await this.jwtService.generateTokens(payload);
+    await this.updateRefreshToken(savedUser.id, refreshToken);
+
+    // Send Welcome Email -- Adjust logic when email templates and services are implemented
+    if (userType === 'SHIPPER') {
+      await this.emailService.sendCompanyWelcomeEmail(
+        userDetails as any,
+        accessToken,
+      );
+    } else {
+      await this.emailService.sendCompanyWelcomeEmail(
+        userDetails as any,
+        accessToken,
+      );
+    }
+
+    return new UserRO({
+      status: 201,
+      message: 'User registration successful',
       data: {
-        email,
-        password: await this.helperService.hashData(password),
-        userType: userType as any, // Map from CompanyType to UserType
+        accessToken,
+        refreshToken,
       },
     });
-
-    // Conditionally create shipper or carrier based on the userType
-    if (userType === 'SHIPPER') {
-      await this.shipperService.create({
-        ...companyDetails,
-        userId: savedUser.id,
-        street: address.street,
-        city: address.city,
-        state: address.state,
-        postalCode: address.postalCode,
-        countryCode: address.countryCode,
-      } as CreateShipperDto);
-    } else if (userType === 'CARRIER') {
-      await this.carrierService.create({
-        ...companyDetails,
-        userId: savedUser.id,
-        street: address.street,
-        city: address.city,
-        state: address.state,
-        postalCode: address.postalCode,
-        countryCode: address.countryCode,
-      } as CreateCarrierDto);
-    }
-  } catch (error: any) {
-    this.logger.error(`Error creating user: ${error.message}`, error.stack);
-    throw new BadRequestException('Database error occurred');
   }
-
-  // Generate JWT token payload
-  const payload: JwtPayload = { sub: savedUser.id, email: savedUser.email, userType: savedUser.userType };
-  // Generate Tokens
-  const { accessToken, refreshToken } = await this.jwtService.generateTokens(payload);
-  await this.updateRefreshToken(savedUser.id, refreshToken);
-
-  // Send Welcome Email -- Adjust logic when email templates and services are implemented
-  if (userType === 'SHIPPER') {
-    await this.emailService.sendCompanyWelcomeEmail(userDetails as any, accessToken);
-  } else {
-    await this.emailService.sendCompanyWelcomeEmail(userDetails as any, accessToken);
-  }
-
-  return new UserRO({
-    status: 201,
-    message: 'User registration successful',
-    data: {
-      accessToken,
-      refreshToken,
-    },
-  });
-}
 
   /* 
 =======================================
 User Login Method
 ========================================
 */
-async login(loginDetails: LoginDto): Promise<UserRO> {
+  async login(loginDetails: LoginDto): Promise<UserRO> {
     const user = await this.prisma.user.findUnique({
       where: { email: loginDetails.email },
     });
 
-    if (!user || !(await this.helperService.compareHash(loginDetails.password, user.password))) {
+    if (
+      !user ||
+      !(await this.helperService.compareHash(
+        loginDetails.password,
+        user.password,
+      ))
+    ) {
       throw new BadRequestException('Invalid email or password');
     }
 
-    const payload: JwtPayload = { sub: user.id, email: user.email, userType: user.userType };
+    const payload: JwtPayload = {
+      sub: user.id,
+      email: user.email,
+      userType: user.userType,
+    };
 
     // Generate Tokens
-    const { accessToken, refreshToken } = await this.jwtService.generateTokens(payload);
+    const { accessToken, refreshToken } =
+      await this.jwtService.generateTokens(payload);
     await this.updateRefreshToken(user.id, refreshToken);
 
     return new UserRO({
@@ -181,7 +204,7 @@ Password Recovery Method
 
     // Get user profile for name
     const userProfile = await this.getUserProfile(user.id);
-    
+
     this.emailService.sendPasswordRecoveryEmail({
       email,
       name: userProfile?.contactFirstName || 'User',
@@ -201,16 +224,25 @@ Password Reset Method
 */
   async resetPassword(resetData: ResetPasswordDto) {
     const { resetToken, newPassword, confirmPassword } = resetData;
-    
+
     // Compare passwords
     if (newPassword !== confirmPassword) {
       throw new BadRequestException('Password must be the same');
     }
-    
+
     //Verify Token
     const payload = await this.jwtService.verifyToken(resetToken);
-    const user = await this.prisma.user.findUnique({ where: { email: payload.email } });
-    if (!user || !user.resetPasswordToken || !(await this.helperService.compareHash(resetToken, user.resetPasswordToken))) {
+    const user = await this.prisma.user.findUnique({
+      where: { email: payload.email },
+    });
+    if (
+      !user ||
+      !user.resetPasswordToken ||
+      !(await this.helperService.compareHash(
+        resetToken,
+        user.resetPasswordToken,
+      ))
+    ) {
       throw new BadRequestException('Invalid Reset Password Token!!!');
     }
 
@@ -224,7 +256,10 @@ Password Reset Method
         },
       });
     } catch (error) {
-      this.logger.error(`Error resetting password: ${error.message}`, error.stack);
+      this.logger.error(
+        `Error resetting password: ${error.message}`,
+        error.stack,
+      );
       throw new InternalServerErrorException();
     }
     return new ForgotPasswordRO({
@@ -243,9 +278,15 @@ Refresh Token Method
     refreshToken: string,
     payload: JwtPayload,
   ): Promise<Tokens> {
-    const user = await this.prisma.user.findUnique({ where: { id: payload.sub } });
+    const user = await this.prisma.user.findUnique({
+      where: { id: payload.sub },
+    });
 
-    if (user && user.refreshToken && (await this.helperService.compareHash(refreshToken, user.refreshToken))) {
+    if (
+      user &&
+      user.refreshToken &&
+      (await this.helperService.compareHash(refreshToken, user.refreshToken))
+    ) {
       const { accessToken, refreshToken: newRefreshToken } =
         await this.jwtService.generateTokens(payload);
       await this.updateRefreshToken(payload.sub, newRefreshToken);
@@ -277,7 +318,10 @@ Update Refresh Token
 Update User Location
 ========================================
 */
-  async updateLocation(id: string, updateLocationDto: UpdateLocationDto): Promise<any> {
+  async updateLocation(
+    id: string,
+    updateLocationDto: UpdateLocationDto,
+  ): Promise<any> {
     const user = await this.prisma.user.findUnique({ where: { id } });
     if (!user) {
       throw new NotFoundException('User not found');
@@ -305,9 +349,9 @@ Helper method to get user profile
         carrier: true,
       },
     });
-    
+
     if (!user) return null;
-    
+
     return user.userType === 'SHIPPER' ? user.shipper : user.carrier;
   }
 }

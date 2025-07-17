@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  ForbiddenException,
+} from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateAdminDto } from './dto/create-admin.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -8,9 +12,7 @@ import * as bcrypt from 'bcryptjs';
 
 @Injectable()
 export class AdminService {
-  constructor(
-    private prisma: PrismaService,
-  ) {}
+  constructor(private prisma: PrismaService) {}
 
   // User Management
   async getAllUsers(): Promise<User[]> {
@@ -33,19 +35,21 @@ export class AdminService {
         carrier: true,
       },
     });
-    
+
     if (!user) {
       throw new NotFoundException(`User with ID ${id} not found`);
     }
-    
+
     return user;
   }
 
   async createAdmin(createAdminDto: CreateAdminDto): Promise<User> {
     const { email, password } = createAdminDto;
-    
+
     // Check if user already exists
-    const existingUser = await this.prisma.user.findUnique({ where: { email } });
+    const existingUser = await this.prisma.user.findUnique({
+      where: { email },
+    });
     if (existingUser) {
       throw new ForbiddenException('User with this email already exists');
     }
@@ -70,16 +74,19 @@ export class AdminService {
 
   async updateUser(id: string, updateUserDto: UpdateUserDto): Promise<User> {
     const user = await this.getUserById(id);
-    
+
     // Prepare update data
     const updateData: any = { ...updateUserDto };
-    
+
     // Hash password if provided
     if (updateUserDto.password) {
       const saltRounds = 10;
-      updateData.password = await bcrypt.hash(updateUserDto.password, saltRounds);
+      updateData.password = await bcrypt.hash(
+        updateUserDto.password,
+        saltRounds,
+      );
     }
-    
+
     return await this.prisma.user.update({
       where: { id },
       data: updateData,
@@ -88,12 +95,12 @@ export class AdminService {
 
   async deleteUser(id: string): Promise<void> {
     const user = await this.getUserById(id);
-    
+
     // Prevent deleting admin users
     if (user.userType === 'ADMIN') {
       throw new ForbiddenException('Cannot delete admin users');
     }
-    
+
     await this.prisma.user.delete({ where: { id } });
   }
 
@@ -133,18 +140,21 @@ export class AdminService {
     });
   }
 
-  async verifyDocument(id: string, verificationDto: DocumentVerificationDto): Promise<Document> {
+  async verifyDocument(
+    id: string,
+    verificationDto: DocumentVerificationDto,
+  ): Promise<Document> {
     const document = await this.prisma.document.findUnique({
       where: { id },
       include: {
         uploadedBy: true,
       },
     });
-    
+
     if (!document) {
       throw new NotFoundException(`Document with ID ${id} not found`);
     }
-    
+
     // Update document status
     const updatedDocument = await this.prisma.document.update({
       where: { id },
@@ -154,7 +164,7 @@ export class AdminService {
         verifiedAt: new Date(),
       },
     });
-    
+
     // Update user verification status if document is approved
     if (verificationDto.status === 'approved') {
       await this.prisma.user.update({
@@ -162,17 +172,17 @@ export class AdminService {
         data: { isVerified: true },
       });
     }
-    
+
     return updatedDocument;
   }
 
   async deleteDocument(id: string): Promise<void> {
     const document = await this.prisma.document.findUnique({ where: { id } });
-    
+
     if (!document) {
       throw new NotFoundException(`Document with ID ${id} not found`);
     }
-    
+
     await this.prisma.document.delete({ where: { id } });
   }
 
@@ -195,11 +205,11 @@ export class AdminService {
         booking: true,
       },
     });
-    
+
     if (!bid) {
       throw new NotFoundException(`Bid with ID ${id} not found`);
     }
-    
+
     return bid;
   }
 
@@ -230,11 +240,15 @@ export class AdminService {
       pendingDocuments,
       totalBids,
       verifiedUsers,
-      userVerificationRate: totalUsers > 0 ? (verifiedUsers / totalUsers) * 100 : 0,
+      userVerificationRate:
+        totalUsers > 0 ? (verifiedUsers / totalUsers) * 100 : 0,
     };
   }
 
-  async getUsersRegisteredInDateRange(startDate: Date, endDate: Date): Promise<User[]> {
+  async getUsersRegisteredInDateRange(
+    startDate: Date,
+    endDate: Date,
+  ): Promise<User[]> {
     return await this.prisma.user.findMany({
       where: {
         createdAt: {

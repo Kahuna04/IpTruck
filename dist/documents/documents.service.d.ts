@@ -6,7 +6,7 @@ export declare class DocumentsService {
     private prisma;
     private readonly uploadPath;
     constructor(prisma: PrismaService);
-    create(createDocumentDto: CreateDocumentDto): Promise<Document>;
+    create(createDocumentDto: CreateDocumentDto, uploadedById: string): Promise<Document>;
     findAll(page?: number, limit?: number, bookingId?: string, type?: string, verified?: boolean): Promise<{
         documents: Document[];
         total: number;
@@ -18,6 +18,7 @@ export declare class DocumentsService {
     findByBooking(bookingId: string): Promise<Document[]>;
     update(id: string, updateDocumentDto: UpdateDocumentDto): Promise<Document>;
     remove(id: string): Promise<Document>;
+    verifyDocument(id: string, verifiedBy: string): Promise<Document>;
     getDocumentStatsByBooking(bookingId?: string): Promise<{
         total: number;
         verified: number;
@@ -26,6 +27,7 @@ export declare class DocumentsService {
         byType: Record<string, number>;
     }>;
     getExpiredDocuments(): Promise<Document[]>;
+    getExpiringDocuments(days?: number): Promise<Document[]>;
     createDocument(createDocumentDto: CreateDocumentDto, file: Express.Multer.File, userId: string): Promise<Document>;
     getDocuments(userId?: string, type?: DocumentType, status?: DocumentStatus, bookingId?: string, limit?: number, offset?: number): Promise<{
         documents: Document[];

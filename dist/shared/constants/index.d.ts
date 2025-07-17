@@ -1,5 +1,5 @@
 import { UserType, CompanySize, UrgencyLevel, BookingStatus, BidStatus, DocumentType, DocumentStatus, UserRole } from '@prisma/client';
-export { UserType, CompanySize, UrgencyLevel, BookingStatus, BidStatus, DocumentType, DocumentStatus, UserRole };
+export { UserType, CompanySize, UrgencyLevel, BookingStatus, BidStatus, DocumentType, DocumentStatus, UserRole, };
 export interface User {
     id: string;
     email: string;

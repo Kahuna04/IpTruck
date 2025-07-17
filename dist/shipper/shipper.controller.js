@@ -25,8 +25,8 @@ let ShipperController = class ShipperController {
         this.shipperService = shipperService;
     }
     create(createShipperDto, req) {
-        const userId = req.user['sub'];
-        return this.shipperService.create(createShipperDto, userId);
+        const userId = req.user?.['sub'];
+        return this.shipperService.create(createShipperDto);
     }
     findAll(page, limit) {
         return this.shipperService.findAll(page, limit);
@@ -35,7 +35,7 @@ let ShipperController = class ShipperController {
         return this.shipperService.search(query, page, limit);
     }
     getMyProfile(req) {
-        const userId = req.user['sub'];
+        const userId = req.user?.['sub'];
         return this.shipperService.findByUserId(userId);
     }
     findOne(id) {
@@ -56,7 +56,10 @@ __decorate([
     (0, common_1.Post)(),
     (0, common_1.HttpCode)(common_1.HttpStatus.CREATED),
     (0, swagger_1.ApiOperation)({ summary: 'Create a new shipper profile' }),
-    (0, swagger_1.ApiResponse)({ status: 201, description: 'Shipper profile created successfully' }),
+    (0, swagger_1.ApiResponse)({
+        status: 201,
+        description: 'Shipper profile created successfully',
+    }),
     (0, swagger_1.ApiResponse)({ status: 400, description: 'Bad request' }),
     (0, swagger_1.ApiResponse)({ status: 401, description: 'Unauthorized' }),
     __param(0, (0, common_1.Body)()),
@@ -68,7 +71,10 @@ __decorate([
 __decorate([
     (0, common_1.Get)(),
     (0, swagger_1.ApiOperation)({ summary: 'Get all shippers with pagination' }),
-    (0, swagger_1.ApiResponse)({ status: 200, description: 'List of shippers retrieved successfully' }),
+    (0, swagger_1.ApiResponse)({
+        status: 200,
+        description: 'List of shippers retrieved successfully',
+    }),
     __param(0, (0, common_1.Query)('page', new common_1.DefaultValuePipe(1), common_1.ParseIntPipe)),
     __param(1, (0, common_1.Query)('limit', new common_1.DefaultValuePipe(20), common_1.ParseIntPipe)),
     __metadata("design:type", Function),
@@ -78,7 +84,10 @@ __decorate([
 __decorate([
     (0, common_1.Get)('search'),
     (0, swagger_1.ApiOperation)({ summary: 'Search shippers' }),
-    (0, swagger_1.ApiResponse)({ status: 200, description: 'Search results retrieved successfully' }),
+    (0, swagger_1.ApiResponse)({
+        status: 200,
+        description: 'Search results retrieved successfully',
+    }),
     __param(0, (0, common_1.Query)('q')),
     __param(1, (0, common_1.Query)('page', new common_1.DefaultValuePipe(1), common_1.ParseIntPipe)),
     __param(2, (0, common_1.Query)('limit', new common_1.DefaultValuePipe(20), common_1.ParseIntPipe)),
@@ -89,7 +98,10 @@ __decorate([
 __decorate([
     (0, common_1.Get)('me'),
     (0, swagger_1.ApiOperation)({ summary: 'Get current user shipper profile' }),
-    (0, swagger_1.ApiResponse)({ status: 200, description: 'Shipper profile retrieved successfully' }),
+    (0, swagger_1.ApiResponse)({
+        status: 200,
+        description: 'Shipper profile retrieved successfully',
+    }),
     (0, swagger_1.ApiResponse)({ status: 404, description: 'Shipper profile not found' }),
     __param(0, (0, common_1.Req)()),
     __metadata("design:type", Function),
@@ -109,7 +121,10 @@ __decorate([
 __decorate([
     (0, common_1.Get)(':id/statistics'),
     (0, swagger_1.ApiOperation)({ summary: 'Get shipper statistics' }),
-    (0, swagger_1.ApiResponse)({ status: 200, description: 'Statistics retrieved successfully' }),
+    (0, swagger_1.ApiResponse)({
+        status: 200,
+        description: 'Statistics retrieved successfully',
+    }),
     (0, swagger_1.ApiResponse)({ status: 404, description: 'Shipper not found' }),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),

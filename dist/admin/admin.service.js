@@ -44,7 +44,9 @@ let AdminService = class AdminService {
     }
     async createAdmin(createAdminDto) {
         const { email, password } = createAdminDto;
-        const existingUser = await this.prisma.user.findUnique({ where: { email } });
+        const existingUser = await this.prisma.user.findUnique({
+            where: { email },
+        });
         if (existingUser) {
             throw new common_1.ForbiddenException('User with this email already exists');
         }

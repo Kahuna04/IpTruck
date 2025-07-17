@@ -23,9 +23,12 @@ let JwtHandler = JwtHandler_1 = class JwtHandler {
         this.config = config;
         this.logger = new common_1.Logger(JwtHandler_1.name);
         this.SECRET = this.config.get('JWT_AT_SECRET') || 'fallback_secret';
-        this.RT_SECRET = this.config.get('JWT_RT_SECRET') || 'fallback_rt_secret';
-        this.TOKEN_EXPIRATION = this.config.get('TOKEN_EXPIRATION') || '15m';
-        this.RT_EXPIRATION = this.config.get('REFRESH_TOKEN_EXPIRATION') || '7d';
+        this.RT_SECRET =
+            this.config.get('JWT_RT_SECRET') || 'fallback_rt_secret';
+        this.TOKEN_EXPIRATION =
+            this.config.get('TOKEN_EXPIRATION') || '15m';
+        this.RT_EXPIRATION =
+            this.config.get('REFRESH_TOKEN_EXPIRATION') || '7d';
     }
     SECRET;
     RT_SECRET;

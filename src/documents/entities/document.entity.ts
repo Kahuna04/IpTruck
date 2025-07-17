@@ -27,31 +27,31 @@ export class Document {
   mimeType: string;
 
   @ApiProperty({ description: 'Associated booking ID', required: false })
-  bookingId?: string;
+  bookingId?: string | null;
 
   @ApiProperty({ description: 'Associated bid ID', required: false })
-  bidId?: string;
+  bidId?: string | null;
 
   @ApiProperty({ description: 'Associated carrier ID', required: false })
-  carrierId?: string;
+  carrierId?: string | null;
 
   @ApiProperty({ description: 'Uploaded by user ID' })
   uploadedById: string;
 
   @ApiProperty({ description: 'Bill of lading ID', required: false })
-  billOfLadingId?: string;
+  billOfLadingId?: string | null;
 
   @ApiProperty({ description: 'Document metadata', required: false })
   metadata?: any;
 
   @ApiProperty({ description: 'Document expiration date', required: false })
-  expiresAt?: Date;
+  expiresAt?: Date | null;
 
   @ApiProperty({ description: 'Document verification date', required: false })
-  verifiedAt?: Date;
+  verifiedAt?: Date | null;
 
   @ApiProperty({ description: 'Verified by user ID', required: false })
-  verifiedById?: string;
+  verifiedById?: string | null;
 
   @ApiProperty({ description: 'Creation timestamp' })
   createdAt: Date;

@@ -46,8 +46,10 @@ let HelperService = class HelperService {
         const dLat = this.toRadians(lat2 - lat1);
         const dLon = this.toRadians(lon2 - lon1);
         const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-            Math.cos(this.toRadians(lat1)) * Math.cos(this.toRadians(lat2)) *
-                Math.sin(dLon / 2) * Math.sin(dLon / 2);
+            Math.cos(this.toRadians(lat1)) *
+                Math.cos(this.toRadians(lat2)) *
+                Math.sin(dLon / 2) *
+                Math.sin(dLon / 2);
         const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
         return R * c;
     }
@@ -58,7 +60,7 @@ let HelperService = class HelperService {
         return {
             status,
             message,
-            data
+            data,
         };
     }
     isValidNigerianPhone(phoneNumber) {
@@ -66,9 +68,9 @@ let HelperService = class HelperService {
         const patterns = [
             /^234[789]\d{9}$/,
             /^0[789]\d{9}$/,
-            /^[789]\d{9}$/
+            /^[789]\d{9}$/,
         ];
-        return patterns.some(pattern => pattern.test(cleaned));
+        return patterns.some((pattern) => pattern.test(cleaned));
     }
     isValidEmail(email) {
         const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -98,7 +100,7 @@ let HelperService = class HelperService {
     formatCurrency(amount, currency = 'NGN') {
         return new Intl.NumberFormat('en-NG', {
             style: 'currency',
-            currency: currency
+            currency: currency,
         }).format(amount);
     }
     sanitizeString(input) {
@@ -122,7 +124,7 @@ let HelperService = class HelperService {
             hasNextPage,
             hasPreviousPage,
             nextPage: hasNextPage ? page + 1 : null,
-            previousPage: hasPreviousPage ? page - 1 : null
+            previousPage: hasPreviousPage ? page - 1 : null,
         };
     }
 };

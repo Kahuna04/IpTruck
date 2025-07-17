@@ -13,12 +13,15 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
   ) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-      secretOrKey: configService.get<string>('JWT_AT_SECRET') || 'fallback_secret',
+      secretOrKey:
+        configService.get<string>('JWT_AT_SECRET') || 'fallback_secret',
     });
   }
 
   async validate(payload: JwtPayload) {
-    const user = await this.prisma.user.findUnique({ where: { id: payload.sub } });
+    const user = await this.prisma.user.findUnique({
+      where: { id: payload.sub },
+    });
     if (!user) throw new NotFoundException('User not found');
     return user;
   }

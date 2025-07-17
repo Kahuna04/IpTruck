@@ -239,7 +239,7 @@ let CarrierService = CarrierService_1 = class CarrierService {
                 return acc;
             }, {});
             const totalEarnings = stats.bids
-                .filter(bid => bid.status === 'ACCEPTED')
+                .filter((bid) => bid.status === 'ACCEPTED')
                 .reduce((total, bid) => total + bid.bidAmount, 0);
             return {
                 rating: stats.rating,

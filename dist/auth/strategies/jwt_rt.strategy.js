@@ -24,7 +24,9 @@ let RtStrategy = class RtStrategy extends (0, passport_1.PassportStrategy)(passp
     }
     async validate(req, data) {
         const authHeader = req.get('authorization');
-        const refreshToken = authHeader ? authHeader.replace('Bearer', '').trim() : '';
+        const refreshToken = authHeader
+            ? authHeader.replace('Bearer', '').trim()
+            : '';
         const { email, sub } = data;
         return { payload: { sub, email }, refreshToken };
     }

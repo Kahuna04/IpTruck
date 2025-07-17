@@ -21,7 +21,12 @@ import { UpdateCarrierDto } from './dto/update-carrier.dto';
 import { CreateTruckDto } from './dto/create-truck.dto';
 import { UpdateTruckDto } from './dto/update-truck.dto';
 import { JwtGuard } from '../auth/guards/jwt_at.guard';
-import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiBearerAuth,
+} from '@nestjs/swagger';
 import { Request } from 'express';
 
 @ApiTags('Carrier')
@@ -34,17 +39,23 @@ export class CarrierController {
   @Post()
   @HttpCode(HttpStatus.CREATED)
   @ApiOperation({ summary: 'Create a new carrier profile' })
-  @ApiResponse({ status: 201, description: 'Carrier profile created successfully' })
+  @ApiResponse({
+    status: 201,
+    description: 'Carrier profile created successfully',
+  })
   @ApiResponse({ status: 400, description: 'Bad request' })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   create(@Body() createCarrierDto: CreateCarrierDto, @Req() req: Request) {
-    const userId = req.user['sub'];
-    return this.carrierService.create(createCarrierDto, userId);
+    const userId = req.user?.['sub'];
+    return this.carrierService.create(createCarrierDto);
   }
 
   @Get()
   @ApiOperation({ summary: 'Get all carriers with pagination' })
-  @ApiResponse({ status: 200, description: 'List of carriers retrieved successfully' })
+  @ApiResponse({
+    status: 200,
+    description: 'List of carriers retrieved successfully',
+  })
   findAll(
     @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
     @Query('limit', new DefaultValuePipe(20), ParseIntPipe) limit: number,
@@ -54,7 +65,10 @@ export class CarrierController {
 
   @Get('search')
   @ApiOperation({ summary: 'Search carriers' })
-  @ApiResponse({ status: 200, description: 'Search results retrieved successfully' })
+  @ApiResponse({
+    status: 200,
+    description: 'Search results retrieved successfully',
+  })
   search(
     @Query('q') query: string,
     @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
@@ -65,10 +79,13 @@ export class CarrierController {
 
   @Get('me')
   @ApiOperation({ summary: 'Get current user carrier profile' })
-  @ApiResponse({ status: 200, description: 'Carrier profile retrieved successfully' })
+  @ApiResponse({
+    status: 200,
+    description: 'Carrier profile retrieved successfully',
+  })
   @ApiResponse({ status: 404, description: 'Carrier profile not found' })
   getMyProfile(@Req() req: Request) {
-    const userId = req.user['sub'];
+    const userId = req.user?.['sub'];
     return this.carrierService.findByUserId(userId);
   }
 
@@ -82,7 +99,10 @@ export class CarrierController {
 
   @Get(':id/statistics')
   @ApiOperation({ summary: 'Get carrier statistics' })
-  @ApiResponse({ status: 200, description: 'Statistics retrieved successfully' })
+  @ApiResponse({
+    status: 200,
+    description: 'Statistics retrieved successfully',
+  })
   @ApiResponse({ status: 404, description: 'Carrier not found' })
   getStatistics(@Param('id') id: string) {
     return this.carrierService.getStatistics(id);
@@ -123,7 +143,10 @@ export class CarrierController {
   @ApiResponse({ status: 201, description: 'Truck added successfully' })
   @ApiResponse({ status: 400, description: 'Bad request' })
   @ApiResponse({ status: 404, description: 'Carrier not found' })
-  addTruck(@Param('id') carrierId: string, @Body() createTruckDto: CreateTruckDto) {
+  addTruck(
+    @Param('id') carrierId: string,
+    @Body() createTruckDto: CreateTruckDto,
+  ) {
     return this.carrierService.addTruck(carrierId, createTruckDto);
   }
 

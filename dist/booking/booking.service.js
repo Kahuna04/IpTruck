@@ -24,6 +24,10 @@ let BookingService = BookingService_1 = class BookingService {
     prisma;
     helperService;
     logger = new common_1.Logger(BookingService_1.name);
+    bookings = new Map();
+    bids = new Map();
+    userBookings = new Map();
+    userBids = new Map();
     constructor(emailService, prisma, helperService) {
         this.emailService = emailService;
         this.prisma = prisma;
@@ -48,8 +52,12 @@ let BookingService = BookingService_1 = class BookingService {
                     cargoDetails: createBookingDto.cargoDetails,
                     preferredTruckType: createBookingDto.preferredTruckType,
                     preferredPickupTime: new Date(createBookingDto.preferredPickupTime),
-                    latestPickupTime: createBookingDto.latestPickupTime ? new Date(createBookingDto.latestPickupTime) : null,
-                    requiredDeliveryTime: createBookingDto.requiredDeliveryTime ? new Date(createBookingDto.requiredDeliveryTime) : null,
+                    latestPickupTime: createBookingDto.latestPickupTime
+                        ? new Date(createBookingDto.latestPickupTime)
+                        : null,
+                    requiredDeliveryTime: createBookingDto.requiredDeliveryTime
+                        ? new Date(createBookingDto.requiredDeliveryTime)
+                        : null,
                     urgencyLevel: createBookingDto.urgencyLevel,
                     loadingType: createBookingDto.loadingType,
                     unloadingType: createBookingDto.unloadingType,
@@ -63,7 +71,9 @@ let BookingService = BookingService_1 = class BookingService {
                     contactPerson: createBookingDto.contactPerson,
                     contactPhone: createBookingDto.contactPhone,
                     contactEmail: createBookingDto.contactEmail,
-                    expiresAt: createBookingDto.expiresAt ? new Date(createBookingDto.expiresAt) : null,
+                    expiresAt: createBookingDto.expiresAt
+                        ? new Date(createBookingDto.expiresAt)
+                        : null,
                     notificationsEnabled: createBookingDto.notificationsEnabled ?? true,
                     isRecurring: createBookingDto.isRecurring ?? false,
                     recurrencePattern: createBookingDto.recurrencePattern,
@@ -206,7 +216,8 @@ let BookingService = BookingService_1 = class BookingService {
     }
     async createBid(createBidDto, carrierId) {
         const booking = await this.getBookingById(createBidDto.bookingId);
-        if (booking.status !== client_1.BookingStatus.ACTIVE && booking.status !== client_1.BookingStatus.PENDING_BIDS) {
+        if (booking.status !== client_1.BookingStatus.ACTIVE &&
+            booking.status !== client_1.BookingStatus.PENDING_BIDS) {
             throw new common_1.BadRequestException('Booking is no longer accepting bids');
         }
         if (booking.expiresAt && new Date(booking.expiresAt) < new Date()) {
@@ -231,7 +242,9 @@ let BookingService = BookingService_1 = class BookingService {
                 driverDetails: createBidDto.driverDetails,
                 message: createBidDto.message,
                 includedServices: createBidDto.includedServices || [],
-                bidExpiresAt: createBidDto.bidExpiresAt ? new Date(createBidDto.bidExpiresAt) : null,
+                bidExpiresAt: createBidDto.bidExpiresAt
+                    ? new Date(createBidDto.bidExpiresAt)
+                    : null,
                 isNegotiable: createBidDto.isNegotiable ?? true,
                 paymentTerms: createBidDto.paymentTerms,
                 specialTerms: createBidDto.specialTerms,
@@ -384,15 +397,21 @@ let BookingService = BookingService_1 = class BookingService {
     async getBookingStats(userId) {
         const userBookingIds = this.userBookings.get(userId) || [];
         const userBidIds = this.userBids.get(userId) || [];
-        const userBookings = userBookingIds.map(id => this.bookings.get(id)).filter(Boolean);
-        const userBids = userBidIds.map(id => this.bids.get(id)).filter(Boolean);
+        const userBookings = userBookingIds
+            .map((id) => this.bookings.get(id))
+            .filter(Boolean);
+        const userBids = userBidIds.map((id) => this.bids.get(id)).filter(Boolean);
         return {
             totalBookings: userBookings.length,
-            activeBookings: userBookings.filter(b => b.status === client_1.BookingStatus.ACTIVE || b.status === client_1.BookingStatus.BIDS_RECEIVED).length,
-            completedBookings: userBookings.filter(b => b.status === client_1.BookingStatus.COMPLETED).length,
+            activeBookings: userBookings.filter((b) => b &&
+                (b.status === client_1.BookingStatus.ACTIVE ||
+                    b.status === client_1.BookingStatus.BIDS_RECEIVED)).length,
+            completedBookings: userBookings.filter((b) => b && b.status === client_1.BookingStatus.COMPLETED).length,
             totalBids: userBids.length,
-            acceptedBids: userBids.filter(b => b.status === create_bid_dto_1.BidStatus.ACCEPTED).length,
-            pendingBids: userBids.filter(b => b.status === create_bid_dto_1.BidStatus.PENDING).length,
+            acceptedBids: userBids.filter((b) => b && b.status === create_bid_dto_1.BidStatus.ACCEPTED)
+                .length,
+            pendingBids: userBids.filter((b) => b && b.status === create_bid_dto_1.BidStatus.PENDING)
+                .length,
         };
     }
     async notifyCarriersOfNewBooking(booking) {
@@ -424,7 +443,7 @@ let BookingService = BookingService_1 = class BookingService {
             driverDetails: bid.driverDetails,
             contactPerson: bid.contactPerson,
             message: bid.message,
-            companyName: bid.carrierCompany,
+            companyName: bid.carrier?.companyName || 'Unknown Carrier',
         };
         const shipperEmail = booking.contactEmail || 'shipper@example.com';
         await this.emailService.sendBidReceivedNotification(shipperEmail, bidData);
@@ -449,12 +468,12 @@ let BookingService = BookingService_1 = class BookingService {
         await this.emailService.sendBidAcceptedNotification(carrierEmail, acceptanceData);
         const allEmails = [
             booking.contactEmail || 'shipper@example.com',
-            acceptedBid.contactEmail || 'carrier@example.com'
+            acceptedBid.contactEmail || 'carrier@example.com',
         ];
         await this.emailService.sendBookingConfirmation(allEmails, acceptanceData);
     }
     async notifyRejectedBidders(booking, acceptedBidId) {
-        const rejectedBids = booking.bids.filter(b => b.id !== acceptedBidId && b.status === create_bid_dto_1.BidStatus.REJECTED);
+        const rejectedBids = booking.bids.filter((b) => b.id !== acceptedBidId && b.status === create_bid_dto_1.BidStatus.REJECTED);
         for (const bid of rejectedBids) {
             const bidData = {
                 bidId: bid.id,
@@ -473,7 +492,7 @@ let BookingService = BookingService_1 = class BookingService {
         }
     }
     async notifyBookingCancellation(booking, reason) {
-        const pendingBids = booking.bids.filter(b => b.status === create_bid_dto_1.BidStatus.PENDING);
+        const pendingBids = booking.bids.filter((b) => b.status === create_bid_dto_1.BidStatus.PENDING);
         for (const bid of pendingBids) {
             const bidData = {
                 bidId: bid.id,

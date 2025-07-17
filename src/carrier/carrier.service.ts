@@ -30,7 +30,10 @@ export class CarrierService {
       this.logger.log(`Carrier created successfully: ${carrier.id}`);
       return carrier;
     } catch (error) {
-      this.logger.error(`Error creating carrier: ${error.message}`, error.stack);
+      this.logger.error(
+        `Error creating carrier: ${error.message}`,
+        error.stack,
+      );
       throw error;
     }
   }
@@ -40,7 +43,7 @@ export class CarrierService {
    */
   async findAll(page: number = 1, limit: number = 20) {
     const skip = (page - 1) * limit;
-    
+
     try {
       const [carriers, total] = await Promise.all([
         this.prisma.carrier.findMany({
@@ -70,14 +73,21 @@ export class CarrierService {
         this.prisma.carrier.count(),
       ]);
 
-      const pagination = this.helperService.getPaginationMeta(page, limit, total);
+      const pagination = this.helperService.getPaginationMeta(
+        page,
+        limit,
+        total,
+      );
 
       return {
         data: carriers,
         pagination,
       };
     } catch (error) {
-      this.logger.error(`Error fetching carriers: ${error.message}`, error.stack);
+      this.logger.error(
+        `Error fetching carriers: ${error.message}`,
+        error.stack,
+      );
       throw error;
     }
   }
@@ -142,7 +152,10 @@ export class CarrierService {
 
       return carrier;
     } catch (error) {
-      this.logger.error(`Error fetching carrier: ${error.message}`, error.stack);
+      this.logger.error(
+        `Error fetching carrier: ${error.message}`,
+        error.stack,
+      );
       throw error;
     }
   }
@@ -179,7 +192,10 @@ export class CarrierService {
         },
       });
     } catch (error) {
-      this.logger.error(`Error fetching carrier by user ID: ${error.message}`, error.stack);
+      this.logger.error(
+        `Error fetching carrier by user ID: ${error.message}`,
+        error.stack,
+      );
       throw error;
     }
   }
@@ -187,7 +203,10 @@ export class CarrierService {
   /**
    * Update carrier profile
    */
-  async update(id: string, updateCarrierDto: UpdateCarrierDto): Promise<Carrier> {
+  async update(
+    id: string,
+    updateCarrierDto: UpdateCarrierDto,
+  ): Promise<Carrier> {
     try {
       const carrier = await this.prisma.carrier.update({
         where: { id },
@@ -208,7 +227,10 @@ export class CarrierService {
       this.logger.log(`Carrier updated successfully: ${carrier.id}`);
       return carrier;
     } catch (error) {
-      this.logger.error(`Error updating carrier: ${error.message}`, error.stack);
+      this.logger.error(
+        `Error updating carrier: ${error.message}`,
+        error.stack,
+      );
       throw error;
     }
   }
@@ -224,7 +246,10 @@ export class CarrierService {
 
       this.logger.log(`Carrier deleted successfully: ${id}`);
     } catch (error) {
-      this.logger.error(`Error deleting carrier: ${error.message}`, error.stack);
+      this.logger.error(
+        `Error deleting carrier: ${error.message}`,
+        error.stack,
+      );
       throw error;
     }
   }
@@ -265,7 +290,7 @@ export class CarrierService {
       }, {});
 
       const totalEarnings = stats.bids
-        .filter(bid => bid.status === 'ACCEPTED')
+        .filter((bid) => bid.status === 'ACCEPTED')
         .reduce((total, bid) => total + bid.bidAmount, 0);
 
       return {
@@ -278,7 +303,10 @@ export class CarrierService {
         currency: stats.bids[0]?.currency || 'NGN',
       };
     } catch (error) {
-      this.logger.error(`Error fetching carrier statistics: ${error.message}`, error.stack);
+      this.logger.error(
+        `Error fetching carrier statistics: ${error.message}`,
+        error.stack,
+      );
       throw error;
     }
   }
@@ -335,14 +363,21 @@ export class CarrierService {
         }),
       ]);
 
-      const pagination = this.helperService.getPaginationMeta(page, limit, total);
+      const pagination = this.helperService.getPaginationMeta(
+        page,
+        limit,
+        total,
+      );
 
       return {
         data: carriers,
         pagination,
       };
     } catch (error) {
-      this.logger.error(`Error searching carriers: ${error.message}`, error.stack);
+      this.logger.error(
+        `Error searching carriers: ${error.message}`,
+        error.stack,
+      );
       throw error;
     }
   }
@@ -350,7 +385,10 @@ export class CarrierService {
   /**
    * Add a truck to carrier's fleet
    */
-  async addTruck(carrierId: string, createTruckDto: CreateTruckDto): Promise<Truck> {
+  async addTruck(
+    carrierId: string,
+    createTruckDto: CreateTruckDto,
+  ): Promise<Truck> {
     try {
       const truck = await this.prisma.truck.create({
         data: {
@@ -417,7 +455,10 @@ export class CarrierService {
   /**
    * Update truck
    */
-  async updateTruck(truckId: string, updateTruckDto: UpdateTruckDto): Promise<Truck> {
+  async updateTruck(
+    truckId: string,
+    updateTruckDto: UpdateTruckDto,
+  ): Promise<Truck> {
     try {
       const truck = await this.prisma.truck.update({
         where: { id: truckId },
@@ -463,7 +504,10 @@ export class CarrierService {
       this.logger.log(`Carrier rating updated: ${carrierId} - ${newRating}`);
       return carrier;
     } catch (error) {
-      this.logger.error(`Error updating carrier rating: ${error.message}`, error.stack);
+      this.logger.error(
+        `Error updating carrier rating: ${error.message}`,
+        error.stack,
+      );
       throw error;
     }
   }
@@ -485,7 +529,10 @@ export class CarrierService {
       this.logger.log(`Completed jobs incremented for carrier: ${carrierId}`);
       return carrier;
     } catch (error) {
-      this.logger.error(`Error incrementing completed jobs: ${error.message}`, error.stack);
+      this.logger.error(
+        `Error incrementing completed jobs: ${error.message}`,
+        error.stack,
+      );
       throw error;
     }
   }

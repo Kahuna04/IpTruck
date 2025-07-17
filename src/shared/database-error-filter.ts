@@ -1,12 +1,15 @@
-import { 
-  ExceptionFilter, 
-  Catch, 
-  ArgumentsHost, 
-  HttpStatus, 
+import {
+  ExceptionFilter,
+  Catch,
+  ArgumentsHost,
+  HttpStatus,
   HttpException,
-  Logger 
+  Logger,
 } from '@nestjs/common';
-import { PrismaClientKnownRequestError, PrismaClientValidationError } from '@prisma/client/runtime/library';
+import {
+  PrismaClientKnownRequestError,
+  PrismaClientValidationError,
+} from '@prisma/client/runtime/library';
 import { Response } from 'express';
 
 @Catch()
@@ -28,7 +31,7 @@ export class DatabaseErrorFilter implements ExceptionFilter {
       details = exception.getResponse();
     } else if (exception instanceof PrismaClientKnownRequestError) {
       status = HttpStatus.BAD_REQUEST;
-      
+
       switch (exception.code) {
         case 'P2002':
           status = HttpStatus.CONFLICT;
@@ -80,13 +83,14 @@ export class DatabaseErrorFilter implements ExceptionFilter {
       message = exception.message;
       details = {
         code: 'UNKNOWN_ERROR',
-        stack: process.env.NODE_ENV === 'development' ? exception.stack : undefined,
+        stack:
+          process.env.NODE_ENV === 'development' ? exception.stack : undefined,
       };
     }
 
     this.logger.error(
       `${request.method} ${request.url} - ${status} - ${message}`,
-      exception instanceof Error ? exception.stack : exception
+      exception instanceof Error ? exception.stack : exception,
     );
 
     response.status(status).json({

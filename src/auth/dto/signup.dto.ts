@@ -1,31 +1,31 @@
-import { 
-  IsEmail, 
-  IsStrongPassword, 
-  MinLength, 
-  MaxLength, 
-  IsString, 
-  IsOptional, 
-  Matches, 
+import {
+  IsEmail,
+  IsStrongPassword,
+  MinLength,
+  MaxLength,
+  IsString,
+  IsOptional,
+  Matches,
   IsPhoneNumber,
   IsEnum,
   IsUrl,
   ValidateNested,
   IsNotEmpty,
-  Length
+  Length,
 } from 'class-validator';
 import { Transform, Type } from 'class-transformer';
 
 export enum CompanyType {
   SHIPPER = 'SHIPPER',
   CARRIER = 'CARRIER',
-  BOTH = 'BOTH'
+  BOTH = 'BOTH',
 }
 
 export enum CompanySize {
-  SMALL = 'SMALL',      // 1-10 employees
-  MEDIUM = 'MEDIUM',    // 11-50 employees
-  LARGE = 'LARGE',      // 51-200 employees
-  ENTERPRISE = 'ENTERPRISE' // 200+ employees
+  SMALL = 'SMALL', // 1-10 employees
+  MEDIUM = 'MEDIUM', // 11-50 employees
+  LARGE = 'LARGE', // 51-200 employees
+  ENTERPRISE = 'ENTERPRISE', // 200+ employees
 }
 
 export class AddressDto {
@@ -56,7 +56,9 @@ export class AddressDto {
   @IsNotEmpty()
   @IsString()
   @Length(2, 3)
-  @Matches(/^[A-Z]{2,3}$/, { message: 'Country code must be 2-3 uppercase letters' })
+  @Matches(/^[A-Z]{2,3}$/, {
+    message: 'Country code must be 2-3 uppercase letters',
+  })
   countryCode: string;
 }
 
@@ -84,7 +86,10 @@ export class CreateCompanyDto {
   @IsString()
   @MinLength(5)
   @MaxLength(50)
-  @Matches(/^[A-Z0-9-]+$/, { message: 'Registration number must contain only uppercase letters, numbers, and hyphens' })
+  @Matches(/^[A-Z0-9-]+$/, {
+    message:
+      'Registration number must contain only uppercase letters, numbers, and hyphens',
+  })
   registrationNumber?: string;
 
   /** @example "12345678901" */
@@ -107,7 +112,9 @@ export class CreateCompanyDto {
   businessEmail: string;
 
   /** @example "+234-80-1234-5678" */
-  @IsPhoneNumber('NG', { message: 'Please provide a valid Nigerian phone number' })
+  @IsPhoneNumber('NG', {
+    message: 'Please provide a valid Nigerian phone number',
+  })
   phoneNumber: string;
 
   /** @example "https://www.kahuna-logistics.com" */
@@ -117,11 +124,15 @@ export class CreateCompanyDto {
   website?: string;
 
   /** @example "shipper" */
-  @IsEnum(CompanyType, { message: 'Company type must be either shipper, carrier, or both' })
+  @IsEnum(CompanyType, {
+    message: 'Company type must be either shipper, carrier, or both',
+  })
   companyType: CompanyType;
 
   /** @example "medium" */
-  @IsEnum(CompanySize, { message: 'Company size must be small, medium, large, or enterprise' })
+  @IsEnum(CompanySize, {
+    message: 'Company size must be small, medium, large, or enterprise',
+  })
   companySize: CompanySize;
 
   /** @example "We specialize in beverage distribution across West Africa" */
@@ -137,7 +148,10 @@ export class CreateCompanyDto {
   @IsString()
   @MinLength(2)
   @MaxLength(50)
-  @Matches(/^[a-zA-Z\s'-]+$/, { message: 'First name must contain only letters, spaces, hyphens, and apostrophes' })
+  @Matches(/^[a-zA-Z\s'-]+$/, {
+    message:
+      'First name must contain only letters, spaces, hyphens, and apostrophes',
+  })
   @Transform(({ value }) => value?.trim())
   contactFirstName: string;
 
@@ -146,7 +160,10 @@ export class CreateCompanyDto {
   @IsString()
   @MinLength(2)
   @MaxLength(50)
-  @Matches(/^[a-zA-Z\s'-]+$/, { message: 'Last name must contain only letters, spaces, hyphens, and apostrophes' })
+  @Matches(/^[a-zA-Z\s'-]+$/, {
+    message:
+      'Last name must contain only letters, spaces, hyphens, and apostrophes',
+  })
   @Transform(({ value }) => value?.trim())
   contactLastName: string;
 
@@ -159,11 +176,17 @@ export class CreateCompanyDto {
   contactJobTitle: string;
 
   /** Primary contact person's phone number */
-  @IsPhoneNumber('NG', { message: 'Please provide a valid Nigerian phone number for the contact person' })
+  @IsPhoneNumber('NG', {
+    message:
+      'Please provide a valid Nigerian phone number for the contact person',
+  })
   contactPhone: string;
 
   /** Primary contact person's email */
-  @IsEmail({}, { message: 'Please provide a valid email address for the contact person' })
+  @IsEmail(
+    {},
+    { message: 'Please provide a valid email address for the contact person' },
+  )
   @MaxLength(100)
   @Transform(({ value }) => value?.toLowerCase().trim())
   contactEmail: string;
@@ -188,13 +211,17 @@ export class CreateCompanyDto {
   /** Terms and conditions acceptance */
   @IsNotEmpty()
   @Matches(/^true$/, { message: 'You must accept the terms and conditions' })
-  @Transform(({ value }) => value === true || value === 'true' ? 'true' : 'false')
+  @Transform(({ value }) =>
+    value === true || value === 'true' ? 'true' : 'false',
+  )
   acceptTerms: string;
 
   /** Privacy policy acceptance */
   @IsNotEmpty()
   @Matches(/^true$/, { message: 'You must accept the privacy policy' })
-  @Transform(({ value }) => value === true || value === 'true' ? 'true' : 'false')
+  @Transform(({ value }) =>
+    value === true || value === 'true' ? 'true' : 'false',
+  )
   acceptPrivacy: string;
 
   /** Marketing communications opt-in */

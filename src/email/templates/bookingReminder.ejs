@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Reminder - IpTruck</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .header {
+            background-color: #3498db;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 8px 8px 0 0;
+        }
+        .content {
+            background-color: #f9f9f9;
+            padding: 30px;
+            border-radius: 0 0 8px 8px;
+        }
+        .reminder-type {
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+            margin: 20px 0;
+            color: #27ae60;
+        }
+        .details {
+            background-color: #ecf0f1;
+            padding: 20px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .button {
+            background-color: #3498db;
+            color: white;
+            padding: 12px 24px;
+            text-decoration: none;
+            border-radius: 5px;
+            display: inline-block;
+            margin: 20px 0;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            color: #666;
+            font-size: 12px;
+        }
+        .highlight {
+            background-color: #d1ecf1;
+            padding: 15px;
+            border-left: 4px solid #0c5460;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>📅 Booking Reminder</h1>
+        <p>Your scheduled <%= reminderType %> is approaching</p>
+    </div>
+    
+    <div class="content">
+        <h2>Hello <%= contactPerson %>,</h2>
+        
+        <div class="highlight">
+            <h3>🚛 Upcoming <%= reminderType %></h3>
+            <p>We wanted to remind you that your scheduled <strong><%= reminderType %></strong> for booking <strong>#<%= bookingId %></strong> is coming up soon.</p>
+        </div>
+
+        <div class="details">
+            <p><strong>Booking ID:</strong> <%= bookingId %></p>
+            <p><strong>Scheduled Time:</strong> <%= scheduledTime %></p>
+            <p><strong>Location:</strong> <%= location %></p>
+            <p><strong>Contact Person:</strong> <%= contactPerson %> - <%= contactPhone %></p>
+        </div>
+
+        <center>
+            <a href="<%= bookingUrl %>" class="button">View Booking Details</a>
+        </center>
+
+        <p><strong>Next Steps for a Successful <%= reminderType %>:</strong></p>
+        <ul>
+            <li>Ensure all necessary documentation is ready</li>
+            <li>Contact the other party for any last-minute updates</li>
+            <li>Prepare the cargo/truck as required</li>
+        </ul>
+
+        <p><strong>Need Assistance?</strong></p>
+        <p>If you have any questions or need help with the booking, please contact our support team at <a href="mailto:support@iptruck.com">support@iptruck.com</a>.</p>
+
+        <p>Best regards,<br>The IpTruck Team</p>
+    </div>
+    
+    <div class="footer">
+        <p>© 2024 IpTruck. All rights reserved.</p>
+        <p>You received this email because you have an upcoming booking event.</p>
+    </div>
+</body>
+</html>
+

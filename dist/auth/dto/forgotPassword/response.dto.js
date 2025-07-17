@@ -41,7 +41,9 @@ __decorate([
     (0, class_transformer_1.Expose)(),
     (0, class_transformer_1.Transform)(({ value }) => {
         const [local, domain] = value.split('@');
-        const maskedLocal = local.charAt(0) + '*'.repeat(local.length - 2) + local.charAt(local.length - 1);
+        const maskedLocal = local.charAt(0) +
+            '*'.repeat(local.length - 2) +
+            local.charAt(local.length - 1);
         return `${maskedLocal}@${domain}`;
     }),
     __metadata("design:type", String)
@@ -104,7 +106,9 @@ __decorate([
     (0, class_transformer_1.Expose)(),
     (0, class_transformer_1.Transform)(({ value }) => {
         const [local, domain] = value.split('@');
-        const maskedLocal = local.charAt(0) + '*'.repeat(local.length - 2) + local.charAt(local.length - 1);
+        const maskedLocal = local.charAt(0) +
+            '*'.repeat(local.length - 2) +
+            local.charAt(local.length - 1);
         return `${maskedLocal}@${domain}`;
     }),
     __metadata("design:type", String)
@@ -147,7 +151,9 @@ __decorate([
     (0, class_transformer_1.Expose)(),
     (0, class_transformer_1.Transform)(({ value }) => {
         const [local, domain] = value.split('@');
-        const maskedLocal = local.charAt(0) + '*'.repeat(local.length - 2) + local.charAt(local.length - 1);
+        const maskedLocal = local.charAt(0) +
+            '*'.repeat(local.length - 2) +
+            local.charAt(local.length - 1);
         return `${maskedLocal}@${domain}`;
     }),
     __metadata("design:type", String)
@@ -164,7 +170,9 @@ __decorate([
     __metadata("design:type", Boolean)
 ], ResetPasswordResponse.prototype, "requiresRelogin", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ example: 'Your password has been updated. Please log in with your new password.' }),
+    (0, swagger_1.ApiProperty)({
+        example: 'Your password has been updated. Please log in with your new password.',
+    }),
     (0, class_transformer_1.Expose)(),
     __metadata("design:type", String)
 ], ResetPasswordResponse.prototype, "nextSteps", void 0);
@@ -244,7 +252,9 @@ __decorate([
     (0, class_transformer_1.Expose)(),
     (0, class_transformer_1.Transform)(({ value }) => {
         const [local, domain] = value.split('@');
-        const maskedLocal = local.charAt(0) + '*'.repeat(local.length - 2) + local.charAt(local.length - 1);
+        const maskedLocal = local.charAt(0) +
+            '*'.repeat(local.length - 2) +
+            local.charAt(local.length - 1);
         return `${maskedLocal}@${domain}`;
     }),
     __metadata("design:type", String)

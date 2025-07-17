@@ -1,24 +1,24 @@
 // Import and re-export Prisma enums
-import { 
-  UserType, 
-  CompanySize, 
-  UrgencyLevel, 
-  BookingStatus, 
-  BidStatus, 
-  DocumentType, 
-  DocumentStatus, 
-  UserRole 
+import {
+  UserType,
+  CompanySize,
+  UrgencyLevel,
+  BookingStatus,
+  BidStatus,
+  DocumentType,
+  DocumentStatus,
+  UserRole,
 } from '@prisma/client';
 
-export { 
-  UserType, 
-  CompanySize, 
-  UrgencyLevel, 
-  BookingStatus, 
-  BidStatus, 
-  DocumentType, 
-  DocumentStatus, 
-  UserRole 
+export {
+  UserType,
+  CompanySize,
+  UrgencyLevel,
+  BookingStatus,
+  BidStatus,
+  DocumentType,
+  DocumentStatus,
+  UserRole,
 };
 
 export interface User {
@@ -124,15 +124,10 @@ export const TRUCK_TYPES = [
   'HEAVY_HAUL',
   'PICKUP',
   'BOX_TRUCK',
-  'TRACTOR_TRAILER'
+  'TRACTOR_TRAILER',
 ] as const;
 
-export const URGENCY_LEVELS = [
-  'LOW',
-  'MEDIUM',
-  'HIGH',
-  'URGENT'
-] as const;
+export const URGENCY_LEVELS = ['LOW', 'MEDIUM', 'HIGH', 'URGENT'] as const;
 
 export const CARGO_TYPES = [
   'GENERAL',
@@ -144,21 +139,53 @@ export const CARGO_TYPES = [
   'BULK',
   'CONSTRUCTION',
   'AUTOMOTIVE',
-  'ELECTRONICS'
+  'ELECTRONICS',
 ] as const;
 
 export const NIGERIAN_STATES = [
-  'ABIA', 'ADAMAWA', 'AKWA_IBOM', 'ANAMBRA', 'BAUCHI', 'BAYELSA', 'BENUE', 'BORNO',
-  'CROSS_RIVER', 'DELTA', 'EBONYI', 'EDO', 'EKITI', 'ENUGU', 'FCT', 'GOMBE',
-  'IMO', 'JIGAWA', 'KADUNA', 'KANO', 'KATSINA', 'KEBBI', 'KOGI', 'KWARA',
-  'LAGOS', 'NASARAWA', 'NIGER', 'OGUN', 'ONDO', 'OSUN', 'OYO', 'PLATEAU',
-  'RIVERS', 'SOKOTO', 'TARABA', 'YOBE', 'ZAMFARA'
+  'ABIA',
+  'ADAMAWA',
+  'AKWA_IBOM',
+  'ANAMBRA',
+  'BAUCHI',
+  'BAYELSA',
+  'BENUE',
+  'BORNO',
+  'CROSS_RIVER',
+  'DELTA',
+  'EBONYI',
+  'EDO',
+  'EKITI',
+  'ENUGU',
+  'FCT',
+  'GOMBE',
+  'IMO',
+  'JIGAWA',
+  'KADUNA',
+  'KANO',
+  'KATSINA',
+  'KEBBI',
+  'KOGI',
+  'KWARA',
+  'LAGOS',
+  'NASARAWA',
+  'NIGER',
+  'OGUN',
+  'ONDO',
+  'OSUN',
+  'OYO',
+  'PLATEAU',
+  'RIVERS',
+  'SOKOTO',
+  'TARABA',
+  'YOBE',
+  'ZAMFARA',
 ] as const;
 
 export const DEFAULT_PAGINATION = {
   page: 1,
   limit: 20,
-  maxLimit: 100
+  maxLimit: 100,
 } as const;
 
 export const EMAIL_TEMPLATES = {
@@ -171,7 +198,7 @@ export const EMAIL_TEMPLATES = {
   BID_ACCEPTED: 'bidAccepted',
   BID_REJECTED: 'bidRejected',
   BOOKING_CONFIRMATION: 'bookingConfirmation',
-  BOOKING_REMINDER: 'bookingReminder'
+  BOOKING_REMINDER: 'bookingReminder',
 } as const;
 
 export const API_RESPONSE_MESSAGES = {
@@ -184,5 +211,5 @@ export const API_RESPONSE_MESSAGES = {
   FORBIDDEN: 'Access forbidden',
   VALIDATION_ERROR: 'Validation failed',
   SERVER_ERROR: 'Internal server error',
-  CONFLICT: 'Resource already exists'
+  CONFLICT: 'Resource already exists',
 } as const;

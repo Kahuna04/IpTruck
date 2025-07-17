@@ -28,15 +28,15 @@ export enum TruckCondition {
   EXCELLENT = 'excellent',
   GOOD = 'good',
   FAIR = 'fair',
-  POOR = 'poor'
+  POOR = 'poor',
 }
 
 export class TruckDetailsDto {
   [key: string]: any;
-  
+
   @ApiProperty({
     example: 'Mercedes-Benz Actros',
-    description: 'Truck make and model'
+    description: 'Truck make and model',
   })
   @IsNotEmpty()
   @IsString()
@@ -46,7 +46,7 @@ export class TruckDetailsDto {
 
   @ApiProperty({
     example: 2020,
-    description: 'Year of manufacture'
+    description: 'Year of manufacture',
   })
   @IsNotEmpty()
   @IsNumber()
@@ -56,7 +56,7 @@ export class TruckDetailsDto {
 
   @ApiProperty({
     example: 'ABC123DE',
-    description: 'License plate number'
+    description: 'License plate number',
   })
   @IsNotEmpty()
   @IsString()
@@ -66,7 +66,7 @@ export class TruckDetailsDto {
 
   @ApiProperty({
     example: 25000,
-    description: 'Maximum payload capacity in kg'
+    description: 'Maximum payload capacity in kg',
   })
   @IsNotEmpty()
   @IsNumber()
@@ -76,7 +76,7 @@ export class TruckDetailsDto {
 
   @ApiProperty({
     example: 85,
-    description: 'Cargo volume capacity in cubic meters'
+    description: 'Cargo volume capacity in cubic meters',
   })
   @IsOptional()
   @IsNumber()
@@ -86,14 +86,14 @@ export class TruckDetailsDto {
 
   @ApiProperty({
     example: TruckCondition.GOOD,
-    description: 'Overall condition of the truck'
+    description: 'Overall condition of the truck',
   })
   @IsEnum(TruckCondition)
   condition: TruckCondition;
 
   @ApiProperty({
     example: 150000,
-    description: 'Odometer reading in kilometers'
+    description: 'Odometer reading in kilometers',
   })
   @IsOptional()
   @IsNumber()
@@ -102,7 +102,7 @@ export class TruckDetailsDto {
 
   @ApiProperty({
     example: 'GPS tracking, temperature monitoring',
-    description: 'Available equipment and features'
+    description: 'Available equipment and features',
   })
   @IsOptional()
   @IsString()
@@ -111,7 +111,7 @@ export class TruckDetailsDto {
 
   @ApiProperty({
     example: ['GPS_TRACKING', 'TEMPERATURE_CONTROL', 'LOADING_ASSISTANCE'],
-    description: 'Available services'
+    description: 'Available services',
   })
   @IsOptional()
   @IsArray()
@@ -120,7 +120,7 @@ export class TruckDetailsDto {
 
   @ApiProperty({
     example: 'https://example.com/truck-photo.jpg',
-    description: 'URL to truck photo'
+    description: 'URL to truck photo',
   })
   @IsOptional()
   @IsUrl()
@@ -129,7 +129,7 @@ export class TruckDetailsDto {
 
   @ApiProperty({
     example: 'INS12345',
-    description: 'Insurance policy number'
+    description: 'Insurance policy number',
   })
   @IsOptional()
   @IsString()
@@ -138,7 +138,7 @@ export class TruckDetailsDto {
 
   @ApiProperty({
     example: '2024-12-31',
-    description: 'Insurance expiry date'
+    description: 'Insurance expiry date',
   })
   @IsOptional()
   @IsDateString()
@@ -147,10 +147,10 @@ export class TruckDetailsDto {
 
 export class DriverDetailsDto {
   [key: string]: any;
-  
+
   @ApiProperty({
     example: 'John Smith',
-    description: 'Driver full name'
+    description: 'Driver full name',
   })
   @IsNotEmpty()
   @IsString()
@@ -160,7 +160,7 @@ export class DriverDetailsDto {
 
   @ApiProperty({
     example: 'DL12345678',
-    description: 'Driver license number'
+    description: 'Driver license number',
   })
   @IsNotEmpty()
   @IsString()
@@ -170,7 +170,7 @@ export class DriverDetailsDto {
 
   @ApiProperty({
     example: '2025-06-30',
-    description: 'License expiry date'
+    description: 'License expiry date',
   })
   @IsNotEmpty()
   @IsDateString()
@@ -178,7 +178,7 @@ export class DriverDetailsDto {
 
   @ApiProperty({
     example: 8,
-    description: 'Years of driving experience'
+    description: 'Years of driving experience',
   })
   @IsNotEmpty()
   @IsNumber()
@@ -188,7 +188,7 @@ export class DriverDetailsDto {
 
   @ApiProperty({
     example: '+234-80-9876-5432',
-    description: 'Driver contact phone'
+    description: 'Driver contact phone',
   })
   @IsNotEmpty()
   @IsString()
@@ -198,7 +198,7 @@ export class DriverDetailsDto {
 
   @ApiProperty({
     example: 4.8,
-    description: 'Driver rating out of 5'
+    description: 'Driver rating out of 5',
   })
   @IsOptional()
   @IsNumber()
@@ -208,7 +208,7 @@ export class DriverDetailsDto {
 
   @ApiProperty({
     example: 245,
-    description: 'Number of completed trips'
+    description: 'Number of completed trips',
   })
   @IsOptional()
   @IsNumber()
@@ -217,7 +217,7 @@ export class DriverDetailsDto {
 
   @ApiProperty({
     example: ['HAZMAT', 'REFRIGERATED_TRANSPORT'],
-    description: 'Special certifications'
+    description: 'Special certifications',
   })
   @IsOptional()
   @IsArray()
@@ -228,7 +228,7 @@ export class DriverDetailsDto {
 export class CreateBidDto {
   @ApiProperty({
     example: 'booking-uuid-123',
-    description: 'Booking ID this bid is for'
+    description: 'Booking ID this bid is for',
   })
   @IsNotEmpty()
   @IsString()
@@ -236,7 +236,7 @@ export class CreateBidDto {
 
   @ApiProperty({
     example: 'carrier-uuid-123',
-    description: 'Carrier ID making the bid'
+    description: 'Carrier ID making the bid',
   })
   @IsNotEmpty()
   @IsString()
@@ -244,7 +244,7 @@ export class CreateBidDto {
 
   @ApiProperty({
     example: 145000,
-    description: 'Bid amount in Naira'
+    description: 'Bid amount in Naira',
   })
   @IsNotEmpty()
   @IsNumber()
@@ -255,7 +255,7 @@ export class CreateBidDto {
 
   @ApiProperty({
     example: 'NGN',
-    description: 'Currency code'
+    description: 'Currency code',
   })
   @IsOptional()
   @IsString()
@@ -265,7 +265,7 @@ export class CreateBidDto {
 
   @ApiProperty({
     example: '2024-07-15T06:00:00Z',
-    description: 'Proposed pickup time'
+    description: 'Proposed pickup time',
   })
   @IsNotEmpty()
   @IsDateString()
@@ -273,21 +273,21 @@ export class CreateBidDto {
 
   @ApiProperty({
     example: '2024-07-15T14:00:00Z',
-    description: 'Estimated delivery time'
+    description: 'Estimated delivery time',
   })
   @IsNotEmpty()
   @IsDateString()
   estimatedDeliveryTime: string;
 
   @ApiProperty({
-    description: 'Truck details for this bid'
+    description: 'Truck details for this bid',
   })
   @ValidateNested()
   @Type(() => TruckDetailsDto)
   truckDetails: TruckDetailsDto;
 
   @ApiProperty({
-    description: 'Driver details for this bid'
+    description: 'Driver details for this bid',
   })
   @ValidateNested()
   @Type(() => DriverDetailsDto)
@@ -295,7 +295,7 @@ export class CreateBidDto {
 
   @ApiProperty({
     example: 'Reliable service with 10 years experience. Fully insured.',
-    description: 'Additional message or proposal details'
+    description: 'Additional message or proposal details',
   })
   @IsOptional()
   @IsString()
@@ -304,7 +304,7 @@ export class CreateBidDto {
 
   @ApiProperty({
     example: ['GPS_TRACKING', 'REAL_TIME_UPDATES', 'PHOTO_PROOF'],
-    description: 'Services included in this bid'
+    description: 'Services included in this bid',
   })
   @IsOptional()
   @IsArray()
@@ -313,7 +313,7 @@ export class CreateBidDto {
 
   @ApiProperty({
     example: '2024-07-16T23:59:59Z',
-    description: 'Bid expiration time'
+    description: 'Bid expiration time',
   })
   @IsOptional()
   @IsDateString()
@@ -321,7 +321,7 @@ export class CreateBidDto {
 
   @ApiProperty({
     example: true,
-    description: 'Whether this bid is negotiable'
+    description: 'Whether this bid is negotiable',
   })
   @IsOptional()
   @IsBoolean()
@@ -329,7 +329,7 @@ export class CreateBidDto {
 
   @ApiProperty({
     example: 'Payment on delivery preferred',
-    description: 'Payment terms and conditions'
+    description: 'Payment terms and conditions',
   })
   @IsOptional()
   @IsString()
@@ -338,7 +338,7 @@ export class CreateBidDto {
 
   @ApiProperty({
     example: 'Available for immediate pickup',
-    description: 'Special terms or conditions'
+    description: 'Special terms or conditions',
   })
   @IsOptional()
   @IsString()
@@ -347,7 +347,7 @@ export class CreateBidDto {
 
   @ApiProperty({
     example: 130000,
-    description: 'Minimum acceptable counter-offer'
+    description: 'Minimum acceptable counter-offer',
   })
   @IsOptional()
   @IsNumber()
@@ -356,7 +356,7 @@ export class CreateBidDto {
 
   @ApiProperty({
     example: 'https://example.com/company-docs.pdf',
-    description: 'URL to additional documentation'
+    description: 'URL to additional documentation',
   })
   @IsOptional()
   @IsUrl()
@@ -365,7 +365,7 @@ export class CreateBidDto {
 
   @ApiProperty({
     example: 'John Doe',
-    description: 'Contact person for this bid'
+    description: 'Contact person for this bid',
   })
   @IsNotEmpty()
   @IsString()
@@ -375,7 +375,7 @@ export class CreateBidDto {
 
   @ApiProperty({
     example: '+234-80-1234-5678',
-    description: 'Contact phone number'
+    description: 'Contact phone number',
   })
   @IsNotEmpty()
   @IsString()
@@ -385,7 +385,7 @@ export class CreateBidDto {
 
   @ApiProperty({
     example: 'carrier@logistics.com',
-    description: 'Contact email'
+    description: 'Contact email',
   })
   @IsOptional()
   @IsString()
@@ -398,14 +398,14 @@ export class BidResponseDto {
   @ApiProperty({
     example: BidStatus.ACCEPTED,
     description: 'Response status',
-    enum: BidStatus
+    enum: BidStatus,
   })
   @IsEnum(BidStatus)
   status: BidStatus;
 
   @ApiProperty({
     example: 'We accept your bid terms',
-    description: 'Response message'
+    description: 'Response message',
   })
   @IsOptional()
   @IsString()
@@ -414,7 +414,7 @@ export class BidResponseDto {
 
   @ApiProperty({
     example: 140000,
-    description: 'Counter-offer amount if applicable'
+    description: 'Counter-offer amount if applicable',
   })
   @IsOptional()
   @IsNumber()

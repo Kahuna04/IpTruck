@@ -203,7 +203,7 @@ let ShipperService = ShipperService_1 = class ShipperService {
                 return acc;
             }, {});
             const totalSpent = stats.bookings
-                .filter(booking => booking.status === 'COMPLETED')
+                .filter((booking) => booking.status === 'COMPLETED')
                 .reduce((total, booking) => total + booking.proposedPrice, 0);
             return {
                 totalBookings: stats._count.bookings,

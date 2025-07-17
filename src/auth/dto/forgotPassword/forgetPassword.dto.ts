@@ -1,14 +1,14 @@
-import { 
-  IsEmail, 
-  IsString, 
-  MinLength, 
-  MaxLength, 
-  IsOptional, 
+import {
+  IsEmail,
+  IsString,
+  MinLength,
+  MaxLength,
+  IsOptional,
   IsUUID,
   IsStrongPassword,
   Matches,
   IsIP,
-  IsEnum
+  IsEnum,
 } from 'class-validator';
 import { Transform } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
@@ -16,14 +16,14 @@ import { ApiProperty } from '@nestjs/swagger';
 export enum ResetMethod {
   EMAIL = 'email',
   SMS = 'sms',
-  BOTH = 'both'
+  BOTH = 'both',
 }
 
 export class ForgotPasswordDto {
   /** @example "contact@kahuna-logistics.com" */
   @ApiProperty({
     example: 'contact@kahuna-logistics.com',
-    description: 'Company email address for password reset'
+    description: 'Company email address for password reset',
   })
   @IsEmail({}, { message: 'Please provide a valid email address' })
   @MaxLength(100)
@@ -35,7 +35,7 @@ export class ForgotPasswordDto {
     example: 'email',
     description: 'Preferred method for receiving reset instructions',
     enum: ResetMethod,
-    required: false
+    required: false,
   })
   @IsOptional()
   @IsEnum(ResetMethod, { message: 'Reset method must be email, sms, or both' })
@@ -45,7 +45,7 @@ export class ForgotPasswordDto {
   @ApiProperty({
     example: '192.168.1.100',
     description: 'Client IP address for security logging',
-    required: false
+    required: false,
   })
   @IsOptional()
   @IsIP()
@@ -55,7 +55,7 @@ export class ForgotPasswordDto {
   @ApiProperty({
     example: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
     description: 'Client user agent for security logging',
-    required: false
+    required: false,
   })
   @IsOptional()
   @IsString()
@@ -66,7 +66,7 @@ export class ForgotPasswordDto {
   @ApiProperty({
     example: '550e8400-e29b-41d4-a716-446655440000',
     description: 'Device fingerprint for security',
-    required: false
+    required: false,
   })
   @IsOptional()
   @IsUUID()
@@ -77,7 +77,7 @@ export class VerifyResetTokenDto {
   /** @example "contact@kahuna-logistics.com" */
   @ApiProperty({
     example: 'contact@kahuna-logistics.com',
-    description: 'Company email address'
+    description: 'Company email address',
   })
   @IsEmail({}, { message: 'Please provide a valid email address' })
   @MaxLength(100)
@@ -87,19 +87,21 @@ export class VerifyResetTokenDto {
   /** @example "abc123def456ghi789jkl012mno345pqr678stu901vwx234yz" */
   @ApiProperty({
     example: 'abc123def456ghi789jkl012mno345pqr678stu901vwx234yz',
-    description: 'Password reset token from email/SMS'
+    description: 'Password reset token from email/SMS',
   })
   @IsString()
   @MinLength(32, { message: 'Reset token must be at least 32 characters' })
   @MaxLength(128, { message: 'Reset token must not exceed 128 characters' })
-  @Matches(/^[a-zA-Z0-9]+$/, { message: 'Reset token must contain only alphanumeric characters' })
+  @Matches(/^[a-zA-Z0-9]+$/, {
+    message: 'Reset token must contain only alphanumeric characters',
+  })
   token: string;
 
   /** @example "192.168.1.100" */
   @ApiProperty({
     example: '192.168.1.100',
     description: 'Client IP address for security verification',
-    required: false
+    required: false,
   })
   @IsOptional()
   @IsIP()
@@ -110,7 +112,7 @@ export class ResetPasswordDto {
   /** @example "contact@kahuna-logistics.com" */
   @ApiProperty({
     example: 'contact@kahuna-logistics.com',
-    description: 'Company email address'
+    description: 'Company email address',
   })
   @IsEmail({}, { message: 'Please provide a valid email address' })
   @MaxLength(100)
@@ -120,18 +122,20 @@ export class ResetPasswordDto {
   /** @example "abc123def456ghi789jkl012mno345pqr678stu901vwx234yz" */
   @ApiProperty({
     example: 'abc123def456ghi789jkl012mno345pqr678stu901vwx234yz',
-    description: 'Password reset token from email/SMS'
+    description: 'Password reset token from email/SMS',
   })
   @IsString()
   @MinLength(32, { message: 'Reset token must be at least 32 characters' })
   @MaxLength(128, { message: 'Reset token must not exceed 128 characters' })
-  @Matches(/^[a-zA-Z0-9]+$/, { message: 'Reset token must contain only alphanumeric characters' })
+  @Matches(/^[a-zA-Z0-9]+$/, {
+    message: 'Reset token must contain only alphanumeric characters',
+  })
   token: string;
 
   /** @example "NewPassword@123" */
   @ApiProperty({
     example: 'NewPassword@123',
-    description: 'New password for the account'
+    description: 'New password for the account',
   })
   @IsStrongPassword(
     {
@@ -152,7 +156,7 @@ export class ResetPasswordDto {
   /** @example "NewPassword@123" */
   @ApiProperty({
     example: 'NewPassword@123',
-    description: 'Confirm new password'
+    description: 'Confirm new password',
   })
   @IsString()
   @MinLength(8)
@@ -163,7 +167,7 @@ export class ResetPasswordDto {
   @ApiProperty({
     example: '192.168.1.100',
     description: 'Client IP address for security logging',
-    required: false
+    required: false,
   })
   @IsOptional()
   @IsIP()
@@ -173,7 +177,7 @@ export class ResetPasswordDto {
   @ApiProperty({
     example: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
     description: 'Client user agent for security logging',
-    required: false
+    required: false,
   })
   @IsOptional()
   @IsString()
@@ -184,7 +188,7 @@ export class ResetPasswordDto {
   @ApiProperty({
     example: '550e8400-e29b-41d4-a716-446655440000',
     description: 'Device fingerprint for security',
-    required: false
+    required: false,
   })
   @IsOptional()
   @IsUUID()
@@ -195,7 +199,7 @@ export class ResendResetTokenDto {
   /** @example "contact@kahuna-logistics.com" */
   @ApiProperty({
     example: 'contact@kahuna-logistics.com',
-    description: 'Company email address'
+    description: 'Company email address',
   })
   @IsEmail({}, { message: 'Please provide a valid email address' })
   @MaxLength(100)
@@ -207,7 +211,7 @@ export class ResendResetTokenDto {
     example: 'email',
     description: 'Preferred method for receiving reset instructions',
     enum: ResetMethod,
-    required: false
+    required: false,
   })
   @IsOptional()
   @IsEnum(ResetMethod, { message: 'Reset method must be email, sms, or both' })
@@ -217,7 +221,7 @@ export class ResendResetTokenDto {
   @ApiProperty({
     example: '192.168.1.100',
     description: 'Client IP address for security logging',
-    required: false
+    required: false,
   })
   @IsOptional()
   @IsIP()

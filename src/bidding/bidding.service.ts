@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+} from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateBidDto, BidStatus } from './dto/create-bid.dto';
 import { UpdateBidDto } from './dto/update-bid.dto';
@@ -44,7 +48,9 @@ export class BiddingService {
         driverDetails: createBidDto.driverDetails,
         message: createBidDto.message,
         includedServices: createBidDto.includedServices || [],
-        bidExpiresAt: createBidDto.bidExpiresAt ? new Date(createBidDto.bidExpiresAt) : null,
+        bidExpiresAt: createBidDto.bidExpiresAt
+          ? new Date(createBidDto.bidExpiresAt)
+          : null,
         isNegotiable: createBidDto.isNegotiable ?? true,
         paymentTerms: createBidDto.paymentTerms,
         specialTerms: createBidDto.specialTerms,
@@ -60,32 +66,32 @@ export class BiddingService {
         carrier: true,
       },
     });
-    
+
     // Notify via email
     try {
       await this.emailService.sendBidNotification(bid);
     } catch (error) {
       console.error('Failed to send bid notification:', error);
     }
-    
+
     return bid;
   }
 
   async findAll(filters: BidFilters, options: BidOptions) {
     const where: any = {};
-    
+
     if (filters.bookingId) {
       where.bookingId = filters.bookingId;
     }
-    
+
     if (filters.bidderId || filters.carrierId) {
       where.carrierId = filters.bidderId || filters.carrierId;
     }
-    
+
     if (filters.status) {
       where.status = filters.status.toUpperCase();
     }
-    
+
     if (filters.minAmount || filters.maxAmount) {
       where.bidAmount = {};
       if (filters.minAmount) {
@@ -95,7 +101,7 @@ export class BiddingService {
         where.bidAmount.lte = filters.maxAmount;
       }
     }
-    
+
     if (filters.currency) {
       where.currency = filters.currency;
     }
@@ -127,53 +133,55 @@ export class BiddingService {
         carrier: true,
       },
     });
-    
+
     if (!bid) {
       throw new NotFoundException('Bid not found');
     }
-    
+
     return bid;
   }
 
   async update(id: string, updateBidDto: UpdateBidDto) {
     const existingBid = await this.findOne(id);
-    
+
     const updateData: any = {};
-    
+
     if (updateBidDto.status) {
       updateData.status = updateBidDto.status.toUpperCase();
     }
-    
+
     if (updateBidDto.message) {
       updateData.message = updateBidDto.message;
     }
-    
+
     if (updateBidDto.bidAmount) {
       updateData.bidAmount = updateBidDto.bidAmount;
     }
-    
+
     if (updateBidDto.proposedPickupTime) {
       updateData.proposedPickupTime = new Date(updateBidDto.proposedPickupTime);
     }
-    
+
     if (updateBidDto.estimatedDeliveryTime) {
-      updateData.estimatedDeliveryTime = new Date(updateBidDto.estimatedDeliveryTime);
+      updateData.estimatedDeliveryTime = new Date(
+        updateBidDto.estimatedDeliveryTime,
+      );
     }
-    
+
     if (updateBidDto.bidExpiresAt) {
       updateData.bidExpiresAt = new Date(updateBidDto.bidExpiresAt);
     }
-    
+
     if (updateBidDto.paymentTerms) {
       updateData.paymentTerms = updateBidDto.paymentTerms;
     }
-    
+
     if (updateBidDto.specialTerms) {
       updateData.specialTerms = updateBidDto.specialTerms;
     }
-    
+
     updateData.updatedAt = new Date();
-    
+
     return this.prisma.bid.update({
       where: { id },
       data: updateData,
@@ -186,28 +194,37 @@ export class BiddingService {
 
   async remove(id: string) {
     const bid = await this.findOne(id);
-    
+
     return this.prisma.bid.delete({
       where: { id },
     });
   }
 
   async getStatistics(userId: string) {
-    const [totalBids, pendingBids, acceptedBids, rejectedBids, cancelledBids] = await Promise.all([
-      this.prisma.bid.count({ where: { carrierId: userId } }),
-      this.prisma.bid.count({ where: { carrierId: userId, status: 'PENDING' } }),
-      this.prisma.bid.count({ where: { carrierId: userId, status: 'ACCEPTED' } }),
-      this.prisma.bid.count({ where: { carrierId: userId, status: 'REJECTED' } }),
-      this.prisma.bid.count({ where: { carrierId: userId, status: 'WITHDRAWN' } }),
-    ]);
-    
+    const [totalBids, pendingBids, acceptedBids, rejectedBids, cancelledBids] =
+      await Promise.all([
+        this.prisma.bid.count({ where: { carrierId: userId } }),
+        this.prisma.bid.count({
+          where: { carrierId: userId, status: 'PENDING' },
+        }),
+        this.prisma.bid.count({
+          where: { carrierId: userId, status: 'ACCEPTED' },
+        }),
+        this.prisma.bid.count({
+          where: { carrierId: userId, status: 'REJECTED' },
+        }),
+        this.prisma.bid.count({
+          where: { carrierId: userId, status: 'WITHDRAWN' },
+        }),
+      ]);
+
     const averageAmountResult = await this.prisma.bid.aggregate({
       where: { carrierId: userId },
       _avg: {
         bidAmount: true,
       },
     });
-    
+
     return {
       totalBids,
       pendingBids,
@@ -238,7 +255,7 @@ export class BiddingService {
   async updateBidStatus(bidId: string, status: string) {
     return this.prisma.bid.update({
       where: { id: bidId },
-      data: { status: status.toUpperCase() },
+      data: { status: status.toUpperCase() as any },
     });
   }
 }

@@ -72,6 +72,58 @@ export interface BidAcceptanceData {
         carrierPhone: string;
     };
 }
+export interface DeliveryNotificationData {
+    bookingId: string;
+    trackingNumber: string;
+    status: 'picked_up' | 'in_transit' | 'delivered';
+    location: string;
+    timestamp: string;
+    driverName: string;
+    driverPhone: string;
+    shipperCompany: string;
+    carrierCompany: string;
+    estimatedDeliveryTime?: string;
+    deliveryProof?: string;
+}
+export interface DocumentVerificationData {
+    documentId: string;
+    documentType: string;
+    fileName: string;
+    status: 'verified' | 'rejected';
+    companyName: string;
+    contactName: string;
+    reason?: string;
+    verifiedBy?: string;
+    verifiedAt?: string;
+}
+export interface PaymentNotificationData {
+    bookingId: string;
+    paymentId: string;
+    amount: number;
+    currency: string;
+    status: 'pending' | 'completed' | 'failed';
+    paymentMethod: string;
+    shipperCompany: string;
+    carrierCompany: string;
+    dueDate?: string;
+    invoiceUrl?: string;
+}
+export interface MaintenanceNotificationData {
+    maintenanceType: 'scheduled' | 'emergency';
+    startTime: string;
+    endTime: string;
+    affectedServices: string[];
+    description: string;
+    alternativeActions?: string[];
+}
+export interface ReviewReminderData {
+    bookingId: string;
+    companyName: string;
+    partnerCompany: string;
+    deliveryDate: string;
+    userType: 'shipper' | 'carrier';
+    reviewUrl: string;
+}
 export declare class EmailService {
     private readonly mailService;
     private readonly config;
@@ -88,4 +140,11 @@ export declare class EmailService {
     sendBookingConfirmation(emails: string[], acceptanceData: BidAcceptanceData): Promise<void>;
     sendBookingReminder(email: string, bookingData: BookingData, reminderType: 'pickup' | 'delivery'): Promise<void>;
     sendBidNotification(bid: any): Promise<void>;
+    sendDeliveryNotification(email: string, deliveryData: DeliveryNotificationData): Promise<void>;
+    sendDocumentVerificationNotification(email: string, documentData: DocumentVerificationData): Promise<void>;
+    sendPaymentNotification(email: string, paymentData: PaymentNotificationData): Promise<void>;
+    sendMaintenanceNotification(emails: string[], maintenanceData: MaintenanceNotificationData): Promise<void>;
+    sendReviewReminder(email: string, reviewData: ReviewReminderData): Promise<void>;
+    sendBulkNotifications(emails: string[], subject: string, templateName: string, context: any): Promise<void>;
+    sendAdminNotification(adminEmails: string[], subject: string, message: string, data?: any): Promise<void>;
 }

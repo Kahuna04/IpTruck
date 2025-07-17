@@ -30,7 +30,7 @@ exports.LoginDto = LoginDto;
 __decorate([
     (0, swagger_1.ApiProperty)({
         example: 'contact@kahuna-logistics.com',
-        description: 'Company email address'
+        description: 'Company email address',
     }),
     (0, class_validator_1.IsEmail)({}, { message: 'Please provide a valid email address' }),
     (0, class_validator_1.MaxLength)(100),
@@ -42,7 +42,7 @@ __decorate([
         example: 'Password@123',
         description: 'Account password',
         minLength: 1,
-        maxLength: 128
+        maxLength: 128,
     }),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.MinLength)(1, { message: 'Password is required' }),
@@ -53,7 +53,7 @@ __decorate([
     (0, swagger_1.ApiProperty)({
         example: false,
         description: 'Remember login session for extended period',
-        required: false
+        required: false,
     }),
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsBoolean)(),
@@ -64,7 +64,7 @@ __decorate([
     (0, swagger_1.ApiProperty)({
         example: '192.168.1.100',
         description: 'Client IP address for security logging',
-        required: false
+        required: false,
     }),
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsIP)(),
@@ -74,7 +74,7 @@ __decorate([
     (0, swagger_1.ApiProperty)({
         example: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
         description: 'Client user agent for security logging',
-        required: false
+        required: false,
     }),
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsString)(),
@@ -85,7 +85,7 @@ __decorate([
     (0, swagger_1.ApiProperty)({
         example: '550e8400-e29b-41d4-a716-446655440000',
         description: 'Device fingerprint for security',
-        required: false
+        required: false,
     }),
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsUUID)(),
@@ -100,7 +100,7 @@ exports.TwoFactorLoginDto = TwoFactorLoginDto;
 __decorate([
     (0, swagger_1.ApiProperty)({
         example: 'contact@kahuna-logistics.com',
-        description: 'Company email address'
+        description: 'Company email address',
     }),
     (0, class_validator_1.IsEmail)({}, { message: 'Please provide a valid email address' }),
     (0, class_validator_1.MaxLength)(100),
@@ -112,7 +112,7 @@ __decorate([
         example: '123456',
         description: '6-digit verification code',
         minLength: 6,
-        maxLength: 6
+        maxLength: 6,
     }),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.MinLength)(6, { message: 'Verification code must be 6 digits' }),
@@ -122,7 +122,7 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({
         example: '550e8400-e29b-41d4-a716-446655440000',
-        description: 'Session token from initial login'
+        description: 'Session token from initial login',
     }),
     (0, class_validator_1.IsUUID)(),
     __metadata("design:type", String)

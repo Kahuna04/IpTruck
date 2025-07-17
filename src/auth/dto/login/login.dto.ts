@@ -1,27 +1,27 @@
-import { 
-  IsEmail, 
-  IsString, 
-  MinLength, 
-  MaxLength, 
-  IsOptional, 
+import {
+  IsEmail,
+  IsString,
+  MinLength,
+  MaxLength,
+  IsOptional,
   IsBoolean,
   IsEnum,
   IsIP,
-  IsUUID
+  IsUUID,
 } from 'class-validator';
 import { Transform } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
 
 export enum LoginType {
   EMAIL = 'email',
-  PHONE = 'phone'
+  PHONE = 'phone',
 }
 
 export class LoginDto {
   /** @example "contact@kahuna-logistics.com" */
   @ApiProperty({
     example: 'contact@kahuna-logistics.com',
-    description: 'Company email address'
+    description: 'Company email address',
   })
   @IsEmail({}, { message: 'Please provide a valid email address' })
   @MaxLength(100)
@@ -33,7 +33,7 @@ export class LoginDto {
     example: 'Password@123',
     description: 'Account password',
     minLength: 1,
-    maxLength: 128
+    maxLength: 128,
   })
   @IsString()
   @MinLength(1, { message: 'Password is required' })
@@ -44,7 +44,7 @@ export class LoginDto {
   @ApiProperty({
     example: false,
     description: 'Remember login session for extended period',
-    required: false
+    required: false,
   })
   @IsOptional()
   @IsBoolean()
@@ -55,7 +55,7 @@ export class LoginDto {
   @ApiProperty({
     example: '192.168.1.100',
     description: 'Client IP address for security logging',
-    required: false
+    required: false,
   })
   @IsOptional()
   @IsIP()
@@ -65,7 +65,7 @@ export class LoginDto {
   @ApiProperty({
     example: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
     description: 'Client user agent for security logging',
-    required: false
+    required: false,
   })
   @IsOptional()
   @IsString()
@@ -76,7 +76,7 @@ export class LoginDto {
   @ApiProperty({
     example: '550e8400-e29b-41d4-a716-446655440000',
     description: 'Device fingerprint for security',
-    required: false
+    required: false,
   })
   @IsOptional()
   @IsUUID()
@@ -87,7 +87,7 @@ export class TwoFactorLoginDto {
   /** @example "contact@kahuna-logistics.com" */
   @ApiProperty({
     example: 'contact@kahuna-logistics.com',
-    description: 'Company email address'
+    description: 'Company email address',
   })
   @IsEmail({}, { message: 'Please provide a valid email address' })
   @MaxLength(100)
@@ -99,7 +99,7 @@ export class TwoFactorLoginDto {
     example: '123456',
     description: '6-digit verification code',
     minLength: 6,
-    maxLength: 6
+    maxLength: 6,
   })
   @IsString()
   @MinLength(6, { message: 'Verification code must be 6 digits' })
@@ -109,7 +109,7 @@ export class TwoFactorLoginDto {
   /** @example "550e8400-e29b-41d4-a716-446655440000" */
   @ApiProperty({
     example: '550e8400-e29b-41d4-a716-446655440000',
-    description: 'Session token from initial login'
+    description: 'Session token from initial login',
   })
   @IsUUID()
   sessionToken: string;

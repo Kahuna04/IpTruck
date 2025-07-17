@@ -75,7 +75,11 @@ let AuthService = AuthService_1 = class AuthService {
             this.logger.error(`Error creating user: ${error.message}`, error.stack);
             throw new common_1.BadRequestException('Database error occurred');
         }
-        const payload = { sub: savedUser.id, email: savedUser.email, userType: savedUser.userType };
+        const payload = {
+            sub: savedUser.id,
+            email: savedUser.email,
+            userType: savedUser.userType,
+        };
         const { accessToken, refreshToken } = await this.jwtService.generateTokens(payload);
         await this.updateRefreshToken(savedUser.id, refreshToken);
         if (userType === 'SHIPPER') {
@@ -97,10 +101,15 @@ let AuthService = AuthService_1 = class AuthService {
         const user = await this.prisma.user.findUnique({
             where: { email: loginDetails.email },
         });
-        if (!user || !(await this.helperService.compareHash(loginDetails.password, user.password))) {
+        if (!user ||
+            !(await this.helperService.compareHash(loginDetails.password, user.password))) {
             throw new common_1.BadRequestException('Invalid email or password');
         }
-        const payload = { sub: user.id, email: user.email, userType: user.userType };
+        const payload = {
+            sub: user.id,
+            email: user.email,
+            userType: user.userType,
+        };
         const { accessToken, refreshToken } = await this.jwtService.generateTokens(payload);
         await this.updateRefreshToken(user.id, refreshToken);
         return new adapter_dto_2.UserRO({
@@ -152,8 +161,12 @@ let AuthService = AuthService_1 = class AuthService {
             throw new common_1.BadRequestException('Password must be the same');
         }
         const payload = await this.jwtService.verifyToken(resetToken);
-        const user = await this.prisma.user.findUnique({ where: { email: payload.email } });
-        if (!user || !user.resetPasswordToken || !(await this.helperService.compareHash(resetToken, user.resetPasswordToken))) {
+        const user = await this.prisma.user.findUnique({
+            where: { email: payload.email },
+        });
+        if (!user ||
+            !user.resetPasswordToken ||
+            !(await this.helperService.compareHash(resetToken, user.resetPasswordToken))) {
             throw new common_1.BadRequestException('Invalid Reset Password Token!!!');
         }
         try {
@@ -177,8 +190,12 @@ let AuthService = AuthService_1 = class AuthService {
         });
     }
     async refreshToken(refreshToken, payload) {
-        const user = await this.prisma.user.findUnique({ where: { id: payload.sub } });
-        if (user && user.refreshToken && (await this.helperService.compareHash(refreshToken, user.refreshToken))) {
+        const user = await this.prisma.user.findUnique({
+            where: { id: payload.sub },
+        });
+        if (user &&
+            user.refreshToken &&
+            (await this.helperService.compareHash(refreshToken, user.refreshToken))) {
             const { accessToken, refreshToken: newRefreshToken } = await this.jwtService.generateTokens(payload);
             await this.updateRefreshToken(payload.sub, newRefreshToken);
             return { accessToken, refreshToken: newRefreshToken };

@@ -84,7 +84,7 @@ let EmailService = class EmailService {
     }
     async sendNewBookingNotification(carrierEmails, bookingData) {
         const bookingUrl = `${this.getBaseUrl()}/bookings/${bookingData.bookingId}`;
-        const emailPromises = carrierEmails.map(email => this.mailService.sendMail({
+        const emailPromises = carrierEmails.map((email) => this.mailService.sendMail({
             to: email,
             from: this.config.get('USER_GMAIL'),
             subject: `New Truck Booking Available - ${bookingData.urgencyLevel.toUpperCase()} Priority`,
@@ -168,13 +168,14 @@ let EmailService = class EmailService {
                 bookingId: bidData.bookingId,
                 carrierCompany: bidData.companyName,
                 contactPerson: bidData.contactPerson,
-                reason: reason || 'The shipper has selected a different carrier for this booking.',
+                reason: reason ||
+                    'The shipper has selected a different carrier for this booking.',
             },
         });
     }
     async sendBookingConfirmation(emails, acceptanceData) {
         const bookingUrl = `${this.getBaseUrl()}/bookings/${acceptanceData.bookingId}`;
-        const emailPromises = emails.map(email => this.mailService.sendMail({
+        const emailPromises = emails.map((email) => this.mailService.sendMail({
             to: email,
             from: this.config.get('USER_GMAIL'),
             subject: `Booking Confirmed - #${acceptanceData.bookingId}`,
@@ -267,6 +268,156 @@ let EmailService = class EmailService {
         catch (error) {
             console.error('Error sending bid notification:', error);
         }
+    }
+    async sendDeliveryNotification(email, deliveryData) {
+        const subject = {
+            picked_up: `📦 Cargo Picked Up - Tracking #${deliveryData.trackingNumber}`,
+            in_transit: `🚛 In Transit - Tracking #${deliveryData.trackingNumber}`,
+            delivered: `✅ Delivered - Tracking #${deliveryData.trackingNumber}`,
+        }[deliveryData.status];
+        await this.mailService.sendMail({
+            to: email,
+            from: this.config.get('USER_GMAIL'),
+            subject: subject,
+            template: './deliveryNotification',
+            context: {
+                bookingId: deliveryData.bookingId,
+                trackingNumber: deliveryData.trackingNumber,
+                status: deliveryData.status,
+                location: deliveryData.location,
+                timestamp: deliveryData.timestamp,
+                driverName: deliveryData.driverName,
+                driverPhone: deliveryData.driverPhone,
+                shipperCompany: deliveryData.shipperCompany,
+                carrierCompany: deliveryData.carrierCompany,
+                estimatedDeliveryTime: deliveryData.estimatedDeliveryTime,
+                deliveryProof: deliveryData.deliveryProof,
+            },
+        });
+    }
+    async sendDocumentVerificationNotification(email, documentData) {
+        const subject = {
+            verified: `✅ Document Verified - ${documentData.documentType}`,
+            rejected: `❌ Document Rejected - ${documentData.documentType}`,
+        }[documentData.status];
+        await this.mailService.sendMail({
+            to: email,
+            from: this.config.get('USER_GMAIL'),
+            subject: subject,
+            template: './documentVerification',
+            context: {
+                documentId: documentData.documentId,
+                documentType: documentData.documentType,
+                fileName: documentData.fileName,
+                status: documentData.status,
+                companyName: documentData.companyName,
+                contactName: documentData.contactName,
+                reason: documentData.reason,
+                verifiedBy: documentData.verifiedBy,
+                verifiedAt: documentData.verifiedAt,
+            },
+        });
+    }
+    async sendPaymentNotification(email, paymentData) {
+        const subject = {
+            pending: `⏳ Payment Processing - ${paymentData.currency} ${paymentData.amount.toLocaleString()}`,
+            completed: `✅ Payment Completed - ${paymentData.currency} ${paymentData.amount.toLocaleString()}`,
+            failed: `❌ Payment Failed - ${paymentData.currency} ${paymentData.amount.toLocaleString()}`,
+        }[paymentData.status];
+        await this.mailService.sendMail({
+            to: email,
+            from: this.config.get('USER_GMAIL'),
+            subject: subject,
+            template: './paymentNotification',
+            context: {
+                bookingId: paymentData.bookingId,
+                paymentId: paymentData.paymentId,
+                amount: paymentData.amount,
+                currency: paymentData.currency,
+                status: paymentData.status,
+                paymentMethod: paymentData.paymentMethod,
+                shipperCompany: paymentData.shipperCompany,
+                carrierCompany: paymentData.carrierCompany,
+                dueDate: paymentData.dueDate,
+                invoiceUrl: paymentData.invoiceUrl,
+            },
+        });
+    }
+    async sendMaintenanceNotification(emails, maintenanceData) {
+        const subject = {
+            scheduled: `🔧 Scheduled Maintenance - ${new Date(maintenanceData.startTime).toLocaleDateString()}`,
+            emergency: `🚨 Emergency Maintenance - Immediate Action Required`,
+        }[maintenanceData.maintenanceType];
+        const emailPromises = emails.map((email) => this.mailService.sendMail({
+            to: email,
+            from: this.config.get('USER_GMAIL'),
+            subject: subject,
+            template: './maintenanceNotification',
+            context: {
+                maintenanceType: maintenanceData.maintenanceType,
+                maintenanceTitle: subject,
+                startTime: new Date(maintenanceData.startTime).toLocaleString(),
+                endTime: new Date(maintenanceData.endTime).toLocaleString(),
+                affectedServices: maintenanceData.affectedServices,
+                description: maintenanceData.description,
+                alternativeActions: maintenanceData.alternativeActions,
+                username: 'Valued User',
+                vehicleRegNo: 'N/A',
+                maintenanceDate: new Date(maintenanceData.startTime).toLocaleDateString(),
+                maintenanceTime: new Date(maintenanceData.startTime).toLocaleTimeString(),
+                maintenanceLocation: 'Service Center',
+                maintenanceDuration: `${Math.ceil((new Date(maintenanceData.endTime).getTime() - new Date(maintenanceData.startTime).getTime()) / (1000 * 60 * 60))} hours`,
+                serviceType: maintenanceData.description,
+                maintenanceId: 'MAINT-' + Date.now(),
+            },
+        }));
+        await Promise.all(emailPromises);
+    }
+    async sendReviewReminder(email, reviewData) {
+        const subject = `⭐ Review Reminder - Share Your Experience with ${reviewData.partnerCompany}`;
+        await this.mailService.sendMail({
+            to: email,
+            from: this.config.get('USER_GMAIL'),
+            subject: subject,
+            template: './reviewReminder',
+            context: {
+                bookingId: reviewData.bookingId,
+                companyName: reviewData.companyName,
+                partnerCompany: reviewData.partnerCompany,
+                deliveryDate: reviewData.deliveryDate,
+                userType: reviewData.userType,
+                reviewUrl: reviewData.reviewUrl,
+            },
+        });
+    }
+    async sendBulkNotifications(emails, subject, templateName, context) {
+        const emailPromises = emails.map((email) => this.mailService.sendMail({
+            to: email,
+            from: this.config.get('USER_GMAIL'),
+            subject: subject,
+            template: templateName,
+            context: context,
+        }));
+        await Promise.all(emailPromises);
+    }
+    async sendAdminNotification(adminEmails, subject, message, data) {
+        const emailPromises = adminEmails.map((email) => this.mailService.sendMail({
+            to: email,
+            from: this.config.get('USER_GMAIL'),
+            subject: `[ADMIN] ${subject}`,
+            html: `
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+            <h2 style="color: #dc3545;">Admin Notification</h2>
+            <p><strong>Subject:</strong> ${subject}</p>
+            <p><strong>Message:</strong> ${message}</p>
+            ${data ? `<p><strong>Additional Data:</strong></p><pre>${JSON.stringify(data, null, 2)}</pre>` : ''}
+            <p><strong>Timestamp:</strong> ${new Date().toLocaleString()}</p>
+            <hr>
+            <p style="color: #666; font-size: 12px;">This is an automated admin notification from IpTruck.</p>
+          </div>
+        `,
+        }));
+        await Promise.all(emailPromises);
     }
 };
 exports.EmailService = EmailService;

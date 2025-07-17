@@ -23,7 +23,7 @@ let DocumentsService = class DocumentsService {
             fs.mkdirSync(this.uploadPath, { recursive: true });
         }
     }
-    async create(createDocumentDto) {
+    async create(createDocumentDto, uploadedById) {
         try {
             if (createDocumentDto.bookingId) {
                 const booking = await this.prisma.booking.findUnique({
@@ -35,9 +35,22 @@ let DocumentsService = class DocumentsService {
             }
             const document = await this.prisma.document.create({
                 data: {
-                    ...createDocumentDto,
-                    createdAt: new Date(),
-                    updatedAt: new Date(),
+                    type: createDocumentDto.type,
+                    bookingId: createDocumentDto.bookingId,
+                    bidId: createDocumentDto.bidId,
+                    carrierId: createDocumentDto.carrierId,
+                    billOfLadingId: createDocumentDto.billOfLadingId,
+                    metadata: createDocumentDto.metadata,
+                    expiresAt: createDocumentDto.expiresAt
+                        ? new Date(createDocumentDto.expiresAt)
+                        : null,
+                    fileName: `document-${Date.now()}`,
+                    originalName: `document-${Date.now()}`,
+                    fileUrl: `/documents/placeholder-${Date.now()}`,
+                    fileSize: 0,
+                    mimeType: 'application/octet-stream',
+                    uploadedById: uploadedById,
+                    status: 'PENDING',
                 },
             });
             return document;
@@ -101,7 +114,8 @@ let DocumentsService = class DocumentsService {
     }
     async update(id, updateDocumentDto) {
         const existingDocument = await this.findOne(id);
-        if (updateDocumentDto.bookingId && updateDocumentDto.bookingId !== existingDocument.bookingId) {
+        if (updateDocumentDto.bookingId &&
+            updateDocumentDto.bookingId !== existingDocument.bookingId) {
             const booking = await this.prisma.booking.findUnique({
                 where: { id: updateDocumentDto.bookingId },
             });
@@ -287,25 +301,6 @@ let DocumentsService = class DocumentsService {
         }
         await this.remove(id);
     }
-    async verifyDocument(id, verifiedById, comments) {
-        const document = await this.findOne(id);
-        if (document.status === 'VERIFIED') {
-            throw new common_1.BadRequestException('Document is already verified');
-        }
-        return this.prisma.document.update({
-            where: { id },
-            data: {
-                status: 'VERIFIED',
-                verifiedById,
-                verifiedAt: new Date(),
-                updatedAt: new Date(),
-                metadata: {
-                    ...document.metadata,
-                    verificationComments: comments,
-                },
-            },
-        });
-    }
     async rejectDocument(id, rejectedById, reason, comments) {
         const document = await this.findOne(id);
         if (document.status !== 'PENDING') {
@@ -354,20 +349,6 @@ let DocumentsService = class DocumentsService {
             throw new common_1.ForbiddenException('You do not have permission to view documents for this booking');
         }
         return this.findByBooking(bookingId);
-    }
-    async getExpiringDocuments(days = 30, userId) {
-        const expirationDate = new Date();
-        expirationDate.setDate(expirationDate.getDate() + days);
-        return this.prisma.document.findMany({
-            where: {
-                uploadedById: userId,
-                expiresAt: {
-                    gte: new Date(),
-                    lte: expirationDate,
-                },
-            },
-            orderBy: { expiresAt: 'asc' },
-        });
     }
     async getDocumentStats(userId) {
         const where = { uploadedById: userId };

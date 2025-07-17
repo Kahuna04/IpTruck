@@ -1,10 +1,30 @@
-import { Injectable, NotFoundException, BadRequestException, ForbiddenException, Logger } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+  ForbiddenException,
+  Logger,
+} from '@nestjs/common';
 import { CreateBookingDto } from './dto/create-booking.dto';
-import { CreateBidDto, UpdateBidDto, BidResponseDto, BidStatus } from '../bidding/dto/create-bid.dto';
-import { EmailService, BookingData, BidData, BidAcceptanceData } from '../email/email.service';
+import {
+  CreateBidDto,
+  UpdateBidDto,
+  BidResponseDto,
+  BidStatus,
+} from '../bidding/dto/create-bid.dto';
+import {
+  EmailService,
+  BookingData,
+  BidData,
+  BidAcceptanceData,
+} from '../email/email.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { HelperService } from '../shared/helper.service';
-import { Booking, BookingStatus, BidStatus as PrismaBidStatus } from '@prisma/client';
+import {
+  Booking,
+  BookingStatus,
+  BidStatus as PrismaBidStatus,
+} from '@prisma/client';
 import { v4 as uuidv4 } from 'uuid';
 
 export { BookingStatus } from '@prisma/client';
@@ -139,6 +159,10 @@ export interface BidEntity {
 @Injectable()
 export class BookingService {
   private readonly logger = new Logger(BookingService.name);
+  private readonly bookings = new Map<string, BookingEntity>();
+  private readonly bids = new Map<string, BidEntity>();
+  private readonly userBookings = new Map<string, string[]>();
+  private readonly userBids = new Map<string, string[]>();
 
   constructor(
     private readonly emailService: EmailService,
@@ -149,14 +173,17 @@ export class BookingService {
   /**
    * Create a new booking
    */
-  async createBooking(createBookingDto: CreateBookingDto, shipperId: string): Promise<Booking> {
+  async createBooking(
+    createBookingDto: CreateBookingDto,
+    shipperId: string,
+  ): Promise<Booking> {
     try {
       // Get shipper company name
       const shipper = await this.prisma.shipper.findUnique({
         where: { id: shipperId },
         select: { companyName: true },
       });
-      
+
       if (!shipper) {
         throw new NotFoundException('Shipper not found');
       }
@@ -171,8 +198,12 @@ export class BookingService {
           cargoDetails: createBookingDto.cargoDetails,
           preferredTruckType: createBookingDto.preferredTruckType,
           preferredPickupTime: new Date(createBookingDto.preferredPickupTime),
-          latestPickupTime: createBookingDto.latestPickupTime ? new Date(createBookingDto.latestPickupTime) : null,
-          requiredDeliveryTime: createBookingDto.requiredDeliveryTime ? new Date(createBookingDto.requiredDeliveryTime) : null,
+          latestPickupTime: createBookingDto.latestPickupTime
+            ? new Date(createBookingDto.latestPickupTime)
+            : null,
+          requiredDeliveryTime: createBookingDto.requiredDeliveryTime
+            ? new Date(createBookingDto.requiredDeliveryTime)
+            : null,
           urgencyLevel: createBookingDto.urgencyLevel,
           loadingType: createBookingDto.loadingType,
           unloadingType: createBookingDto.unloadingType,
@@ -186,7 +217,9 @@ export class BookingService {
           contactPerson: createBookingDto.contactPerson,
           contactPhone: createBookingDto.contactPhone,
           contactEmail: createBookingDto.contactEmail,
-          expiresAt: createBookingDto.expiresAt ? new Date(createBookingDto.expiresAt) : null,
+          expiresAt: createBookingDto.expiresAt
+            ? new Date(createBookingDto.expiresAt)
+            : null,
           notificationsEnabled: createBookingDto.notificationsEnabled ?? true,
           isRecurring: createBookingDto.isRecurring ?? false,
           recurrencePattern: createBookingDto.recurrencePattern,
@@ -211,7 +244,10 @@ export class BookingService {
       this.logger.log(`Booking created successfully: ${booking.id}`);
       return booking;
     } catch (error) {
-      this.logger.error(`Error creating booking: ${error.message}`, error.stack);
+      this.logger.error(
+        `Error creating booking: ${error.message}`,
+        error.stack,
+      );
       throw error;
     }
   }
@@ -226,7 +262,7 @@ export class BookingService {
     truckType?: string,
     location?: string,
     limit: number = 20,
-    offset: number = 0
+    offset: number = 0,
   ): Promise<{ bookings: any[]; total: number }> {
     try {
       const where: any = {};
@@ -289,7 +325,10 @@ export class BookingService {
 
       return { bookings, total };
     } catch (error) {
-      this.logger.error(`Error fetching bookings: ${error.message}`, error.stack);
+      this.logger.error(
+        `Error fetching bookings: ${error.message}`,
+        error.stack,
+      );
       throw error;
     }
   }
@@ -331,7 +370,10 @@ export class BookingService {
 
       return booking;
     } catch (error) {
-      this.logger.error(`Error fetching booking: ${error.message}`, error.stack);
+      this.logger.error(
+        `Error fetching booking: ${error.message}`,
+        error.stack,
+      );
       throw error;
     }
   }
@@ -339,12 +381,18 @@ export class BookingService {
   /**
    * Update booking status
    */
-  async updateBookingStatus(bookingId: string, status: BookingStatus, userId: string): Promise<any> {
+  async updateBookingStatus(
+    bookingId: string,
+    status: BookingStatus,
+    userId: string,
+  ): Promise<any> {
     const booking = await this.getBookingById(bookingId);
-    
+
     // Check if user has permission to update this booking
     if (booking.shipperId !== userId) {
-      throw new ForbiddenException('You do not have permission to update this booking');
+      throw new ForbiddenException(
+        'You do not have permission to update this booking',
+      );
     }
 
     return this.prisma.booking.update({
@@ -366,9 +414,12 @@ export class BookingService {
    */
   async createBid(createBidDto: CreateBidDto, carrierId: string): Promise<any> {
     const booking = await this.getBookingById(createBidDto.bookingId);
-    
+
     // Check if booking is still active
-    if (booking.status !== BookingStatus.ACTIVE && booking.status !== BookingStatus.PENDING_BIDS) {
+    if (
+      booking.status !== BookingStatus.ACTIVE &&
+      booking.status !== BookingStatus.PENDING_BIDS
+    ) {
       throw new BadRequestException('Booking is no longer accepting bids');
     }
 
@@ -382,11 +433,11 @@ export class BookingService {
       where: { id: carrierId },
       select: { companyName: true },
     });
-    
+
     if (!carrier) {
       throw new NotFoundException('Carrier not found');
     }
-    
+
     const bid = await this.prisma.bid.create({
       data: {
         bookingId: createBidDto.bookingId,
@@ -399,7 +450,9 @@ export class BookingService {
         driverDetails: createBidDto.driverDetails,
         message: createBidDto.message,
         includedServices: createBidDto.includedServices || [],
-        bidExpiresAt: createBidDto.bidExpiresAt ? new Date(createBidDto.bidExpiresAt) : null,
+        bidExpiresAt: createBidDto.bidExpiresAt
+          ? new Date(createBidDto.bidExpiresAt)
+          : null,
         isNegotiable: createBidDto.isNegotiable ?? true,
         paymentTerms: createBidDto.paymentTerms,
         specialTerms: createBidDto.specialTerms,
@@ -438,12 +491,17 @@ export class BookingService {
   /**
    * Get bids for a booking
    */
-  async getBidsForBooking(bookingId: string, userId: string): Promise<BidEntity[]> {
+  async getBidsForBooking(
+    bookingId: string,
+    userId: string,
+  ): Promise<BidEntity[]> {
     const booking = await this.getBookingById(bookingId);
-    
+
     // Check if user has permission to view bids
     if (booking.shipperId !== userId) {
-      throw new ForbiddenException('You do not have permission to view bids for this booking');
+      throw new ForbiddenException(
+        'You do not have permission to view bids for this booking',
+      );
     }
 
     return booking.bids;
@@ -473,7 +531,11 @@ export class BookingService {
   /**
    * Update a bid
    */
-  async updateBid(bidId: string, updateBidDto: UpdateBidDto, userId: string): Promise<any> {
+  async updateBid(
+    bidId: string,
+    updateBidDto: UpdateBidDto,
+    userId: string,
+  ): Promise<any> {
     const bid = await this.prisma.bid.findUnique({
       where: { id: bidId },
       include: {
@@ -481,19 +543,23 @@ export class BookingService {
         carrier: true,
       },
     });
-    
+
     if (!bid) {
       throw new NotFoundException(`Bid with ID ${bidId} not found`);
     }
 
     // Check if user has permission to update this bid
     if (bid.carrierId !== userId) {
-      throw new ForbiddenException('You do not have permission to update this bid');
+      throw new ForbiddenException(
+        'You do not have permission to update this bid',
+      );
     }
 
     // Check if bid is still pending
     if (bid.status !== 'PENDING') {
-      throw new BadRequestException('Bid can only be updated while it is pending');
+      throw new BadRequestException(
+        'Bid can only be updated while it is pending',
+      );
     }
 
     // Update bid
@@ -516,7 +582,11 @@ export class BookingService {
   /**
    * Respond to a bid (accept/reject/counter-offer)
    */
-  async respondToBid(bidId: string, bidResponseDto: BidResponseDto, userId: string): Promise<any> {
+  async respondToBid(
+    bidId: string,
+    bidResponseDto: BidResponseDto,
+    userId: string,
+  ): Promise<any> {
     const bid = await this.prisma.bid.findUnique({
       where: { id: bidId },
       include: {
@@ -528,16 +598,18 @@ export class BookingService {
         },
       },
     });
-    
+
     if (!bid) {
       throw new NotFoundException(`Bid with ID ${bidId} not found`);
     }
 
     const booking = bid.booking;
-    
+
     // Check if user has permission to respond to this bid
     if (booking.shipperId !== userId) {
-      throw new ForbiddenException('You do not have permission to respond to this bid');
+      throw new ForbiddenException(
+        'You do not have permission to respond to this bid',
+      );
     }
 
     // Update bid status
@@ -559,12 +631,12 @@ export class BookingService {
       // Update booking status and set accepted bid
       await this.prisma.booking.update({
         where: { id: booking.id },
-        data: { 
+        data: {
           status: BookingStatus.ACCEPTED,
           acceptedBidId: bidId,
         },
       });
-      
+
       // Reject all other bids for this booking
       await this.prisma.bid.updateMany({
         where: {
@@ -586,12 +658,18 @@ export class BookingService {
   /**
    * Cancel a booking
    */
-  async cancelBooking(bookingId: string, userId: string, reason?: string): Promise<BookingEntity> {
+  async cancelBooking(
+    bookingId: string,
+    userId: string,
+    reason?: string,
+  ): Promise<BookingEntity> {
     const booking = await this.getBookingById(bookingId);
-    
+
     // Check if user has permission to cancel this booking
     if (booking.shipperId !== userId) {
-      throw new ForbiddenException('You do not have permission to cancel this booking');
+      throw new ForbiddenException(
+        'You do not have permission to cancel this booking',
+      );
     }
 
     // Check if booking can be cancelled
@@ -601,7 +679,7 @@ export class BookingService {
 
     booking.status = BookingStatus.CANCELLED;
     booking.updatedAt = new Date().toISOString();
-    
+
     this.bookings.set(bookingId, booking);
 
     // Notify all bidders
@@ -623,28 +701,41 @@ export class BookingService {
   }> {
     const userBookingIds = this.userBookings.get(userId) || [];
     const userBidIds = this.userBids.get(userId) || [];
-    
-    const userBookings = userBookingIds.map(id => this.bookings.get(id)).filter(Boolean);
-    const userBids = userBidIds.map(id => this.bids.get(id)).filter(Boolean);
+
+    const userBookings = userBookingIds
+      .map((id) => this.bookings.get(id))
+      .filter(Boolean);
+    const userBids = userBidIds.map((id) => this.bids.get(id)).filter(Boolean);
 
     return {
       totalBookings: userBookings.length,
-      activeBookings: userBookings.filter(b => b.status === BookingStatus.ACTIVE || b.status === BookingStatus.BIDS_RECEIVED).length,
-      completedBookings: userBookings.filter(b => b.status === BookingStatus.COMPLETED).length,
+      activeBookings: userBookings.filter(
+        (b) =>
+          b &&
+          (b.status === BookingStatus.ACTIVE ||
+            b.status === BookingStatus.BIDS_RECEIVED),
+      ).length,
+      completedBookings: userBookings.filter(
+        (b) => b && b.status === BookingStatus.COMPLETED,
+      ).length,
       totalBids: userBids.length,
-      acceptedBids: userBids.filter(b => b.status === BidStatus.ACCEPTED).length,
-      pendingBids: userBids.filter(b => b.status === BidStatus.PENDING).length,
+      acceptedBids: userBids.filter((b) => b && b.status === BidStatus.ACCEPTED)
+        .length,
+      pendingBids: userBids.filter((b) => b && b.status === BidStatus.PENDING)
+        .length,
     };
   }
 
   /**
    * Private helper methods for notifications
    */
-  private async notifyCarriersOfNewBooking(booking: BookingEntity): Promise<void> {
+  private async notifyCarriersOfNewBooking(
+    booking: BookingEntity,
+  ): Promise<void> {
     // In production, this would query the database for active carriers
     // For demo purposes, we'll use placeholder emails
     const carrierEmails = ['carrier1@example.com', 'carrier2@example.com'];
-    
+
     const bookingData: BookingData = {
       bookingId: booking.id,
       referenceNumber: booking.referenceNumber,
@@ -660,10 +751,16 @@ export class BookingService {
       urgencyLevel: booking.urgencyLevel,
     };
 
-    await this.emailService.sendNewBookingNotification(carrierEmails, bookingData);
+    await this.emailService.sendNewBookingNotification(
+      carrierEmails,
+      bookingData,
+    );
   }
 
-  private async notifyShipperOfNewBid(booking: BookingEntity, bid: BidEntity): Promise<void> {
+  private async notifyShipperOfNewBid(
+    booking: BookingEntity,
+    bid: any,
+  ): Promise<void> {
     const bidData: BidData = {
       bidId: bid.id,
       bookingId: bid.bookingId,
@@ -674,7 +771,7 @@ export class BookingService {
       driverDetails: bid.driverDetails,
       contactPerson: bid.contactPerson,
       message: bid.message,
-      companyName: bid.carrierCompany,
+      companyName: bid.carrier?.companyName || 'Unknown Carrier',
     };
 
     // In production, get shipper email from user service
@@ -682,7 +779,10 @@ export class BookingService {
     await this.emailService.sendBidReceivedNotification(shipperEmail, bidData);
   }
 
-  private async notifyBidAcceptance(booking: BookingEntity, acceptedBid: BidEntity): Promise<void> {
+  private async notifyBidAcceptance(
+    booking: BookingEntity,
+    acceptedBid: BidEntity,
+  ): Promise<void> {
     const acceptanceData: BidAcceptanceData = {
       bidId: acceptedBid.id,
       bookingId: booking.id,
@@ -701,19 +801,27 @@ export class BookingService {
 
     // Notify carrier of acceptance
     const carrierEmail = acceptedBid.contactEmail || 'carrier@example.com';
-    await this.emailService.sendBidAcceptedNotification(carrierEmail, acceptanceData);
+    await this.emailService.sendBidAcceptedNotification(
+      carrierEmail,
+      acceptanceData,
+    );
 
     // Send confirmation to both parties
     const allEmails = [
       booking.contactEmail || 'shipper@example.com',
-      acceptedBid.contactEmail || 'carrier@example.com'
+      acceptedBid.contactEmail || 'carrier@example.com',
     ];
     await this.emailService.sendBookingConfirmation(allEmails, acceptanceData);
   }
 
-  private async notifyRejectedBidders(booking: BookingEntity, acceptedBidId: string): Promise<void> {
-    const rejectedBids = booking.bids.filter(b => b.id !== acceptedBidId && b.status === BidStatus.REJECTED);
-    
+  private async notifyRejectedBidders(
+    booking: BookingEntity,
+    acceptedBidId: string,
+  ): Promise<void> {
+    const rejectedBids = booking.bids.filter(
+      (b) => b.id !== acceptedBidId && b.status === BidStatus.REJECTED,
+    );
+
     for (const bid of rejectedBids) {
       const bidData: BidData = {
         bidId: bid.id,
@@ -729,13 +837,21 @@ export class BookingService {
       };
 
       const carrierEmail = bid.contactEmail || 'carrier@example.com';
-      await this.emailService.sendBidRejectedNotification(carrierEmail, bidData);
+      await this.emailService.sendBidRejectedNotification(
+        carrierEmail,
+        bidData,
+      );
     }
   }
 
-  private async notifyBookingCancellation(booking: BookingEntity, reason?: string): Promise<void> {
-    const pendingBids = booking.bids.filter(b => b.status === BidStatus.PENDING);
-    
+  private async notifyBookingCancellation(
+    booking: BookingEntity,
+    reason?: string,
+  ): Promise<void> {
+    const pendingBids = booking.bids.filter(
+      (b) => b.status === BidStatus.PENDING,
+    );
+
     for (const bid of pendingBids) {
       const bidData: BidData = {
         bidId: bid.id,
@@ -751,7 +867,11 @@ export class BookingService {
       };
 
       const carrierEmail = bid.contactEmail || 'carrier@example.com';
-      await this.emailService.sendBidRejectedNotification(carrierEmail, bidData, reason || 'Booking has been cancelled');
+      await this.emailService.sendBidRejectedNotification(
+        carrierEmail,
+        bidData,
+        reason || 'Booking has been cancelled',
+      );
     }
   }
 }
