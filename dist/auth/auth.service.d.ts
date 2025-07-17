@@ -85,4 +85,5 @@ export declare class AuthService {
         rating: number | null;
         completedJobs: number;
     } | null>;
+    testEmail(email: string): Promise<void>;
 }

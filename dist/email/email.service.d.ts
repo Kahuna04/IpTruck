@@ -147,4 +147,5 @@ export declare class EmailService {
     sendReviewReminder(email: string, reviewData: ReviewReminderData): Promise<void>;
     sendBulkNotifications(emails: string[], subject: string, templateName: string, context: any): Promise<void>;
     sendAdminNotification(adminEmails: string[], subject: string, message: string, data?: any): Promise<void>;
+    sendTestEmail(to: string): Promise<void>;
 }

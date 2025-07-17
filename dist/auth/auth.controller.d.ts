@@ -16,4 +16,15 @@ export declare class AuthController {
     forgotPassword(forgotPasswordData: ForgotPasswordDto): Promise<ForgotPasswordRO>;
     resetPassword(resetData: ResetPasswordDto): Promise<ForgotPasswordRO>;
     refreshToken(req: Request): Promise<import("../shared/constants").Tokens>;
+    testEmail(body: {
+        email: string;
+    }): Promise<{
+        message: string;
+        error?: undefined;
+        details?: undefined;
+    } | {
+        error: string;
+        details: any;
+        message?: undefined;
+    }>;
 }

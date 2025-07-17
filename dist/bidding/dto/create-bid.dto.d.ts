@@ -1,6 +1,5 @@
 import { BidStatus } from '@prisma/client';
 export { BidStatus };
-export { UpdateBidDto } from './update-bid.dto';
 export declare enum TruckCondition {
     NEW = "new",
     EXCELLENT = "excellent",

@@ -21,7 +21,6 @@ import { ApiProperty } from '@nestjs/swagger';
 import { BidStatus } from '@prisma/client';
 
 export { BidStatus };
-export { UpdateBidDto } from './update-bid.dto';
 
 export enum TruckCondition {
   NEW = 'new',

@@ -1,6 +1,7 @@
 import { BookingService, BookingStatus, BookingEntity, BidEntity } from './booking.service';
 import { CreateBookingDto } from './dto/create-booking.dto';
-import { CreateBidDto, UpdateBidDto, BidResponseDto } from '../bidding/dto/create-bid.dto';
+import { CreateBidDto, BidResponseDto } from '../bidding/dto/create-bid.dto';
+import { UpdateBidDto } from '../bidding/dto/update-bid.dto';
 export declare class BookingController {
     private readonly bookingService;
     constructor(bookingService: BookingService);

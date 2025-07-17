@@ -1,5 +1,6 @@
 import { CreateBookingDto } from './dto/create-booking.dto';
-import { CreateBidDto, UpdateBidDto, BidResponseDto, BidStatus } from '../bidding/dto/create-bid.dto';
+import { CreateBidDto, BidResponseDto, BidStatus } from '../bidding/dto/create-bid.dto';
+import { UpdateBidDto } from '../bidding/dto/update-bid.dto';
 import { EmailService } from '../email/email.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { HelperService } from '../shared/helper.service';

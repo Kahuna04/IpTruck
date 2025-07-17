@@ -9,14 +9,12 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.BidResponseDto = exports.CreateBidDto = exports.DriverDetailsDto = exports.TruckDetailsDto = exports.TruckCondition = exports.UpdateBidDto = exports.BidStatus = void 0;
+exports.BidResponseDto = exports.CreateBidDto = exports.DriverDetailsDto = exports.TruckDetailsDto = exports.TruckCondition = exports.BidStatus = void 0;
 const class_validator_1 = require("class-validator");
 const class_transformer_1 = require("class-transformer");
 const swagger_1 = require("@nestjs/swagger");
 const client_1 = require("@prisma/client");
 Object.defineProperty(exports, "BidStatus", { enumerable: true, get: function () { return client_1.BidStatus; } });
-var update_bid_dto_1 = require("./update-bid.dto");
-Object.defineProperty(exports, "UpdateBidDto", { enumerable: true, get: function () { return update_bid_dto_1.UpdateBidDto; } });
 var TruckCondition;
 (function (TruckCondition) {
     TruckCondition["NEW"] = "new";

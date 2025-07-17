@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delivery Update - IpTruck</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .header {
+            background-color: #3498db;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 8px 8px 0 0;
+        }
+        .content {
+            background-color: #f9f9f9;
+            padding: 30px;
+            border-radius: 0 0 8px 8px;
+        }
+        .status-badge {
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-align: center;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+        .status-picked-up {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+        .status-in-transit {
+            background-color: #cce5ff;
+            color: #0056b3;
+        }
+        .status-delivered {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .tracking-details {
+            background-color: #ecf0f1;
+            padding: 20px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .driver-info {
+            background-color: #e8f4f8;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .button {
+            background-color: #3498db;
+            color: white;
+            padding: 12px 24px;
+            text-decoration: none;
+            border-radius: 5px;
+            display: inline-block;
+            margin: 20px 0;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            color: #666;
+            font-size: 12px;
+        }
+        .delivery-proof {
+            background-color: #e8f5e8;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>📦 Delivery Update</h1>
+        <p>Tracking your shipment - Booking #<%= bookingId %></p>
+    </div>
+    
+    <div class="content">
+        <div class="status-badge status-<%= status.replace('_', '-') %>">
+            <h2>
+                <% if (status === 'picked_up') { %>
+                    🚚 Cargo Picked Up
+                <% } else if (status === 'in_transit') { %>
+                    🛣️ In Transit
+                <% } else if (status === 'delivered') { %>
+                    ✅ Delivered
+                <% } %>
+            </h2>
+        </div>
+        
+        <div class="tracking-details">
+            <h3>📍 Tracking Information</h3>
+            <p><strong>Tracking Number:</strong> <%= trackingNumber %></p>
+            <p><strong>Current Status:</strong> <%= status.replace('_', ' ').toUpperCase() %></p>
+            <p><strong>Location:</strong> <%= location %></p>
+            <p><strong>Timestamp:</strong> <%= new Date(timestamp).toLocaleString() %></p>
+            
+            <% if (estimatedDeliveryTime) { %>
+            <p><strong>Estimated Delivery:</strong> <%= new Date(estimatedDeliveryTime).toLocaleString() %></p>
+            <% } %>
+        </div>
+        
+        <div class="driver-info">
+            <h3>👨‍💼 Driver Information</h3>
+            <p><strong>Driver:</strong> <%= driverName %></p>
+            <p><strong>Contact:</strong> <%= driverPhone %></p>
+        </div>
+        
+        <div class="tracking-details">
+            <h3>🏢 Company Information</h3>
+            <p><strong>Shipper:</strong> <%= shipperCompany %></p>
+            <p><strong>Carrier:</strong> <%= carrierCompany %></p>
+        </div>
+        
+        <% if (status === 'delivered' && deliveryProof) { %>
+        <div class="delivery-proof">
+            <h3>📸 Delivery Proof</h3>
+            <p>Your delivery has been completed successfully. Proof of delivery is available.</p>
+            <a href="<%= deliveryProof %>" target="_blank" style="color: #3498db;">View Delivery Proof</a>
+        </div>
+        <% } %>
+        
+        <center>
+            <a href="https://iptruck.com/tracking/<%= trackingNumber %>" class="button">Track Your Shipment</a>
+        </center>
+        
+        <% if (status === 'picked_up') { %>
+        <p><strong>What's Next?</strong></p>
+        <ul>
+            <li>Your cargo is now in transit</li>
+            <li>You'll receive updates as it moves along the route</li>
+            <li>Expected delivery: <%= estimatedDeliveryTime ? new Date(estimatedDeliveryTime).toLocaleDateString() : 'To be confirmed' %></li>
+        </ul>
+        <% } else if (status === 'in_transit') { %>
+        <p><strong>What's Next?</strong></p>
+        <ul>
+            <li>Your cargo is on its way to the destination</li>
+            <li>You'll be notified when it arrives</li>
+            <li>Track real-time progress using the button above</li>
+        </ul>
+        <% } else if (status === 'delivered') { %>
+        <p><strong>🎉 Congratulations!</strong></p>
+        <p>Your shipment has been successfully delivered. Thank you for choosing IpTruck for your logistics needs.</p>
+        <ul>
+            <li>Please review your delivery and confirm receipt</li>
+            <li>Rate your experience with the carrier</li>
+            <li>Contact support if you have any issues</li>
+        </ul>
+        <% } %>
+        
+        <p><strong>Need Help?</strong></p>
+        <p>If you have any questions about your shipment, please contact our support team at <a href="mailto:support@iptruck.com">support@iptruck.com</a> or call our 24/7 helpline.</p>
+        
+        <p>Best regards,<br>The IpTruck Team</p>
+    </div>
+    
+    <div class="footer">
+        <p>© 2024 IpTruck. All rights reserved.</p>
+        <p>You received this email because you're tracking shipment #<%= trackingNumber %></p>
+    </div>
+</body>
+</html>

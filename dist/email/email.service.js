@@ -25,8 +25,13 @@ let EmailService = class EmailService {
     }
     async sendCompanyWelcomeEmail(companyData, token) {
         const confirmationUrl = `${this.getBaseUrl()}/auth/confirm?token=${token}`;
-        await this.mailService.sendMail({
-            to: companyData.businessEmail,
+        const recipients = [
+            companyData.businessEmail,
+            companyData.contactEmail || companyData.businessEmail
+        ];
+        const uniqueRecipients = [...new Set(recipients)];
+        const emailPromises = uniqueRecipients.map(email => this.mailService.sendMail({
+            to: email,
             from: this.config.get('USER_GMAIL'),
             subject: 'Welcome to IpTruck! Confirm your Company Registration',
             template: './companyWelcome',
@@ -36,7 +41,8 @@ let EmailService = class EmailService {
                 companyType: companyData.companyType,
                 confirmationUrl,
             },
-        });
+        }));
+        await Promise.all(emailPromises);
     }
     async sendAccountActivationEmail(companyData, activationCode) {
         const activationUrl = `${this.getBaseUrl()}/auth/activate/${activationCode}`;
@@ -418,6 +424,23 @@ let EmailService = class EmailService {
         `,
         }));
         await Promise.all(emailPromises);
+    }
+    async sendTestEmail(to) {
+        await this.mailService.sendMail({
+            to,
+            from: this.config.get('USER_GMAIL'),
+            subject: 'IpTruck Email Test',
+            html: `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+          <h2 style="color: #2c3e50;">🚛 IpTruck Email Test</h2>
+          <p>This is a test email from the IpTruck platform.</p>
+          <p><strong>Timestamp:</strong> ${new Date().toLocaleString()}</p>
+          <p>If you received this email, your email configuration is working correctly!</p>
+          <hr>
+          <p style="color: #666; font-size: 12px;">This is a test email from IpTruck.</p>
+        </div>
+      `,
+        });
     }
 };
 exports.EmailService = EmailService;

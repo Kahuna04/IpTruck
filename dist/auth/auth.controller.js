@@ -51,11 +51,20 @@ let AuthController = class AuthController {
         const user = req.user;
         return this.authService.refreshToken(user['refreshToken'], user['payload']);
     }
+    async testEmail(body) {
+        try {
+            await this.authService.testEmail(body.email);
+            return { message: 'Test email sent successfully' };
+        }
+        catch (error) {
+            return { error: 'Failed to send test email', details: error.message };
+        }
+    }
 };
 exports.AuthController = AuthController;
 __decorate([
     (0, swagger_1.ApiBadRequestResponse)(),
-    (0, common_1.Post)('local/signup'),
+    (0, common_1.Post)('signup'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [signup_dto_1.CreateCompanyDto]),
@@ -65,7 +74,7 @@ __decorate([
     (0, swagger_1.ApiUnauthorizedResponse)({
         description: 'Invalid Email or Password, Please check your login credentials',
     }),
-    (0, common_1.Post)('local/login'),
+    (0, common_1.Post)('login'),
     (0, common_1.HttpCode)(common_1.HttpStatus.OK),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -115,6 +124,14 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", void 0)
 ], AuthController.prototype, "refreshToken", null);
+__decorate([
+    (0, common_1.Post)('test-email'),
+    (0, common_1.HttpCode)(common_1.HttpStatus.OK),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], AuthController.prototype, "testEmail", null);
 exports.AuthController = AuthController = __decorate([
     (0, swagger_1.ApiTags)('UserAuth'),
     (0, common_1.Controller)('auth'),

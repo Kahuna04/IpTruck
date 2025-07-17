@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maintenance Notification - IpTruck</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .header {
+            background-color: #ff9800;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 8px 8px 0 0;
+        }
+        .content {
+            background-color: #f9f9f9;
+            padding: 30px;
+            border-radius: 0 0 8px 8px;
+        }
+        .maintenance-status {
+            background-color: #fbe9e7;
+            padding: 20px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .button {
+            background-color: #3498db;
+            color: white;
+            padding: 12px 24px;
+            text-decoration: none;
+            border-radius: 5px;
+            display: inline-block;
+            margin: 20px 0;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            color: #666;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🔧 Maintenance Notification</h1>
+        <p>
+            <%= maintenanceTitle %>
+        </p>
+    </div>
+    
+    <div class="content">
+        <p>
+            Dear <%= username %>,
+        </p>
+        
+        <p>
+            We would like to inform you that there will be a scheduled maintenance for your vehicle with registration number <%= vehicleRegNo %>.
+        </p>
+
+        <div class="maintenance-status">
+            <h2>🛠 Maintenance Details</h2>
+            <p><strong>Date:</strong> <%= maintenanceDate %></p>
+            <p><strong>Time:</strong> <%= maintenanceTime %></p>
+            <p><strong>Location:</strong> <%= maintenanceLocation %></p>
+            <p><strong>Estimated Duration:</strong> <%= maintenanceDuration %></p>
+            <p><strong>Service Type:</strong> <%= serviceType %></p>
+        </div>
+
+        <p>
+            Please ensure that your vehicle is available at the specified location and time for the service.
+        </p>
+
+        <p>
+            If you have any questions or need to reschedule, please contact our support team at <a href="mailto:support@iptruck.com">support@iptruck.com</a> or call our customer service line.
+        </p>
+
+        <center>
+            <a href="https://iptruck.com/maintenance/<%= maintenanceId %>" class="button">View Maintenance Details</a>
+        </center>
+
+        <p>
+            Thank you for choosing IpTruck for your logistics needs.
+        </p>
+
+        <p>
+            Best regards,<br>
+            The IpTruck Maintenance Team
+        </p>
+    </div>
+
+    <div class="footer">
+        <p>© 2024 IpTruck. All rights reserved.</p>
+        <p>You received this email because your vehicle is due for maintenance.</p>
+    </div>
+</body>
+</html>

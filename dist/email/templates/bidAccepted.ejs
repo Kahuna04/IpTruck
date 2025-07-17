@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Bid was Accepted - IpTruck</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .header {
+            background-color: #28a745;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 8px 8px 0 0;
+        }
+        .content {
+            background-color: #f9f9f9;
+            padding: 30px;
+            border-radius: 0 0 8px 8px;
+        }
+        .success-badge {
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+            padding: 15px;
+            border-radius: 5px;
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+        .booking-details {
+            background-color: #ecf0f1;
+            padding: 20px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .button {
+            background-color: #3498db;
+            color: white;
+            padding: 12px 24px;
+            text-decoration: none;
+            border-radius: 5px;
+            display: inline-block;
+            margin: 20px 0;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            color: #666;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🎉 Congratulations!</h1>
+        <p>Your bid has been accepted</p>
+    </div>
+    
+    <div class="content">
+        <div class="success-badge">
+            <h2>🚛 Bid Accepted</h2>
+            <p>Your bid for booking <strong>#<%= bookingId %></strong> has been accepted by the shipper.</p>
+        </div>
+        
+        <h2>Hello <%= carrierCompany %>,</h2>
+        
+        <p>We are pleased to inform you that your bid for Shipment with ID <strong>#<%= bookingId %></strong> has been accepted. Below are the details of the shipment:</p>
+
+        <div class="booking-details">
+            <p><strong>Final Amount:</strong> ₦<%= finalAmount %></p>
+            <p><strong>Pickup Date:</strong> <%= pickupTime %></p>
+            <p><strong>Delivery Date:</strong> <%= deliveryTime %></p>
+            <p><strong>Shipper Company:</strong> <%= shipperCompany %></p>
+            <p><strong>Shipper Contact:</strong> <%= shipperContact %> - <%= shipperPhone %></p>
+            <p><strong>Your Contact:</strong> <%= carrierContact %> - <%= carrierPhone %></p>
+        </div>
+
+        <center>
+            <a href="<%= bookingUrl %>" class="button">View Booking Details</a>
+        </center>
+        
+        <p><strong>Next Steps:</strong></p>
+        <ul>
+            <li>Review the booking details and confirm your readiness</li>
+            <li>Contact the shipper to coordinate the pickup and delivery</li>
+            <li>Ensure all necessary documents are ready before pickup</li>
+        </ul>
+        
+        <p><strong>Need Assistance?</strong></p>
+        <p>If you have any questions or need support, feel free to reach out to us at <a href="mailto:support@iptruck.com">support@iptruck.com</a>.</p>
+
+        <p>Thank you for using IpTruck. We wish you a successful trip!
+        <br>The IpTruck Team</p>
+    </div>
+    
+    <div class="footer">
+        <p>© 2024 IpTruck. All rights reserved.</p>
+        <p>You received this email because your bid was accepted for a booking.</p>
+    </div>
+</body>
+</html>
+

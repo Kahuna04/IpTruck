@@ -6,21 +6,16 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.BookingModule = void 0;
+exports.SharedModule = void 0;
 const common_1 = require("@nestjs/common");
-const booking_controller_1 = require("./booking.controller");
-const booking_service_1 = require("./booking.service");
-const email_module_1 = require("../email/email.module");
-const shared_module_1 = require("../shared/shared.module");
-let BookingModule = class BookingModule {
+const helper_service_1 = require("./helper.service");
+let SharedModule = class SharedModule {
 };
-exports.BookingModule = BookingModule;
-exports.BookingModule = BookingModule = __decorate([
+exports.SharedModule = SharedModule;
+exports.SharedModule = SharedModule = __decorate([
     (0, common_1.Module)({
-        imports: [email_module_1.EmailModule, shared_module_1.SharedModule],
-        controllers: [booking_controller_1.BookingController],
-        providers: [booking_service_1.BookingService],
-        exports: [booking_service_1.BookingService],
+        providers: [helper_service_1.HelperService],
+        exports: [helper_service_1.HelperService],
     })
-], BookingModule);
-//# sourceMappingURL=booking.module.js.map
+], SharedModule);
+//# sourceMappingURL=shared.module.js.map

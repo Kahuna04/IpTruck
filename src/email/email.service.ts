@@ -156,18 +156,31 @@ Send Welcome Email for Company Registration
   async sendCompanyWelcomeEmail(companyData: CompanyData, token: string) {
     const confirmationUrl = `${this.getBaseUrl()}/auth/confirm?token=${token}`;
 
-    await this.mailService.sendMail({
-      to: companyData.businessEmail,
-      from: this.config.get<string>('USER_GMAIL'),
-      subject: 'Welcome to IpTruck! Confirm your Company Registration',
-      template: './companyWelcome',
-      context: {
-        companyName: companyData.companyName,
-        contactName: `${companyData.contactFirstName} ${companyData.contactLastName}`,
-        companyType: companyData.companyType,
-        confirmationUrl,
-      },
-    });
+    // Send to both business email and contact email
+    const recipients = [
+      companyData.businessEmail,
+      companyData.contactEmail || companyData.businessEmail
+    ];
+
+    // Remove duplicates if both emails are the same
+    const uniqueRecipients = [...new Set(recipients)];
+
+    const emailPromises = uniqueRecipients.map(email => 
+      this.mailService.sendMail({
+        to: email,
+        from: this.config.get<string>('USER_GMAIL'),
+        subject: 'Welcome to IpTruck! Confirm your Company Registration',
+        template: './companyWelcome',
+        context: {
+          companyName: companyData.companyName,
+          contactName: `${companyData.contactFirstName} ${companyData.contactLastName}`,
+          companyType: companyData.companyType,
+          confirmationUrl,
+        },
+      })
+    );
+
+    await Promise.all(emailPromises);
   }
 
   /* 
@@ -753,5 +766,28 @@ Send Bid Notification (General)
     );
 
     await Promise.all(emailPromises);
+  }
+
+  /* 
+  =======================================
+  Send Test Email
+  ========================================
+  */
+  async sendTestEmail(to: string): Promise<void> {
+    await this.mailService.sendMail({
+      to,
+      from: this.config.get<string>('USER_GMAIL'),
+      subject: 'IpTruck Email Test',
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+          <h2 style="color: #2c3e50;">🚛 IpTruck Email Test</h2>
+          <p>This is a test email from the IpTruck platform.</p>
+          <p><strong>Timestamp:</strong> ${new Date().toLocaleString()}</p>
+          <p>If you received this email, your email configuration is working correctly!</p>
+          <hr>
+          <p style="color: #666; font-size: 12px;">This is a test email from IpTruck.</p>
+        </div>
+      `,
+    });
   }
 }

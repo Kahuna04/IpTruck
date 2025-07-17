@@ -23,14 +23,14 @@ exports.EmailModule = EmailModule = __decorate([
             mailer_1.MailerModule.forRootAsync({
                 useFactory: async (config) => ({
                     transport: {
-                        host: config.get('MAIL_HOST'),
-                        port: 465,
-                        secure: true,
+                        host: config.get('SMTP_HOST') || 'smtp.gmail.com',
+                        port: parseInt(config.get('SMTP_PORT') || '587'),
+                        secure: parseInt(config.get('SMTP_PORT') || '587') === 465,
                         debug: true,
                         logger: true,
                         auth: {
                             user: config.get('USER_GMAIL'),
-                            pass: config.get('USER_PASSWORD'),
+                            pass: config.get('GMAIL_PASSWORD'),
                         },
                     },
                     defaults: {

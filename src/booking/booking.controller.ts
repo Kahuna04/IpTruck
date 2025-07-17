@@ -33,9 +33,9 @@ import {
 import { CreateBookingDto } from './dto/create-booking.dto';
 import {
   CreateBidDto,
-  UpdateBidDto,
   BidResponseDto,
 } from '../bidding/dto/create-bid.dto';
+import { UpdateBidDto } from '../bidding/dto/update-bid.dto';
 
 // Mock decorator for current user - replace with actual auth implementation
 const CurrentUser =

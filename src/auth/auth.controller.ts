@@ -36,7 +36,7 @@ export class AuthController {
 
   /** API Endpoint for User Registration */
   @ApiBadRequestResponse()
-  @Post('local/signup')
+  @Post('signup')
   createUser(@Body() signupDetails: CreateCompanyDto) {
     return this.authService.createUser(signupDetails);
   }
@@ -50,7 +50,7 @@ export class AuthController {
     description:
       'Invalid Email or Password, Please check your login credentials',
   })
-  @Post('local/login')
+  @Post('login')
   @HttpCode(HttpStatus.OK)
   login(@Body() loginDetails: LoginDto) {
     return this.authService.login(loginDetails);
@@ -109,5 +109,17 @@ export class AuthController {
       user!['refreshToken'],
       user!['payload'],
     );
+  }
+
+  /** API Endpoint to test email sending */
+  @Post('test-email')
+  @HttpCode(HttpStatus.OK)
+  async testEmail(@Body() body: { email: string }) {
+    try {
+      await this.authService.testEmail(body.email);
+      return { message: 'Test email sent successfully' };
+    } catch (error) {
+      return { error: 'Failed to send test email', details: error.message };
+    }
   }
 }

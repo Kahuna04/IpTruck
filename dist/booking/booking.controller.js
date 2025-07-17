@@ -18,6 +18,7 @@ const swagger_1 = require("@nestjs/swagger");
 const booking_service_1 = require("./booking.service");
 const create_booking_dto_1 = require("./dto/create-booking.dto");
 const create_bid_dto_1 = require("../bidding/dto/create-bid.dto");
+const update_bid_dto_1 = require("../bidding/dto/update-bid.dto");
 const CurrentUser = () => (target, propertyKey, parameterIndex) => {
 };
 class JwtAuthGuard {
@@ -388,7 +389,7 @@ __decorate([
     __param(1, (0, common_1.Body)()),
     __param(2, CurrentUser()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, create_bid_dto_1.UpdateBidDto, Object]),
+    __metadata("design:paramtypes", [String, update_bid_dto_1.UpdateBidDto, Object]),
     __metadata("design:returntype", Promise)
 ], BookingController.prototype, "updateBid", null);
 __decorate([

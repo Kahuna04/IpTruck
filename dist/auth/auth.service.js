@@ -41,6 +41,23 @@ let AuthService = AuthService_1 = class AuthService {
         let savedUser;
         const { email, password, userType, address, ...companyDetails } = userDetails;
         try {
+            const existingUser = await this.prisma.user.findUnique({
+                where: { email },
+            });
+            if (existingUser) {
+                throw new common_1.BadRequestException('An account with this email address already exists. Please use a different email or try logging in.');
+            }
+            const existingBusinessEmail = await Promise.all([
+                this.prisma.shipper.findUnique({
+                    where: { businessEmail: companyDetails.businessEmail },
+                }),
+                this.prisma.carrier.findUnique({
+                    where: { businessEmail: companyDetails.businessEmail },
+                }),
+            ]);
+            if (existingBusinessEmail[0] || existingBusinessEmail[1]) {
+                throw new common_1.BadRequestException('A company with this business email address already exists. Please use a different business email.');
+            }
             savedUser = await this.prisma.user.create({
                 data: {
                     email,
@@ -49,30 +66,75 @@ let AuthService = AuthService_1 = class AuthService {
                 },
             });
             if (userType === 'SHIPPER') {
-                await this.shipperService.create({
-                    ...companyDetails,
+                const shipperData = {
                     userId: savedUser.id,
+                    companyName: companyDetails.companyName,
+                    registrationNumber: companyDetails.registrationNumber,
+                    taxId: companyDetails.taxId,
+                    businessEmail: companyDetails.businessEmail,
+                    phoneNumber: companyDetails.phoneNumber,
+                    website: companyDetails.website,
+                    companySize: companyDetails.companySize,
+                    description: companyDetails.description,
                     street: address.street,
                     city: address.city,
                     state: address.state,
                     postalCode: address.postalCode,
                     countryCode: address.countryCode,
-                });
+                    contactFirstName: companyDetails.contactFirstName,
+                    contactLastName: companyDetails.contactLastName,
+                    contactJobTitle: companyDetails.contactJobTitle,
+                    contactPhone: companyDetails.contactPhone,
+                    contactEmail: companyDetails.contactEmail,
+                    expectedMonthlyVolume: companyDetails.expectedMonthlyVolume,
+                    operatingRegions: companyDetails.operatingRegions,
+                    marketingOptIn: companyDetails.marketingOptIn,
+                };
+                await this.shipperService.create(shipperData);
             }
             else if (userType === 'CARRIER') {
-                await this.carrierService.create({
-                    ...companyDetails,
+                const carrierData = {
                     userId: savedUser.id,
+                    companyName: companyDetails.companyName,
+                    registrationNumber: companyDetails.registrationNumber,
+                    taxId: companyDetails.taxId,
+                    businessEmail: companyDetails.businessEmail,
+                    phoneNumber: companyDetails.phoneNumber,
+                    website: companyDetails.website,
+                    companySize: companyDetails.companySize,
+                    description: companyDetails.description,
                     street: address.street,
                     city: address.city,
                     state: address.state,
                     postalCode: address.postalCode,
                     countryCode: address.countryCode,
-                });
+                    contactFirstName: companyDetails.contactFirstName,
+                    contactLastName: companyDetails.contactLastName,
+                    contactJobTitle: companyDetails.contactJobTitle,
+                    contactPhone: companyDetails.contactPhone,
+                    contactEmail: companyDetails.contactEmail,
+                    fleetSize: companyDetails.fleetSize,
+                    operatingRegions: companyDetails.operatingRegions,
+                    marketingOptIn: companyDetails.marketingOptIn,
+                };
+                await this.carrierService.create(carrierData);
             }
         }
         catch (error) {
             this.logger.error(`Error creating user: ${error.message}`, error.stack);
+            if (error instanceof common_1.BadRequestException) {
+                throw error;
+            }
+            if (error.code === 'P2002') {
+                const target = error.meta?.target;
+                if (target?.includes('email')) {
+                    throw new common_1.BadRequestException('An account with this email address already exists. Please use a different email or try logging in.');
+                }
+                if (target?.includes('businessEmail')) {
+                    throw new common_1.BadRequestException('A company with this business email address already exists. Please use a different business email.');
+                }
+                throw new common_1.BadRequestException('A record with these details already exists. Please check your information and try again.');
+            }
             throw new common_1.BadRequestException('Database error occurred');
         }
         const payload = {
@@ -82,11 +144,20 @@ let AuthService = AuthService_1 = class AuthService {
         };
         const { accessToken, refreshToken } = await this.jwtService.generateTokens(payload);
         await this.updateRefreshToken(savedUser.id, refreshToken);
-        if (userType === 'SHIPPER') {
-            await this.emailService.sendCompanyWelcomeEmail(userDetails, accessToken);
+        try {
+            const emailData = {
+                ...userDetails,
+                contactEmail: email,
+            };
+            if (userType === 'SHIPPER') {
+                await this.emailService.sendCompanyWelcomeEmail(emailData, accessToken);
+            }
+            else {
+                await this.emailService.sendCompanyWelcomeEmail(emailData, accessToken);
+            }
         }
-        else {
-            await this.emailService.sendCompanyWelcomeEmail(userDetails, accessToken);
+        catch (emailError) {
+            this.logger.error(`Failed to send welcome email to ${email}: ${emailError.message}`, emailError.stack);
         }
         return new adapter_dto_2.UserRO({
             status: 201,
@@ -238,6 +309,16 @@ let AuthService = AuthService_1 = class AuthService {
         if (!user)
             return null;
         return user.userType === 'SHIPPER' ? user.shipper : user.carrier;
+    }
+    async testEmail(email) {
+        try {
+            await this.emailService.sendTestEmail(email);
+            this.logger.log(`Test email sent successfully to ${email}`);
+        }
+        catch (error) {
+            this.logger.error(`Failed to send test email to ${email}: ${error.message}`, error.stack);
+            throw error;
+        }
     }
 };
 exports.AuthService = AuthService;

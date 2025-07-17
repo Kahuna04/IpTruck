@@ -49,6 +49,33 @@ User Registration Method
       userDetails;
 
     try {
+      // Check if user already exists
+      const existingUser = await this.prisma.user.findUnique({
+        where: { email },
+      });
+
+      if (existingUser) {
+        throw new BadRequestException(
+          'An account with this email address already exists. Please use a different email or try logging in.',
+        );
+      }
+
+      // Check if business email already exists in shipper or carrier tables
+      const existingBusinessEmail = await Promise.all([
+        this.prisma.shipper.findUnique({
+          where: { businessEmail: companyDetails.businessEmail },
+        }),
+        this.prisma.carrier.findUnique({
+          where: { businessEmail: companyDetails.businessEmail },
+        }),
+      ]);
+
+      if (existingBusinessEmail[0] || existingBusinessEmail[1]) {
+        throw new BadRequestException(
+          'A company with this business email address already exists. Please use a different business email.',
+        );
+      }
+
       // Create user in the database
       savedUser = await this.prisma.user.create({
         data: {
@@ -60,28 +87,86 @@ User Registration Method
 
       // Conditionally create shipper or carrier based on the userType
       if (userType === 'SHIPPER') {
-        await this.shipperService.create({
-          ...companyDetails,
+        const shipperData: CreateShipperDto = {
           userId: savedUser.id,
+          companyName: companyDetails.companyName,
+          registrationNumber: companyDetails.registrationNumber,
+          taxId: companyDetails.taxId,
+          businessEmail: companyDetails.businessEmail,
+          phoneNumber: companyDetails.phoneNumber,
+          website: companyDetails.website,
+          companySize: companyDetails.companySize,
+          description: companyDetails.description,
           street: address.street,
           city: address.city,
           state: address.state,
           postalCode: address.postalCode,
           countryCode: address.countryCode,
-        } as CreateShipperDto);
+          contactFirstName: companyDetails.contactFirstName,
+          contactLastName: companyDetails.contactLastName,
+          contactJobTitle: companyDetails.contactJobTitle,
+          contactPhone: companyDetails.contactPhone,
+          contactEmail: companyDetails.contactEmail,
+          expectedMonthlyVolume: companyDetails.expectedMonthlyVolume,
+          operatingRegions: companyDetails.operatingRegions,
+          marketingOptIn: companyDetails.marketingOptIn,
+        };
+        await this.shipperService.create(shipperData);
       } else if (userType === 'CARRIER') {
-        await this.carrierService.create({
-          ...companyDetails,
+        const carrierData: CreateCarrierDto = {
           userId: savedUser.id,
+          companyName: companyDetails.companyName,
+          registrationNumber: companyDetails.registrationNumber,
+          taxId: companyDetails.taxId,
+          businessEmail: companyDetails.businessEmail,
+          phoneNumber: companyDetails.phoneNumber,
+          website: companyDetails.website,
+          companySize: companyDetails.companySize,
+          description: companyDetails.description,
           street: address.street,
           city: address.city,
           state: address.state,
           postalCode: address.postalCode,
           countryCode: address.countryCode,
-        } as CreateCarrierDto);
+          contactFirstName: companyDetails.contactFirstName,
+          contactLastName: companyDetails.contactLastName,
+          contactJobTitle: companyDetails.contactJobTitle,
+          contactPhone: companyDetails.contactPhone,
+          contactEmail: companyDetails.contactEmail,
+          fleetSize: companyDetails.fleetSize,
+          operatingRegions: companyDetails.operatingRegions,
+          marketingOptIn: companyDetails.marketingOptIn,
+        };
+        await this.carrierService.create(carrierData);
       }
     } catch (error: any) {
       this.logger.error(`Error creating user: ${error.message}`, error.stack);
+      
+      // If it's already a BadRequestException, re-throw it
+      if (error instanceof BadRequestException) {
+        throw error;
+      }
+      
+      // Handle specific Prisma errors
+      if (error.code === 'P2002') {
+        // Unique constraint violation
+        const target = error.meta?.target;
+        if (target?.includes('email')) {
+          throw new BadRequestException(
+            'An account with this email address already exists. Please use a different email or try logging in.',
+          );
+        }
+        if (target?.includes('businessEmail')) {
+          throw new BadRequestException(
+            'A company with this business email address already exists. Please use a different business email.',
+          );
+        }
+        throw new BadRequestException(
+          'A record with these details already exists. Please check your information and try again.',
+        );
+      }
+      
+      // Generic database error
       throw new BadRequestException('Database error occurred');
     }
 
@@ -97,16 +182,31 @@ User Registration Method
     await this.updateRefreshToken(savedUser.id, refreshToken);
 
     // Send Welcome Email -- Adjust logic when email templates and services are implemented
-    if (userType === 'SHIPPER') {
-      await this.emailService.sendCompanyWelcomeEmail(
-        userDetails as any,
-        accessToken,
+    try {
+      // Prepare email data with both personal and business email
+      const emailData = {
+        ...userDetails,
+        contactEmail: email, // Add personal email as contact email
+      };
+      
+      if (userType === 'SHIPPER') {
+        await this.emailService.sendCompanyWelcomeEmail(
+          emailData as any,
+          accessToken,
+        );
+      } else {
+        await this.emailService.sendCompanyWelcomeEmail(
+          emailData as any,
+          accessToken,
+        );
+      }
+    } catch (emailError) {
+      // Log email error but don't fail the signup process
+      this.logger.error(
+        `Failed to send welcome email to ${email}: ${emailError.message}`,
+        emailError.stack,
       );
-    } else {
-      await this.emailService.sendCompanyWelcomeEmail(
-        userDetails as any,
-        accessToken,
-      );
+      // Continue with successful signup response
     }
 
     return new UserRO({
@@ -353,5 +453,20 @@ Helper method to get user profile
     if (!user) return null;
 
     return user.userType === 'SHIPPER' ? user.shipper : user.carrier;
+  }
+
+  /* 
+=======================================
+Test email method
+========================================
+*/
+  async testEmail(email: string): Promise<void> {
+    try {
+      await this.emailService.sendTestEmail(email);
+      this.logger.log(`Test email sent successfully to ${email}`);
+    } catch (error) {
+      this.logger.error(`Failed to send test email to ${email}: ${error.message}`, error.stack);
+      throw error;
+    }
   }
 }

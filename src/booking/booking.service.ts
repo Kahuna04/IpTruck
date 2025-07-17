@@ -8,10 +8,10 @@ import {
 import { CreateBookingDto } from './dto/create-booking.dto';
 import {
   CreateBidDto,
-  UpdateBidDto,
   BidResponseDto,
   BidStatus,
 } from '../bidding/dto/create-bid.dto';
+import { UpdateBidDto } from '../bidding/dto/update-bid.dto';
 import {
   EmailService,
   BookingData,
